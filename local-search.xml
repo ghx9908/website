@@ -4,6 +4,19 @@
   
   
   <entry>
+    <title>tset1</title>
+    <link href="/2022/07/11/tset1/"/>
+    <url>/2022/07/11/tset1/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>Object.prototype.hasOwnProperty()和 Object.hasOwn()</title>
     <link href="/2022/07/09/Object.prototype.hasOwnProperty()andObject.hasOwn()/"/>
     <url>/2022/07/09/Object.prototype.hasOwnProperty()andObject.hasOwn()/</url>
@@ -15,6 +28,10 @@
     <tags>
       
       <tag>javascript</tag>
+      
+      <tag>es6</tag>
+      
+      <tag>git</tag>
       
     </tags>
     
