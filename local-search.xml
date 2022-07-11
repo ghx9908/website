@@ -95,6 +95,25 @@
   
   
   <entry>
+    <title>rtd样式</title>
+    <link href="/2022/03/01/%E6%A0%B7%E5%BC%8F/"/>
+    <url>/2022/03/01/%E6%A0%B7%E5%BC%8F/</url>
+    
+    <content type="html"><![CDATA[<h3 id="css"><a href="#css" class="headerlink" title="css"></a>css</h3><ul><li><p>m 是 margin 缩写，</p></li><li><p>p 是 padding 缩写，.rtd-p-h-24 -&gt; padding-right: 24px; padding-left: 24px;</p></li><li><p>t r b l 是 top right bottom left 缩写，</p></li><li><p>h 是 horizontal 缩写（margin-right: 24px; margin-left: 24px;）</p></li><li><p>v 是 vertical 缩写（margin-top: 24px; margin-bottom: 24px)</p></li><li><p>n 是 negative（负值，比如 -8px）缩写</p></li></ul><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-class">.rtd-p-h-24</span> -&gt; <span class="hljs-attribute">padding-right</span>: <span class="hljs-number">24px</span>; <span class="hljs-attribute">padding-left</span>: <span class="hljs-number">24px</span>;<br><span class="hljs-selector-class">.rtd-m-r-24</span> -&gt; <span class="hljs-attribute">margin-right</span>: <span class="hljs-number">24px</span>;<br><span class="hljs-selector-class">.rtd-m-t-24</span> -&gt; <span class="hljs-attribute">margin-top</span>: <span class="hljs-number">24px</span>;<br><br></code></pre></td></tr></table></figure><script src="https://utteranc.es/client.js"        repo="Gao-Hongxiang/Gao-Hongxiang.github.io"        issue-term="pathname"        theme="github-light"        crossorigin="anonymous"        async></script>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>工作</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>算法+手撕</title>
     <link href="/2022/03/01/%E7%AE%97%E6%B3%95%E6%89%8B%E6%92%95/"/>
     <url>/2022/03/01/%E7%AE%97%E6%B3%95%E6%89%8B%E6%92%95/</url>
@@ -106,25 +125,6 @@
     <tags>
       
       <tag>面试</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>rtd样式</title>
-    <link href="/2022/03/01/%E6%A0%B7%E5%BC%8F/"/>
-    <url>/2022/03/01/%E6%A0%B7%E5%BC%8F/</url>
-    
-    <content type="html"><![CDATA[<h3 id="css"><a href="#css" class="headerlink" title="css"></a>css</h3><ul><li><p>m 是 margin 缩写，</p></li><li><p>p 是 padding 缩写，.rtd-p-h-24 -&gt; padding-right: 24px; padding-left: 24px;</p></li><li><p>t r b l 是 top right bottom left 缩写，</p></li><li><p>h 是 horizontal 缩写（margin-right: 24px; margin-left: 24px;）</p></li><li><p>v 是 vertical 缩写（margin-top: 24px; margin-bottom: 24px)</p></li><li><p>n 是 negative（负值，比如 -8px）缩写</p></li></ul><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-class">.rtd-p-h-24</span> -&gt; <span class="hljs-attribute">padding-right</span>: <span class="hljs-number">24px</span>; <span class="hljs-attribute">padding-left</span>: <span class="hljs-number">24px</span>;<br><span class="hljs-selector-class">.rtd-m-r-24</span> -&gt; <span class="hljs-attribute">margin-right</span>: <span class="hljs-number">24px</span>;<br><span class="hljs-selector-class">.rtd-m-t-24</span> -&gt; <span class="hljs-attribute">margin-top</span>: <span class="hljs-number">24px</span>;<br><br></code></pre></td></tr></table></figure>]]></content>
-    
-    
-    
-    <tags>
-      
-      <tag>工作</tag>
       
     </tags>
     
