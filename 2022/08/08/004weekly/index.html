@@ -7,8 +7,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/blog/img/bg/favicon.png">
-  <link rel="icon" href="/blog/img/bg/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/bg/favicon.png">
+  <link rel="icon" href="/img/bg/favicon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
@@ -16,24 +16,24 @@
   <meta name="author" content="高红翔">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Object.prototype.hasOwnProperty()和 Object.hasOwn()Object.prototype.hasOwnProperty()hasOwnProperty() 方法会返回一个布尔值，指示对象自身属性中是否具有指定的属性（也就是，是否有指定的键）。 1234567891011const object1 &#x3D; &amp;#123;&amp;#125;object1.propert">
+    <meta name="description" content="本期文章七夕到了，还不快给你女朋友做一个专属 chrome 插件七夕节马上就要到了，作为拥有对象（没有的话，可以选择 new 一个出来）的程序员来说，肯定是需要有一点表示才行的。用钱能买到的东西不一定能表达咱们的心意，但是用心去写的代码，还能让对象每天看到那才是最正确的选择。 除了手机之外，在电脑上使用浏览器搜索想要的东西是最常用的功能了，所以就需要一个打开即用的搜索框，而且还能表达心意的 chr">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Object.prototype.hasOwnProperty()和 Object.hasOwn()">
-<meta property="og:url" content="https://gao-hongongxiang.github.io/blog/2022/07/09/Object.prototype.hasOwnProperty()andObject.hasOwn()/index.html">
+<meta property="og:title" content="weekly 004">
+<meta property="og:url" content="http://example.com/2022/08/08/004weekly/index.html">
 <meta property="og:site_name" content="title">
-<meta property="og:description" content="Object.prototype.hasOwnProperty()和 Object.hasOwn()Object.prototype.hasOwnProperty()hasOwnProperty() 方法会返回一个布尔值，指示对象自身属性中是否具有指定的属性（也就是，是否有指定的键）。 1234567891011const object1 &#x3D; &amp;#123;&amp;#125;object1.propert">
+<meta property="og:description" content="本期文章七夕到了，还不快给你女朋友做一个专属 chrome 插件七夕节马上就要到了，作为拥有对象（没有的话，可以选择 new 一个出来）的程序员来说，肯定是需要有一点表示才行的。用钱能买到的东西不一定能表达咱们的心意，但是用心去写的代码，还能让对象每天看到那才是最正确的选择。 除了手机之外，在电脑上使用浏览器搜索想要的东西是最常用的功能了，所以就需要一个打开即用的搜索框，而且还能表达心意的 chr">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-07-09T08:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-11T14:52:25.712Z">
+<meta property="article:published_time" content="2022-08-08T10:00:00.000Z">
+<meta property="article:modified_time" content="2022-08-11T07:36:10.787Z">
 <meta property="article:author" content="高红翔">
-<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="weekly">
 <meta name="twitter:card" content="summary_large_image">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>Object.prototype.hasOwnProperty()和 Object.hasOwn() - title</title>
+  <title>weekly 004 - title</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -57,12 +57,12 @@
 <link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
 
 
-<link  rel="stylesheet" href="/blog/css/main.css" />
+<link  rel="stylesheet" href="/css/main.css" />
 
 
-  <link id="highlight-css" rel="stylesheet" href="/blog/css/highlight.css" />
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
   
-    <link id="highlight-css-dark" rel="stylesheet" href="/blog/css/highlight-dark.css" />
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
   
 
 
@@ -71,15 +71,15 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"gao-hongongxiang.github.io","root":"/blog/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/blog/local-search.xml"};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.2","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
       Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
     }
   </script>
-  <script  src="/blog/js/utils.js" ></script>
-  <script  src="/blog/js/color-schema.js" ></script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
   
 
 
@@ -96,7 +96,7 @@
 <div class="header-inner" style="height: 70vh;">
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
-    <a class="navbar-brand" href="/blog/">
+    <a class="navbar-brand" href="/">
       <strong>Gao-Hongxiang&#39;s blog</strong>
     </a>
 
@@ -115,7 +115,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/blog/">
+              <a class="nav-link" href="/">
                 <i class="iconfont icon-home-fill"></i>
                 首页
               </a>
@@ -127,7 +127,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/blog/archives/">
+              <a class="nav-link" href="/archives/">
                 <i class="iconfont icon-archive-fill"></i>
                 归档
               </a>
@@ -139,7 +139,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/blog/categories/">
+              <a class="nav-link" href="/categories/">
                 <i class="iconfont icon-category-fill"></i>
                 分类
               </a>
@@ -151,7 +151,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/blog/tags/">
+              <a class="nav-link" href="/tags/">
                 <i class="iconfont icon-tags-fill"></i>
                 标签
               </a>
@@ -163,7 +163,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/blog/links/">
+              <a class="nav-link" href="/links/">
                 <i class="iconfont icon-link-fill"></i>
                 友链
               </a>
@@ -175,7 +175,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/blog/about/">
+              <a class="nav-link" href="/about/">
                 <i class="iconfont icon-user-fill"></i>
                 关于
               </a>
@@ -244,13 +244,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('/blog/img/bg/2.jpg') no-repeat center center; background-size: cover;">
+     style="background: url('/img/bg/2.jpg') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Object.prototype.hasOwnProperty()和 Object.hasOwn()"></span>
+            <span id="subtitle" data-typed-text="weekly 004"></span>
           
         </div>
 
@@ -266,8 +266,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-07-09 16:00" pubdate>
-          2022年7月9日 下午
+        <time datetime="2022-08-08 18:00" pubdate>
+          2022年8月8日 晚上
         </time>
       </span>
     
@@ -278,7 +278,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.7k 字
+          1.3k 字
         
       </span>
     
@@ -289,7 +289,7 @@
         
         
         
-          15 分钟
+          12 分钟
         
       </span>
     
@@ -335,30 +335,31 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Object.prototype.hasOwnProperty()和 Object.hasOwn()</h1>
+            <h1 style="display: none">weekly 004</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="Object-prototype-hasOwnProperty-和-Object-hasOwn"><a href="#Object-prototype-hasOwnProperty-和-Object-hasOwn" class="headerlink" title="Object.prototype.hasOwnProperty()和 Object.hasOwn()"></a>Object.prototype.hasOwnProperty()和 Object.hasOwn()</h1><h3 id="Object-prototype-hasOwnProperty"><a href="#Object-prototype-hasOwnProperty" class="headerlink" title="Object.prototype.hasOwnProperty()"></a><code>Object.prototype.hasOwnProperty()</code></h3><p><code>hasOwnProperty()</code> 方法会返回一个布尔值，指示对象自身属性中是否具有指定的属性（也就是，是否有指定的键）。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> object1 = &#123;&#125;<br>object1.<span class="hljs-property">property1</span> = <span class="hljs-number">42</span><br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(object1.<span class="hljs-title function_">hasOwnProperty</span>(<span class="hljs-string">&quot;property1&quot;</span>))<br><span class="hljs-comment">// expected output: true</span><br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(object1.<span class="hljs-title function_">hasOwnProperty</span>(<span class="hljs-string">&quot;toString&quot;</span>))<br><span class="hljs-comment">// expected output: false</span><br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(object1.<span class="hljs-title function_">hasOwnProperty</span>(<span class="hljs-string">&quot;hasOwnProperty&quot;</span>))<br><span class="hljs-comment">// expected output: false</span><br></code></pre></td></tr></table></figure>
-
-<h3 id="Object-hasOwn"><a href="#Object-hasOwn" class="headerlink" title="Object.hasOwn()"></a><code>Object.hasOwn()</code></h3><blockquote>
-<p><strong>注意：</strong> <code>Object.hasOwn()</code>旨在替代<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty"><code>Object.hasOwnProperty()</code></a>.</p>
-</blockquote>
-<h4 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h4><p><code>hasOwn(instance, prop)</code></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> object1 = &#123;<br>  <span class="hljs-attr">prop</span>: <span class="hljs-string">&quot;exists&quot;</span>,<br>&#125;<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">Object</span>.<span class="hljs-title function_">hasOwn</span>(object1, <span class="hljs-string">&quot;prop&quot;</span>))<br><span class="hljs-comment">// expected output: true</span><br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">Object</span>.<span class="hljs-title function_">hasOwn</span>(object1, <span class="hljs-string">&quot;toString&quot;</span>))<br><span class="hljs-comment">// expected output: false</span><br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">Object</span>.<span class="hljs-title function_">hasOwn</span>(object1, <span class="hljs-string">&quot;undeclaredPropertyValue&quot;</span>))<br><span class="hljs-comment">// expected output: false</span><br></code></pre></td></tr></table></figure>
-
-<h4 id="hasOwn和-in-的区别"><a href="#hasOwn和-in-的区别" class="headerlink" title="hasOwn和 in 的区别"></a><code>hasOwn</code>和 in 的区别</h4><blockquote>
-<p>以下示例区分直接属性和通过原型链继承的属性：</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> example = &#123;&#125;<br>example.<span class="hljs-property">prop</span> = <span class="hljs-string">&quot;exists&quot;</span><br><br><span class="hljs-comment">// `hasOwn` will only return true for direct properties:</span><br><span class="hljs-title class_">Object</span>.<span class="hljs-title function_">hasOwn</span>(example, <span class="hljs-string">&quot;prop&quot;</span>) <span class="hljs-comment">// returns true</span><br><span class="hljs-title class_">Object</span>.<span class="hljs-title function_">hasOwn</span>(example, <span class="hljs-string">&quot;toString&quot;</span>) <span class="hljs-comment">// returns false</span><br><span class="hljs-title class_">Object</span>.<span class="hljs-title function_">hasOwn</span>(example, <span class="hljs-string">&quot;hasOwnProperty&quot;</span>) <span class="hljs-comment">// returns false</span><br><br><span class="hljs-comment">// The `in` operator will return true for direct or inherited properties:</span><br><span class="hljs-string">&quot;prop&quot;</span> <span class="hljs-keyword">in</span> example <span class="hljs-comment">// returns true</span><br><span class="hljs-string">&quot;toString&quot;</span> <span class="hljs-keyword">in</span> example <span class="hljs-comment">// returns true</span><br><span class="hljs-string">&quot;hasOwnProperty&quot;</span> <span class="hljs-keyword">in</span> example <span class="hljs-comment">// returns true</span><br></code></pre></td></tr></table></figure>
-
-<h3 id="hasOwnProperty-存在的问题"><a href="#hasOwnProperty-存在的问题" class="headerlink" title="hasOwnProperty 存在的问题"></a><code>hasOwnProperty</code> 存在的问题</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> foo = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">create</span>(<span class="hljs-literal">null</span>);<br>foo.<span class="hljs-property">prop</span> = <span class="hljs-string">&#x27;exists&#x27;</span>;<br><span class="hljs-keyword">if</span> (<span class="hljs-title class_">Object</span>.<span class="hljs-title function_">hasOwn</span>(foo, <span class="hljs-string">&#x27;prop&#x27;</span>)) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(foo.<span class="hljs-property">prop</span>); <span class="hljs-comment">//true - 与该对象怎么创建的没关系</span><br><span class="hljs-keyword">if</span> (foo.<span class="hljs-title function_">hasOwnProperty</span>(<span class="hljs-string">&#x27;prop&#x27;</span>)) &#123;<span class="hljs-comment">//  TypeError: foo.hasOwnProperty is not a function</span><br>   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(foo.<span class="hljs-property">prop</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create"><code>Object.create(null)</code></a>. 这些不继承自<code>Object.prototype</code>，因此<code>hasOwnProperty()</code>无法访问。</p>
-</blockquote>
+                <h2 id="本期文章"><a href="#本期文章" class="headerlink" title="本期文章"></a>本期文章</h2><h3 id="七夕到了，还不快给你女朋友做一个专属-chrome-插件"><a href="#七夕到了，还不快给你女朋友做一个专属-chrome-插件" class="headerlink" title="七夕到了，还不快给你女朋友做一个专属 chrome 插件"></a><a target="_blank" rel="noopener" href="https://juejin.cn/post/7122332008252080142">七夕到了，还不快给你女朋友做一个专属 chrome 插件</a></h3><p>七夕节马上就要到了，作为拥有对象（没有的话，可以选择 new 一个出来）的程序员来说，肯定是需要有一点表示才行的。用钱能买到的东西不一定能表达咱们的心意，但是用心去写的代码，还能让对象每天看到那才是最正确的选择。</p>
+<p>除了手机之外，在电脑上使用浏览器搜索想要的东西是最常用的功能了，所以就需要一个打开即用的搜索框，而且还能表达心意的 chrome 标签页来让 TA 随时可用。</p>
+<h3 id="写给前端的跨平台方案、跨端引擎的本质"><a href="#写给前端的跨平台方案、跨端引擎的本质" class="headerlink" title="写给前端的跨平台方案、跨端引擎的本质"></a><a target="_blank" rel="noopener" href="https://juejin.cn/post/6966626823912308772">写给前端的跨平台方案、跨端引擎的本质</a></h3><p>近些年来，前端领域的跨端技术越来越多了：react native、weex、flutter、electron、kraken 等等。那么多跨端方案，他们有没有通用的思路？我们能不能从这么多方案中找出本质的原理？</p>
+<p>本文会尝试探究探究以下问题：<br>什么是跨平台<br>有哪些方案是跨平台的<br>跨端和跨平台的区别是什么<br>前端领域有哪些跨端方案<br>跨平台、跨端的通用原理是什么</p>
+<p>本文主要讲述了跨平台的概念、方案、优缺点，以及前端跨端的常见方案和原理，通过这篇文章可以理解跨端和跨平台容器的思路</p>
+<h3 id="lerna-中文教程"><a href="#lerna-中文教程" class="headerlink" title="lerna 中文教程"></a><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903856153821198?share_token=52703fb9-a8a2-4301-956a-31bb3fb19b43">lerna 中文教程</a></h3><p>Lerna 是一个工具，它优化了使用 git 和 npm 管理多包存储库的工作流。本文讲解了工作的两种模式：Fixed&#x2F;Locked mode (default)和 Independent mode；yarn 的 workspaces 模式；以及各种命令</p>
+<p>让我们简单了解一下如何使用 lerna 来管理一个多包，以及 lerna 的主要配置和命令。</p>
+<h3 id="Git-基础教程-必学"><a href="#Git-基础教程-必学" class="headerlink" title="Git 基础教程(必学)"></a><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/0mGBRiG-kOa9rNL3qn9vVQ">Git 基础教程(必学)</a></h3><p>在工作中，发现不少同学对 Git 的掌握非常基础，同样作为版本控制系统，使用好 Git 比 SVN 要更有挑战，需要对 Git 有一定的了解，才能在工作中，驾驭好 Git。</p>
+<p>本文从最简单的基础入门，讲解工作中常用的 Git 基础，掌握这些是 Git 进阶的基础，足够日常工作场景。</p>
+<h3 id="牛逼，一款-996-代码分析工具"><a href="#牛逼，一款-996-代码分析工具" class="headerlink" title="牛逼，一款 996 代码分析工具"></a><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzA3MzE4ODY0Mg==&mid=2455993889&idx=1&sn=7233d57b655d882a3e73386abba5e8ac&chksm=88850a6cbff2837a0eee062726b62415836b92c0ee5527a6c8a72993f255fa6bc1095600a5dd#rd">牛逼，一款 996 代码分析工具</a></h3><p>一个代码分析工具 code996，它可以统计 Git 项目的 commit 时间分布，进而推导出这个项目的编码工作强度。这算是一种对项目更了解的方式，杜绝 996 从了解数据开始。</p>
+<p>code996 除了能够分析项目的实际工作强度，也能用来分析我们代码编写的情况，对自身了解自己代码编写效率的时段、最近的工作强度等都是非常好的一个输入</p>
+<h3 id="如何优雅地在-React-中使用-TypeScript，看这一篇就够了！"><a href="#如何优雅地在-React-中使用-TypeScript，看这一篇就够了！" class="headerlink" title="如何优雅地在 React 中使用 TypeScript，看这一篇就够了！"></a><a target="_blank" rel="noopener" href="https://juejin.cn/post/7021674818621669389">如何优雅地在 React 中使用 TypeScript，看这一篇就够了！</a></h3><p>本文讲解了 ypeScript 与 React 一起使用时经常遇到的一些类型定义的问题。阅读本文前，希望你能有一定的 React 和 TypeScript 基础。</p>
+<p>你平时如何使用 ts, 鼠标点击事件对象类型是什么? 是不是用的最多的是 any 类型,最后 typescript 用成了 anyscript,typescript 也就失去了它存在的意义,本文将为你讲解如何在 react 中优雅的使用 typescript</p>
+<h3 id="React-State-Hooks-useReducer-useState-useContext"><a href="#React-State-Hooks-useReducer-useState-useContext" class="headerlink" title="React State Hooks: useReducer, useState, useContext"></a><a target="_blank" rel="noopener" href="https://www.robinwieruch.de/react-state-usereducer-usestate-usecontext/">React State Hooks: useReducer, useState, useContext</a></h3><p>作为 react 初学者，第一次弄懂了 useReducer, useState, useContext 的用法，在什么时候用，以及三者之间的区别。</p>
+<h2 id="友情链接"><a href="#友情链接" class="headerlink" title="友情链接"></a>友情链接</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/aliyunfe/weekly">阿里云 TXD 前端周刊</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ascoders/weekly">前端精度周刊</a></li>
+<li><a href="">o2team&#x2F;tech-weekly</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/tnfe/TNT-Weekly/">tnfe&#x2F;TNT-Weekly</a></li>
+</ul>
 
                 
               </div>
@@ -367,11 +368,32 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/weekly/" class="category-chain-item">weekly</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
   
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/blog/tags/javascript/">#javascript</a>
+        <a href="/tags/weekly/">#weekly</a>
       
     </div>
   
@@ -383,8 +405,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Object.prototype.hasOwnProperty()和 Object.hasOwn()</div>
-      <div>https://gao-hongongxiang.github.io/blog/2022/07/09/Object.prototype.hasOwnProperty()andObject.hasOwn()/</div>
+      <div>weekly 004</div>
+      <div>http://example.com/2022/08/08/004weekly/</div>
     </div>
     <div class="license-meta">
       
@@ -396,7 +418,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年7月9日</div>
+          <div>2022年8月8日</div>
         </div>
       
       
@@ -426,9 +448,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/blog/2022/07/11/tset1/" title="tset1">
+                      <a href="/2022/08/09/%E5%8D%87%E7%BA%A7umi4/" title="umi4升级">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">tset1</span>
+                        <span class="hidden-mobile">umi4升级</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -436,8 +458,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/blog/2022/07/09/for...of%E5%BE%AA%E7%8E%AF%E5%92%8Cfor...in%E5%BE%AA%E7%8E%AF%E5%8C%BA%E5%88%AB/" title="for...of循环和for...in循环区别">
-                        <span class="hidden-mobile">for...of循环和for...in循环区别</span>
+                      <a href="/2022/08/01/003weekly/" title="weekly 003">
+                        <span class="hidden-mobile">weekly 003</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -619,8 +641,8 @@
 
 <script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
 <script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
-<script  src="/blog/js/events.js" ></script>
-<script  src="/blog/js/plugins.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
 
 
   <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
@@ -642,7 +664,7 @@
 
 
   
-    <script  src="/blog/js/img-lazyload.js" ></script>
+    <script  src="/js/img-lazyload.js" ></script>
   
 
 
@@ -714,7 +736,7 @@
 
   <script>Fluid.plugins.imageCaption();</script>
 
-  <script  src="/blog/js/local-search.js" ></script>
+  <script  src="/js/local-search.js" ></script>
 
   <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
 
@@ -724,7 +746,7 @@
 
 <!-- 主题的启动项，将它保持在最底部 -->
 <!-- the boot of the theme, keep it at the bottom -->
-<script  src="/blog/js/boot.js" ></script>
+<script  src="/js/boot.js" ></script>
 
 
   
