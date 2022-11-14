@@ -130,7 +130,7 @@ const config = {
             label: "Docs",
           },
           {
-            to: "https://gao-hongxiang.github.io/",
+            to: "https://gao-hongxiang.github.io/blog/",
             label: "Blog",
             position: "right",
           },
