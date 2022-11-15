@@ -102,6 +102,7 @@ const config = {
             label: "test1",
             to: "test1/intro",
             position: "left",
+            activeBaseRegex: '/test1/'
           },
           {
             label: "TypeScript",
@@ -117,11 +118,13 @@ const config = {
             label: "Leectode",
             to: "leetcode/intro",
             position: "left",
+            activeBaseRegex: '/leetcode/'
           },
           {
             label: "Design",
             to: "design/intro",
             position: "left",
+            activeBaseRegex: '/design/'
           },
           {
             type: "doc",
