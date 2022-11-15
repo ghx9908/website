@@ -45,3 +45,31 @@ last_update:
 
 来源：力扣（LeetCode）
 链接：https://leetcode.cn/problems/two-sum/
+
+## 🧠 解题思路
+
+根据题意，如果我们使用暴破，会导致时间复杂度为 n^2，这样的代价无疑是很大的。
+
+所以我们很容易想到用哈希表来解决这个问题。
+
+我们遍历到数字 aaa 时，用 targettargettarget 减去 aaa，就会得到 bbb，若 bbb 存在于哈希表中，我们就可以直接返回结果了。若 bbb 不存在，那么我们需要将 aaa 存入哈希表，好让后续遍历的数字使用。
+
+```js
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var twoSum = function (nums, target) {
+  let map = new Map()
+  for (let i = 0; i < nums.length; i++) {
+    let
+    if (map.has(target - nums[i])) {
+      return [map.get(target - nums[i]), i]
+    } else {
+      map.set(nums[i], i)
+    }
+  }
+  return []
+}
+```
