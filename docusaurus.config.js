@@ -45,15 +45,6 @@ const config = {
     [
       "@docusaurus/plugin-content-docs",
       {
-        id: "test1",
-        path: "test1",
-        routeBasePath: "test1",
-        sidebarPath: require.resolve("./test1.js"),
-      },
-    ],
-    [
-      "@docusaurus/plugin-content-docs",
-      {
         id: "typescript",
         path: "typescript",
         routeBasePath: "typescript",
@@ -99,20 +90,16 @@ const config = {
         },
         items: [
           {
-            label: "test1",
-            to: "test1/intro",
-            position: "left",
-            activeBaseRegex: '/test1/'
-          },
-          {
             label: "TypeScript",
             to: "typescript/intro",
             position: "left",
+            activeBaseRegex: '/typescript/'
           },
           {
             label: "React",
             to: "react/intro",
             position: "left",
+            activeBaseRegex: '/react/'
           },
           {
             label: "Leectode",
@@ -125,12 +112,6 @@ const config = {
             to: "design/intro",
             position: "left",
             activeBaseRegex: '/design/'
-          },
-          {
-            type: "doc",
-            position: "left",
-            docId: "intro",
-            label: "Docs",
           },
           {
             to: "https://gao-hongxiang.github.io/blog/",
@@ -146,48 +127,7 @@ const config = {
       },
       footer: {
         style: "dark",
-        links: [
-          {
-            title: "Docs",
-            items: [
-              {
-                label: "Tutorial",
-                to: "/docs/intro",
-              },
-            ],
-          },
-          {
-            title: "Community",
-            items: [
-              {
-                label: "Stack Overflow",
-                href: "https://stackoverflow.com/questions/tagged/docusaurus",
-              },
-              {
-                label: "Discord",
-                href: "https://discordapp.com/invite/docusaurus",
-              },
-              {
-                label: "Twitter",
-                href: "https://twitter.com/docusaurus",
-              },
-            ],
-          },
-          {
-            title: "More",
-            items: [
-              {
-                label: "Blog",
-                to: "/blog",
-              },
-              {
-                label: "GitHub",
-                href: "https://github.com/facebook/docusaurus",
-              },
-            ],
-          },
-        ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} My Project, Gao hongxiang.`,
       },
       prism: {
         theme: lightCodeTheme,
