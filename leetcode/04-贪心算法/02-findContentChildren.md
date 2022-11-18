@@ -1,6 +1,6 @@
 ---
 title: 分发饼干-455
-description: 考察双指针
+description: 考察贪心算法
 last_update:
   date: 11/15/2022
   author: 高红翔
@@ -40,6 +40,8 @@ last_update:
 链接：https://leetcode-cn.com/problems/assign-cookies
 
 ## 思路
+
+**贪心** 确保每次最小的孩子拿到适合自己的最小的饼干
 
 把饼干和孩子的需求都排序好，然后从最小的饼干分配给需求最小的孩子开始，不断的尝试新的饼干和新的孩子，这样能保证每个分给孩子的饼干都恰到好处的不浪费，又满足需求。
 
