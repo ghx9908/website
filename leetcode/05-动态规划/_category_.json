@@ -1,6 +1,6 @@
 {
-  "label": "例题详解",
-  "position": 2,
+  "label": "动态规划",
+  "position": 5,
   "link": {
     "type": "generated-index"
   }
