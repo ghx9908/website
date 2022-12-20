@@ -78,6 +78,15 @@ const config = {
         sidebarPath: require.resolve("./react.js"),
       },
     ],
+    [
+      "@docusaurus/plugin-content-docs",
+      {
+        id: "interview",
+        path: "interview",
+        routeBasePath: "interview",
+        sidebarPath: require.resolve("./interview.js"),
+      },
+    ],
   ],
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
@@ -93,25 +102,31 @@ const config = {
             label: "TypeScript",
             to: "typescript/intro",
             position: "left",
-            activeBaseRegex: '/typescript/'
+            activeBaseRegex: "/typescript/",
           },
           {
             label: "React",
             to: "react/intro",
             position: "left",
-            activeBaseRegex: '/react/'
+            activeBaseRegex: "/react/",
           },
           {
             label: "Leectode",
             to: "leetcode/intro",
             position: "left",
-            activeBaseRegex: '/leetcode/'
+            activeBaseRegex: "/leetcode/",
           },
           {
             label: "Design",
             to: "design/intro",
             position: "left",
-            activeBaseRegex: '/design/'
+            activeBaseRegex: "/design/",
+          },
+          {
+            label: "Interview",
+            to: "interview/intro",
+            position: "left",
+            activeBaseRegex: "/interview/",
           },
           {
             to: "https://gao-hongxiang.github.io/blog/",
