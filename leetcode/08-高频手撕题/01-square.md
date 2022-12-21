@@ -105,7 +105,6 @@ function parseParam(url) {
 
   return paramsObj
 }
-console.log("11111111111111111111111111=>", 11111111111111111111111111)
 console.log(
   parseParam("user=anonymous&id=123&id=456&city=%E5%8C%97%E4%BA%AC&enabled")
 )
@@ -155,7 +154,13 @@ function deep_set(o, path, value) {
   }
   value = decodeURIComponent(value)
   value = /^\d+$/.test(value) ? parseFloat(value) : value // 判断是否转为数字
-  o[path[i]] = value
+  if (o.hasOwnProperty(path[i])) {
+    // 如果对象有 key，则添加一个值
+    o[path[i]] = [].concat(o[path[i]], value)
+  } else {
+    // 如果对象没有这个 key，创建 key 并设置值
+    o[path[i]] = value
+  }
 }
 console.log(
   parse("user=anonymous&id=123&id=456&city=%E5%8C%97%E4%BA%AC&enabled")
