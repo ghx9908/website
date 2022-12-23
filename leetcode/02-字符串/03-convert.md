@@ -92,3 +92,26 @@ var convert = function (s, numRows) {
   return arr.join("")
 }
 ```
+
+---
+
+```js
+/**
+ * @param {string} s
+ * @param {number} numRows
+ * @return {string}
+ */
+let convert = function (s, numRows) {
+  if (numRows < 2) return s
+  let res = Array(numRows).fill("")
+  let i = 0,
+    flag = -1
+
+  for (let c of s) {
+    res[i] += c
+    if (i === 0 || i === numRows - 1) flag = -flag
+    i += flag
+  }
+  return res.join("")
+}
+```
