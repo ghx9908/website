@@ -1,6 +1,6 @@
 ---
 title: 删除排序链表中的重复元素 - 86
-description: 双指针
+description: 双指针 链表
 last_update:
   date: 12/23/2022
   author: zhongnan
@@ -8,7 +8,7 @@ last_update:
 
 ## 题目
 
-给定一个已排序的链表的头 `head` ， 删除所有重复的元素，使每个元素只出现一次 。返回 `已排序的链表` 
+给定一个已排序的链表的头 `head` ， 删除所有重复的元素，使每个元素只出现一次 。返回 `已排序的链表`
 
 示例 1:
 
@@ -61,17 +61,16 @@ last_update:
  * @param {ListNode} head
  * @return {ListNode}
  */
-var deleteDuplicates = function(head) {
-  if(!head) return head
+var deleteDuplicates = function (head) {
+  if (!head) return head
   let cur = head
-  while(cur && !cur.next){
-    if(cur.val ===cur.next.val){
+  while (cur && !cur.next) {
+    if (cur.val === cur.next.val) {
       cur.next = cur.next.next
-    }else{
+    } else {
       cur = cur.next
     }
   }
   return head
-};
-
+}
 ```
