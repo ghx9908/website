@@ -16,24 +16,24 @@
   <meta name="author" content="高红翔">
   <meta name="keywords" content="">
   
-    <meta name="description" content="本期文章七夕到了，还不快给你女朋友做一个专属 chrome 插件七夕节马上就要到了，作为拥有对象（没有的话，可以选择 new 一个出来）的程序员来说，肯定是需要有一点表示才行的。用钱能买到的东西不一定能表达咱们的心意，但是用心去写的代码，还能让对象每天看到那才是最正确的选择。 除了手机之外，在电脑上使用浏览器搜索想要的东西是最常用的功能了，所以就需要一个打开即用的搜索框，而且还能表达心意的 chr">
+    <meta name="description" content="基本原理 https:&#x2F;&#x2F;github.com&#x2F;zhilinYu&#x2F;zhufeng-public&#x2F;tree&#x2F;master&#x2F;%E5%89%8D%E7%AB%AF%E7%9B%91%E6%8E%A7monitor&#x2F;monitor  https:&#x2F;&#x2F;retechus.atlassian.net&#x2F;browse&#x2F;EW-1744  https:&#x2F;&#x2F;juejin.cn&#x2F;post&#x2F;68563666267500380">
 <meta property="og:type" content="article">
-<meta property="og:title" content="weekly 004">
-<meta property="og:url" content="https://gao-hongongxiang.github.io/blog/2022/08/08/004weekly/index.html">
+<meta property="og:title" content="sentry监控">
+<meta property="og:url" content="https://gao-hongongxiang.github.io/blog/2022/11/16/007sentry/index.html">
 <meta property="og:site_name" content="title">
-<meta property="og:description" content="本期文章七夕到了，还不快给你女朋友做一个专属 chrome 插件七夕节马上就要到了，作为拥有对象（没有的话，可以选择 new 一个出来）的程序员来说，肯定是需要有一点表示才行的。用钱能买到的东西不一定能表达咱们的心意，但是用心去写的代码，还能让对象每天看到那才是最正确的选择。 除了手机之外，在电脑上使用浏览器搜索想要的东西是最常用的功能了，所以就需要一个打开即用的搜索框，而且还能表达心意的 chr">
+<meta property="og:description" content="基本原理 https:&#x2F;&#x2F;github.com&#x2F;zhilinYu&#x2F;zhufeng-public&#x2F;tree&#x2F;master&#x2F;%E5%89%8D%E7%AB%AF%E7%9B%91%E6%8E%A7monitor&#x2F;monitor  https:&#x2F;&#x2F;retechus.atlassian.net&#x2F;browse&#x2F;EW-1744  https:&#x2F;&#x2F;juejin.cn&#x2F;post&#x2F;68563666267500380">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-08-08T10:00:00.000Z">
-<meta property="article:modified_time" content="2022-08-11T07:36:10.787Z">
+<meta property="article:published_time" content="2022-11-16T08:00:00.000Z">
+<meta property="article:modified_time" content="2022-11-16T10:27:07.573Z">
 <meta property="article:author" content="高红翔">
-<meta property="article:tag" content="weekly">
+<meta property="article:tag" content="性能">
 <meta name="twitter:card" content="summary_large_image">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>weekly 004 - title</title>
+  <title>sentry监控 - title</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -250,7 +250,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="weekly 004"></span>
+            <span id="subtitle" data-typed-text="sentry监控"></span>
           
         </div>
 
@@ -266,8 +266,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-08-08 18:00" pubdate>
-          2022年8月8日 晚上
+        <time datetime="2022-11-16 16:00" pubdate>
+          2022年11月16日 下午
         </time>
       </span>
     
@@ -278,7 +278,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.3k 字
+          1.1k 字
         
       </span>
     
@@ -289,7 +289,7 @@
         
         
         
-          12 分钟
+          10 分钟
         
       </span>
     
@@ -335,30 +335,55 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">weekly 004</h1>
+            <h1 style="display: none">sentry监控</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="本期文章"><a href="#本期文章" class="headerlink" title="本期文章"></a>本期文章</h2><h3 id="七夕到了，还不快给你女朋友做一个专属-chrome-插件"><a href="#七夕到了，还不快给你女朋友做一个专属-chrome-插件" class="headerlink" title="七夕到了，还不快给你女朋友做一个专属 chrome 插件"></a><a target="_blank" rel="noopener" href="https://juejin.cn/post/7122332008252080142">七夕到了，还不快给你女朋友做一个专属 chrome 插件</a></h3><p>七夕节马上就要到了，作为拥有对象（没有的话，可以选择 new 一个出来）的程序员来说，肯定是需要有一点表示才行的。用钱能买到的东西不一定能表达咱们的心意，但是用心去写的代码，还能让对象每天看到那才是最正确的选择。</p>
-<p>除了手机之外，在电脑上使用浏览器搜索想要的东西是最常用的功能了，所以就需要一个打开即用的搜索框，而且还能表达心意的 chrome 标签页来让 TA 随时可用。</p>
-<h3 id="写给前端的跨平台方案、跨端引擎的本质"><a href="#写给前端的跨平台方案、跨端引擎的本质" class="headerlink" title="写给前端的跨平台方案、跨端引擎的本质"></a><a target="_blank" rel="noopener" href="https://juejin.cn/post/6966626823912308772">写给前端的跨平台方案、跨端引擎的本质</a></h3><p>近些年来，前端领域的跨端技术越来越多了：react native、weex、flutter、electron、kraken 等等。那么多跨端方案，他们有没有通用的思路？我们能不能从这么多方案中找出本质的原理？</p>
-<p>本文会尝试探究探究以下问题：<br>什么是跨平台<br>有哪些方案是跨平台的<br>跨端和跨平台的区别是什么<br>前端领域有哪些跨端方案<br>跨平台、跨端的通用原理是什么</p>
-<p>本文主要讲述了跨平台的概念、方案、优缺点，以及前端跨端的常见方案和原理，通过这篇文章可以理解跨端和跨平台容器的思路</p>
-<h3 id="lerna-中文教程"><a href="#lerna-中文教程" class="headerlink" title="lerna 中文教程"></a><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903856153821198?share_token=52703fb9-a8a2-4301-956a-31bb3fb19b43">lerna 中文教程</a></h3><p>Lerna 是一个工具，它优化了使用 git 和 npm 管理多包存储库的工作流。本文讲解了工作的两种模式：Fixed&#x2F;Locked mode (default)和 Independent mode；yarn 的 workspaces 模式；以及各种命令</p>
-<p>让我们简单了解一下如何使用 lerna 来管理一个多包，以及 lerna 的主要配置和命令。</p>
-<h3 id="Git-基础教程-必学"><a href="#Git-基础教程-必学" class="headerlink" title="Git 基础教程(必学)"></a><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/0mGBRiG-kOa9rNL3qn9vVQ">Git 基础教程(必学)</a></h3><p>在工作中，发现不少同学对 Git 的掌握非常基础，同样作为版本控制系统，使用好 Git 比 SVN 要更有挑战，需要对 Git 有一定的了解，才能在工作中，驾驭好 Git。</p>
-<p>本文从最简单的基础入门，讲解工作中常用的 Git 基础，掌握这些是 Git 进阶的基础，足够日常工作场景。</p>
-<h3 id="牛逼，一款-996-代码分析工具"><a href="#牛逼，一款-996-代码分析工具" class="headerlink" title="牛逼，一款 996 代码分析工具"></a><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzA3MzE4ODY0Mg==&mid=2455993889&idx=1&sn=7233d57b655d882a3e73386abba5e8ac&chksm=88850a6cbff2837a0eee062726b62415836b92c0ee5527a6c8a72993f255fa6bc1095600a5dd#rd">牛逼，一款 996 代码分析工具</a></h3><p>一个代码分析工具 code996，它可以统计 Git 项目的 commit 时间分布，进而推导出这个项目的编码工作强度。这算是一种对项目更了解的方式，杜绝 996 从了解数据开始。</p>
-<p>code996 除了能够分析项目的实际工作强度，也能用来分析我们代码编写的情况，对自身了解自己代码编写效率的时段、最近的工作强度等都是非常好的一个输入</p>
-<h3 id="如何优雅地在-React-中使用-TypeScript，看这一篇就够了！"><a href="#如何优雅地在-React-中使用-TypeScript，看这一篇就够了！" class="headerlink" title="如何优雅地在 React 中使用 TypeScript，看这一篇就够了！"></a><a target="_blank" rel="noopener" href="https://juejin.cn/post/7021674818621669389">如何优雅地在 React 中使用 TypeScript，看这一篇就够了！</a></h3><p>本文讲解了 ypeScript 与 React 一起使用时经常遇到的一些类型定义的问题。阅读本文前，希望你能有一定的 React 和 TypeScript 基础。</p>
-<p>你平时如何使用 ts, 鼠标点击事件对象类型是什么? 是不是用的最多的是 any 类型,最后 typescript 用成了 anyscript,typescript 也就失去了它存在的意义,本文将为你讲解如何在 react 中优雅的使用 typescript</p>
-<h3 id="React-State-Hooks-useReducer-useState-useContext"><a href="#React-State-Hooks-useReducer-useState-useContext" class="headerlink" title="React State Hooks: useReducer, useState, useContext"></a><a target="_blank" rel="noopener" href="https://www.robinwieruch.de/react-state-usereducer-usestate-usecontext/">React State Hooks: useReducer, useState, useContext</a></h3><p>作为 react 初学者，第一次弄懂了 useReducer, useState, useContext 的用法，在什么时候用，以及三者之间的区别。</p>
-<h2 id="友情链接"><a href="#友情链接" class="headerlink" title="友情链接"></a>友情链接</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/aliyunfe/weekly">阿里云 TXD 前端周刊</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/ascoders/weekly">前端精度周刊</a></li>
-<li><a href="">o2team&#x2F;tech-weekly</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/tnfe/TNT-Weekly/">tnfe&#x2F;TNT-Weekly</a></li>
+                <h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/zhilinYu/zhufeng-public/tree/master/%E5%89%8D%E7%AB%AF%E7%9B%91%E6%8E%A7monitor/monitor">https://github.com/zhilinYu/zhufeng-public/tree/master/%E5%89%8D%E7%AB%AF%E7%9B%91%E6%8E%A7monitor/monitor</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://retechus.atlassian.net/browse/EW-1744">https://retechus.atlassian.net/browse/EW-1744</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6856366626750038023">https://juejin.cn/post/6856366626750038023</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903984457580551">https://juejin.cn/post/6844903984457580551</a></p>
+</li>
+</ul>
+<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6914530201430917128">https://juejin.cn/post/6914530201430917128</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904088866390024?share_token=72af2173-7dc5-4301-b2a4-35818b82813b">https://juejin.cn/post/6844904088866390024?share_token=72af2173-7dc5-4301-b2a4-35818b82813b</a></p>
+</li>
+</ul>
+<h2 id="上报-SourceMap-版本号"><a href="#上报-SourceMap-版本号" class="headerlink" title="上报 SourceMap 版本号"></a>上报 SourceMap 版本号</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6954303116783124487?share_token=fdac6d5d-73fe-43be-aa02-2930cca74729">https://juejin.cn/post/6954303116783124487?share_token=fdac6d5d-73fe-43be-aa02-2930cca74729</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7123518368631652382">https://juejin.cn/post/7123518368631652382</a></p>
+</li>
+</ul>
+<h2 id="手动上报"><a href="#手动上报" class="headerlink" title="手动上报"></a>手动上报</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6957475955858210823">https://juejin.cn/post/6957475955858210823</a></li>
+</ul>
+<h2 id="主动捕获错误"><a href="#主动捕获错误" class="headerlink" title="主动捕获错误"></a>主动捕获错误</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js">axios<br>  .<span class="hljs-title function_">post</span>(url)<br>  .<span class="hljs-title function_">then</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params">response</span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(response)<br>  &#125;)<br>  .<span class="hljs-title function_">catch</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) &#123;<br>    <span class="hljs-title class_">Sentry</span>.<span class="hljs-title function_">captureException</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&quot;something went wrong&quot;</span>), scope)<br>  &#125;)<br></code></pre></td></tr></table></figure>
+
+<h2 id="Transactions"><a href="#Transactions" class="headerlink" title="Transactions"></a>Transactions</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6919856296522989582">https://juejin.cn/post/6919856296522989582</a></li>
+</ul>
+<h2 id="微前端区分项目"><a href="#微前端区分项目" class="headerlink" title="微前端区分项目"></a>微前端区分项目</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7139452175088320520">https://juejin.cn/post/7139452175088320520</a></li>
+</ul>
+<h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7148364027817623589?share_token=387017f7-9c88-4765-b069-b5a6aff3c36d">https://juejin.cn/post/7148364027817623589?share_token=387017f7-9c88-4765-b069-b5a6aff3c36d</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7151753139052347399?share_token=474df17d-1139-403e-b351-766e3ad65ab5">https://juejin.cn/post/7151753139052347399?share_token=474df17d-1139-403e-b351-766e3ad65ab5</a></p>
+</li>
+</ul>
+<h2 id="推送"><a href="#推送" class="headerlink" title="推送"></a>推送</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7143142055294795807">https://juejin.cn/post/7143142055294795807</a></li>
+</ul>
+<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/getsentry/sentry-javascript">https://github.com/getsentry/sentry-javascript</a></li>
 </ul>
 
                 
@@ -378,7 +403,7 @@
     
       <span class="category-chain">
         
-  <a href="/blog/categories/weekly/" class="category-chain-item">weekly</a>
+  <a href="/blog/categories/%E6%80%A7%E8%83%BD/" class="category-chain-item">性能</a>
   
   
 
@@ -393,7 +418,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/blog/tags/weekly/">#weekly</a>
+        <a href="/blog/tags/%E6%80%A7%E8%83%BD/">#性能</a>
       
     </div>
   
@@ -405,8 +430,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>weekly 004</div>
-      <div>https://gao-hongongxiang.github.io/blog/2022/08/08/004weekly/</div>
+      <div>sentry监控</div>
+      <div>https://gao-hongongxiang.github.io/blog/2022/11/16/007sentry/</div>
     </div>
     <div class="license-meta">
       
@@ -418,7 +443,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年8月8日</div>
+          <div>2022年11月16日</div>
         </div>
       
       
@@ -448,18 +473,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/blog/2022/08/09/%E5%8D%87%E7%BA%A7umi4/" title="umi4升级">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">umi4升级</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/blog/2022/08/01/003weekly/" title="weekly 003">
-                        <span class="hidden-mobile">weekly 003</span>
+                      <a href="/blog/2022/09/16/006%E8%BF%9E%E7%BB%AD%E6%95%B0%E7%BB%84/" title="连续数组test1">
+                        <span class="hidden-mobile">连续数组test1</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
