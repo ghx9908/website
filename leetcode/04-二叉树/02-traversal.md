@@ -1,6 +1,6 @@
 ---
-title: 二叉树的前中后序和层序遍历
-description: 考察深度优先 广度优先
+title: 二叉树的前中后序遍历
+description: 考察深度优先遍历 递归+迭代
 last_update:
   date: 12/25/2022
   author: 钟男
@@ -243,58 +243,4 @@ const inorderTraversal = function (root) {
   }
   // 返回结果数组
   return res
-```
-
-### 层序遍历（BFS）
-
-#### 返回一维数组
-
-```js
-function BFS(root) {
-  const res = []
-  const queue = [] // 初始化队列queue
-  // 根结点首先入队
-  queue.push(root)
-  // 队列不为空，说明没有遍历完全
-  while (queue.length) {
-    const top = queue[0] // 取出队头元素
-    // 访问 top
-    res.push(top.val)
-    // 如果左子树存在，左子树入队
-    if (top.left) {
-      queue.push(top.left)
-    }
-    // 如果右子树存在，右子树入队
-    if (top.right) {
-      queue.push(top.right)
-    }
-    queue.shift() // 访问完毕，队头元素出队
-  }
-}
-```
-
-#### 返回二维数组
-
-```js
-var levelOrder = function (root) {
-  /* 非递归的实现方式 */
-  let res = []
-  if (root == null) return res
-  let queue = [root]
-  // while 循环控制从上向下一层层遍历
-  while (queue.length) {
-    let size = queue.length
-    // 记录这一层的节点值
-    let level = []
-    // for 循环控制每一层从左向右遍历
-    for (let i = 0; i < size; i++) {
-      let cur = queue.shift()
-      level.push(cur.val)
-      if (cur.left != null) queue.push(cur.left)
-      if (cur.right != null) queue.push(cur.right)
-    }
-    res.push(level)
-  }
-  return res
-}
 ```
