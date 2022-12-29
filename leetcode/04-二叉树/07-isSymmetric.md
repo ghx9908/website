@@ -1,5 +1,5 @@
 ---
-title: 翻转二叉树
+title: 对称二叉树
 last_update:
   date: 12/29/2022
   author: 高红翔
@@ -37,14 +37,6 @@ last_update:
 来源：力扣（LeetCode）
 
 链接：https://leetcode.cn/problems/symmetric-tree/
-
-## 思路
-
-本题利用二分查找来求解，一开始把右边界粗略的设定为目标值 `x`，左右边界的中间值设为 `middle`，然后在二分过程中每次发现 `middle * middle` < `x` 的情况，就把这个 `middle` 值记录为`ans`。
-
-如果计算出的乘积正好等于 `x`，就直接返回这个`mid` 值。
-
-如果二分查找超出边界了，无论最后的边界是停留在小于 `x` 的位置还是大于 `x` 的位置，都返回 `ans` 即可，因为它是最后一个乘积小于 `x` 的值，一定是正确答案。
 
 ## 答案
 
