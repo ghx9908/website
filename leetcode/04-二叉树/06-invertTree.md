@@ -70,7 +70,7 @@ var invertTree = function (root) {
   root.left = rightNode
 
   invertTree(root.left) //左
-  invertTree(rightNode) //右
+  invertTree(root.right) //右
   return root
 }
 ```
@@ -85,7 +85,7 @@ var invertTree = function (root) {
   }
 
   invertTree(root.left) //左
-  invertTree(rightNode) //右
+  invertTree(root.right) //右
   // 中 交换左右节点
   const rightNode = root.right
   root.right = root.left
