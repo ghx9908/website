@@ -41,6 +41,8 @@ last_update:
 
 ## 解题
 
+### 返回二维数组
+
 ```js
 var levelOrder = function (root) {
   /* 非递归的实现方式 */
@@ -71,6 +73,7 @@ var levelOrder = function (root) {
 ```js
 function BFS(root) {
   const res = []
+  if (!root) return res
   const queue = [] // 初始化队列queue
   // 根结点首先入队
   queue.push(root)
