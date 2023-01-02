@@ -1,11 +1,9 @@
 ---
-title: promise链式调用的实现原理
+title: 完整实现Promises/A+规范
 last_update:
   date: 01/01/2023
   author: 高红翔
 ---
-
-# promisify 的实现
 
 ## 将某一个基于回调的函数变为 Primise 可链式调用
 
@@ -44,8 +42,6 @@ function promisify(fn) {
 //使用
 let readFile = promisify(fs.readFile) // 高阶函数的概念
 ```
-
-# Promise.then 的实现
 
 ## then 链的特点
 
@@ -143,6 +139,11 @@ class Promise {
 
     const resolve = (value) => {
       //只有状态是pending的时候 才可以修改状态 和 改变成功和失败的原因
+
+      if (value instanceof Promise) {
+        // 递归解析的流程
+        return value.then(resolve, reject);
+      }
       if (this.status === PENDING) {
         this.status = FULFILLED
         this.value = value
@@ -165,6 +166,7 @@ class Promise {
       reject(e)
     }
   }
+  // then 的实现
   then(onFulfilled, onRejected) {
     onFulfilled = typeof onFulfilled === "function" ? onFulfilled : (v) => v
     onRejected =
@@ -221,5 +223,70 @@ class Promise {
     })
     return promise2
   }
+
+  // catch的实现
+  catch(errCallback) {
+    return this.then(null, errCallback);
+  }
+  // Promise.resolve, Promise.reject
+  // resolve一个promise 会等待这个promise执行完毕
+  // reject 一个promise 会直接失败 不在解析了
+
+  // Promise.resolve 的实现
+  static resolve(value) {
+    return new Promise((resolve, reject) => {
+      resolve(value);
+    });
+  }
+// finally的实现
+ finally(callback) {
+    return this.then((val)=>{
+      return Promise.resolve(callback()).then(()=>val)
+    },(err)=>{
+      return Promise.resolve(callback()).then(()=>{throw err})
+    })
+  }
+ // Promise.reject 的实现
+  static reject(reason) {
+    return new Promise((resolve, reject) => {
+      reject(reason);
+    });
+  }
+
+  // Promise.all 的实现
+   static all = function (values) {
+    // promise 以第一个结果为准，其它的逻辑还是走，只是不采纳了
+    // 一个promise返回
+    return new Promise((resolve, reject) => {
+      // 并发是循环  串行递归
+      let arr = [];// 成功的结果
+      let times = 0;
+      //将当前索引和数据对应
+      function processData(index, data) {
+        arr[index] = data; // arr[2] = 1;
+        if (++times === values.length) {
+          resolve(arr);
+        }
+      }
+
+      for (let i = 0; i < values.length; i++) {
+        let cur = values[i]; //cur可能是普通值，页可能是promise，
+        //将cur变为一个成功promise,成功保存数据，失败结束
+        Promise.resolve(cur).then((data) => {
+          processData(i, data);
+        }, reject);
+      }
+    });
+  };
+ // Promise.race 的实现
+   static race = function (values) {
+    // promise 以第一个结果为准，其它的逻辑还是走，只是不采纳了
+    return new Promise((resolve, reject) => {
+      // 并发是循环  串行递归
+      for (let i = 0; i < values.length; i++) {
+        Promise.resolve(values[i]).then(resolve, reject);
+      }
+    });
+  };
 }
 ```
