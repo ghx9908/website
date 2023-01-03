@@ -23,6 +23,8 @@ last_update:
 ```
 
 **示例 2:**
+
+
 ![img](https://assets.leetcode.com/uploads/2021/01/18/pathsum2.jpg)
 
 ```
