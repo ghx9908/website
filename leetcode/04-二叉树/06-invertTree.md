@@ -1,5 +1,5 @@
 ---
-title: 翻转二叉树
+title: 6. 翻转二叉树
 last_update:
   date: 12/29/2022
   author: 高红翔

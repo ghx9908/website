@@ -1,5 +1,5 @@
 ---
-title: 二叉树的统一迭代法
+title: 4. 二叉树的统一迭代法
 description: 栈实现
 last_update:
   date: 12/26/2022

@@ -1,5 +1,5 @@
 ---
-title: 二叉树的最小深度
+title: 9. 二叉树的最小深度
 last_update:
   date: 12/29/2022
   author: 高红翔
