@@ -1,5 +1,5 @@
 ---
-title: 完全二叉树的节点个数
+title: 10. 完全二叉树的节点个数
 last_update:
   date: 12/29/2022
   author: 高红翔

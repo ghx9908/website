@@ -1,5 +1,5 @@
 ---
-title: 从中序与后序遍历序列构造二叉树
+title: 16. 从中序与后序遍历序列构造二叉树
 last_update:
   date: 01/03/2023
   author: zhongnan

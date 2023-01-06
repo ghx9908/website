@@ -1,5 +1,5 @@
 ---
-title: 路径总和
+title: 15. 路径总和
 last_update:
   date: 01/03/2023
   author: zhongnan

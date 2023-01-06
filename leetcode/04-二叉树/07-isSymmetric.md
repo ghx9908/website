@@ -1,5 +1,5 @@
 ---
-title: 对称二叉树
+title: 7. 对称二叉树
 last_update:
   date: 12/29/2022
   author: 高红翔

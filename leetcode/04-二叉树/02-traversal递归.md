@@ -1,5 +1,5 @@
 ---
-title: 二叉树的递归遍历
+title: 2. 二叉树的递归遍历
 description: 考察深度优先遍历 递归法
 last_update:
   date: 12/25/2022

@@ -1,5 +1,5 @@
 ---
-title: 二叉树的所有路径
+title: 12. 二叉树的所有路径
 last_update:
   date: 12/29/2022
   author: zhongnan
