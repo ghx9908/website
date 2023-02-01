@@ -34,7 +34,34 @@ last_update:
 输出：[[1]]
 ```
 
+来源：力扣（LeetCode）
+链接：https://leetcode.cn/problems/combinations/description/
+
 ## 答案
+
+```js
+var combine = function (n, k) {
+  let result = [] //存放符合条件结果的集合
+  let path = [] //用来存放符合条件结果
+  // startIndex 开始搜索的位置
+  const combineHelper = (n, k, startIndex) => {
+    if (path.length === k) {
+      //回溯函数终止条件
+      result.push([...path])
+      return
+    }
+    for (let i = startIndex; i <= n; ++i) {
+      path.push(i) //处理节点
+      combineHelper(n, k, i + 1) //递归
+      path.pop() //回溯，撤销处理的节点
+    }
+  }
+  combineHelper(n, k, 1)
+  return result
+}
+```
+
+## 优化
 
 ```js
 var combine = function (n, k) {
@@ -58,3 +85,15 @@ var combine = function (n, k) {
   return result
 }
 ```
+
+接下来看一下优化过程如下：
+
+1. 已经选择的元素个数：path.size();
+
+2. 还需要的元素个数为: k - path.size();
+
+3. 在集合 n 中至多要从该起始位置 : n - (k - path.length()) + 1，开始遍历
+
+4. 为什么有个+1 呢，因为包括起始位置，我们要是一个左闭的集合。
+
+举个例子，n = 4，k = 3， 目前已经选取的元素为 0（path.size 为 0），n - (k - 0) + 1 即 4 - ( 3 - 0) + 1 = 2。
