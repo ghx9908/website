@@ -1,5 +1,5 @@
 ---
-title: 三数之和-15
+title: 2. 三数之和-15
 description: 考察双指针
 last_update:
   date: 11/15/2022

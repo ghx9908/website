@@ -1,5 +1,5 @@
 ---
-title: 合并两个有序数组-88
+title: 5. 合并两个有序数组-88
 description: 考察双指针
 last_update:
   date: 11/19/2022

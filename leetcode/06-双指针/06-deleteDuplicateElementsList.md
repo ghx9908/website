@@ -1,5 +1,5 @@
 ---
-title: 删除排序链表中的重复元素 - 86
+title: 6. 删除排序链表中的重复元素 - 86
 description: 双指针 链表
 last_update:
   date: 12/23/2022

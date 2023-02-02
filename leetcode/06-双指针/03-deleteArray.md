@@ -1,5 +1,5 @@
 ---
-title: 删除有序数组中的重复项--26
+title: 3. 删除有序数组中的重复项--26
 description: 考察双指针
 last_update:
   date: 12/21/2022
