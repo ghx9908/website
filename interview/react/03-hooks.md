@@ -1,5 +1,5 @@
 ---
-title: diff算法
+title: 3. React Hooks 当中的 useEffect 是如何区分生命周期钩子的
 last_update:
   date: 12/20/2022
   author: 高红翔

@@ -1,5 +1,5 @@
 ---
-title: 说说你对 DNS 协议的理解
+title: 7. 说说你对 DNS 协议的理解
 last_update:
   date: 12/26/2022
   author: 高红翔
