@@ -72,6 +72,15 @@ const config = {
     [
       "@docusaurus/plugin-content-docs",
       {
+        id: "node",
+        path: "node",
+        routeBasePath: "node",
+        sidebarPath: require.resolve("./node.js"),
+      },
+    ],
+    [
+      "@docusaurus/plugin-content-docs",
+      {
         id: "react",
         path: "react",
         routeBasePath: "react",
@@ -103,6 +112,12 @@ const config = {
             to: "typescript/intro",
             position: "left",
             activeBaseRegex: "/typescript/",
+          },
+          {
+            label: "Node核心",
+            to: "node/intro",
+            position: "left",
+            activeBaseRegex: "/node/",
           },
           {
             label: "React",
