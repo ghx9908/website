@@ -1,5 +1,5 @@
 ---
-title: 6. 环形链表 - 141
+title: 7. 环形链表 - 141
 description: 双指针 链表
 last_update:
   date: 02/02/2023
