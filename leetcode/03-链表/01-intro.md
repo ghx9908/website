@@ -14,12 +14,10 @@ function ListNode(val, next) {
   this.next = next === undefined ? null : next
 }
 
-class ListNode {
-  val
-  next = null
-  constructor(value) {
-    this.val = value
-    this.next = null
+class LinkNode {
+  constructor(val, next) {
+    this.val = val
+    this.next = next
   }
 }
 ```
@@ -29,6 +27,15 @@ class ListNode {
 链表的入口节点称为链表的头结点也就是 head。
 
 如图所示： ![链表1](https://img-blog.csdnimg.cn/20200806194529815.png)
+
+# 链表操作的两种方式：
+
+- 直接使用原来的链表来进行操作。
+- 设置一个虚拟头结点在进行操作。
+
+```js
+const ret = new ListNode(0, head) // 虚拟头节点
+```
 
 # 链表的类型
 
