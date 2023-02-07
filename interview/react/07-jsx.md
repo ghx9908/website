@@ -8,7 +8,7 @@ last_update:
 ## jsx语法转换生成虚拟DOM?
 
 ### 前言
->**`react`中的`jsx`语法很多伙伴都会使用
+>`react`中的`jsx`语法很多伙伴都会使用
 >- 但是你知道它的本质是什么吗？运行中它会做如何的转换呢？
 >- `jsx`内部又是怎么生成了虚拟`DOM`？
 >- 虚拟`DOM`又是如何挂载到真实`DOM`上去的呢？
@@ -30,28 +30,33 @@ last_update:
 ### 2. jsx语法在babel中会转成 React.createElement()的函数调用。
 >注意：使用了React相关的方法一定先引入react.development.js 和react-dom.development.js这两个文件，否则会报错
 
-
-```<script src="../react/react.development.js"></script>```
-```<script src="../react/react-dom.development.js"></script>```
+```javascript
+<script src="../react/react.development.js"></script>
+<script src="../react/react-dom.development.js"></script>
+```
 
 
 ### 3. babel转换
 我们先用`jsx`语法, 开发页面。部分`html`代码省略，只写核心`js`代码
 
-```<script src="../react/react.development.js"></script>```
-```<script src="../react/react-dom.development.js"></script>```
-```//babel.min文件 是将 jsx转成 React.createElement函数调用的```
-```<script src="../react/babel.min.js"></script>```
-```<script type='text/babel'>```
-```// 这是jsx语法```
-```const msg1 = ```
- ```  <div class="header">```
-    ``` <h2>头部</h2>```
-    ``` <div class="main">主题</div>```
-    ``` <footer>这里是尾部</footer>```
-  ``` </div>;```
-```ReactDOM.render(msg1, document.getElementById("app"));```
-```</script>```
+```javascript
+
+<script src="../react/react.development.js"></script>
+<script src="../react/react-dom.development.js"></script>
+//babel.min文件 是将 jsx转成 React.createElement函数调用的
+<script src="../react/babel.min.js"></script>
+<script type='text/babel'>
+// 这是jsx语法
+const msg1 = 
+  <div class="header">
+     <h2>头部</h2>
+     <div class="main">主题</div>
+     <footer>这里是尾部</footer>
+   </div>;
+ReactDOM.render(msg1, document.getElementById("app"));
+</script>
+
+```
 用浏览器打开文件，查看页面效果
 ![img](https://img-blog.csdnimg.cn/fa66de7dd07f49a090517b6e7d837a14.png)
 
@@ -64,19 +69,21 @@ last_update:
 
 复制右边转换后的`React.createElement`函数调用代码到`js`中
 
-```<script src="../react/react.development.js"></script>```
-```<script src="../react/react-dom.development.js"></script>```
-```// type="text/babel" 可以去掉,babel.min.js 也可以不用了。```
-```// 因为我们代码中没有了jsx语法了。下面的代码属于正常的js代码```
-```<script>```
-```const msg2 = React.createElement("div", {```
-   	```class: "header"```
-```}, React.createElement("h2", null, "\u5934\u90E8"), React.createElement("div", {```
-    ```class: "main"```
-```}, "\u4E3B\u9898"), React.createElement("footer", null, "\u8FD9\u91CC\u662F\u5C3E\u90E8"));```
-```//React.reder 函数渲染到浏览器上```
-```ReactDOM.render(msg2, document.getElementById("app"));```
-```</script>```
+```javascript
+<script src="../react/react.development.js"></script>
+<script src="../react/react-dom.development.js"></script>
+// type="text/babel" 可以去掉,babel.min.js 也可以不用了。
+// 因为我们代码中没有了jsx语法了。下面的代码属于正常的js代码
+<script>
+const msg2 = React.createElement("div", {
+   	class: "header"
+}, React.createElement("h2", null, "\u5934\u90E8"), React.createElement("div", {
+    class: "main"
+}, "\u4E3B\u9898"), React.createElement("footer", null, "\u8FD9\u91CC\u662F\u5C3E\u90E8"));
+//React.reder 函数渲染到浏览器上
+ReactDOM.render(msg2, document.getElementById("app"));
+</script>
+```
 
 在浏览器中打开后，查看页面
 ![img](https://img-blog.csdnimg.cn/bc2c4c4a883d40dc8bea31bc97fdfa1f.png)
@@ -94,14 +101,16 @@ last_update:
 
 在上面的```React.createElement```函数调用后，打印它的返回值
 
-```const msg2 = React.createElement("div", {```
-  ```  class: "header"```
-``` },React.createElement("h2", null, "\u5934\u90E8"), React.createElement("div", {```
-    ```class: "main"```
- ```}, "\u4E3B\u9898"), React.createElement("footer", null, "\u8FD9\u91CC\u662F\u5C3E\u90E8"));```
+```javascript
+const msg2 = React.createElement("div", {
+  class: "header"
+},React.createElement("h2", null, "\u5934\u90E8"), React.createElement("div", {
+    class: "main"
+ }, "\u4E3B\u9898"), React.createElement("footer", null, "\u8FD9\u91CC\u662F\u5C3E\u90E8"));
 
-```console.log(msg2);```
-```ReactDOM.render(msg2, document.getElementById("app"));```
+console.log(msg2);
+ReactDOM.render(msg2, document.getElementById("app"));
+```
 
 在浏览器打开，查看结果
 
@@ -139,8 +148,10 @@ last_update:
 
 - react是通过ReactDOM.render 函数把虚拟DOM挂载到真实DOM的
 
-```//把虚拟DOM挂载到 id为app的元素中```
-```ReactDOM.render(msg2, document.getElementById("app"));```
+```javascript
+//把虚拟DOM挂载到 id为app的元素中
+ReactDOM.render(msg2, document.getElementById("app"));
+```
 
 
 ### 5.为什么要使用虚拟DOM
