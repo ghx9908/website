@@ -286,15 +286,28 @@ nrm ls # 查看源    nrm hrlp
 
 **登录**
 
+https://www.npmjs.com/
+
 ```bash
 npm login
 ```
+
+```bash
+npm who am i
+```
+
+
 
 更新包名字，忽略⽂件夹可以使⽤ .npmignore，⼀切就绪后，发布！！！
 
 ```bash
 npm publish
+npm publish -h
+npm publish --access public
+npm unpublish [<package-spec>]
 ```
+
+
 
 **注册**
 
