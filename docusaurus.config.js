@@ -10,6 +10,15 @@ const config = {
   tagline: "Dinosaurs are cool",
   url: "https://gao-hongxiang.github.io/",
   baseUrl: "/",
+  themes: [
+    [
+      require.resolve("@easyops-cn/docusaurus-search-local"),
+      {
+        hashed: true,
+        language: ["en", "zh"],
+      },
+    ],
+  ],
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",
