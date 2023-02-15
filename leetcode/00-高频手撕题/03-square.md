@@ -1,5 +1,5 @@
 ---
-title: 解析 URL Params 为对象
+title: 3.解析 URL Params 为对象
 last_update:
   date: 12/20/2022
   author: gaohongxiang
@@ -15,7 +15,7 @@ parseParam(url)
 { user: 'anonymous',
   id: [ 123, 456 ], // 重复出现的 key 要组装成数组，能被转成数字的就转成数字类型
   city: '北京', // 中文需解码
-  enabled: true, // 未指定值得 key 约定为 true
+  enabled: true, // 未指定值得 key 约定`为 true
 }
 */
 ```
