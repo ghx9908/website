@@ -16,6 +16,7 @@ const config = {
       {
         hashed: true,
         language: ["en", "zh"],
+        docsRouteBasePath: ["./design", "/leetcode", "/node", "/interview"],
       },
     ],
   ],
