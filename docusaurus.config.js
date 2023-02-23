@@ -55,10 +55,10 @@ const config = {
     [
       "@docusaurus/plugin-content-docs",
       {
-        id: "typescript",
-        path: "typescript",
-        routeBasePath: "typescript",
-        sidebarPath: require.resolve("./typescript.js"),
+        id: "engineering",
+        path: "engineering",
+        routeBasePath: "engineering",
+        sidebarPath: require.resolve("./engineering.js"),
       },
     ],
     [
@@ -118,10 +118,10 @@ const config = {
         },
         items: [
           {
-            label: "TypeScript",
-            to: "typescript/intro",
+            label: "前端工程化",
+            to: "engineering/intro",
             position: "left",
-            activeBaseRegex: "/typescript/",
+            activeBaseRegex: "/engineering/",
           },
           {
             label: "Node核心",
