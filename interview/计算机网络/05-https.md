@@ -8,7 +8,7 @@ last_update:
 
 HTTP 采⽤明⽂传输，中间⼈可以获取到明⽂数据 （从⽽实现对数据的篡改）。这时候 HTTPS 就登场了！ HTTPS 是什么呢？ **HTTPS = HTTP + SSL/TLS** ， SSL 安全套接层（Secure Sockets Layer） 发展到 v3 时改名为 TLS 传输层安全(Transport Layer Security)，主要的⽬的是提供数据的完整性和保密性
 
-![](https://raw.githubusercontent.com/Gao-Hongxiang/image-hosting/master/img/20221226120753.png)
+![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img/20221226120753.png)
 
 ## **⼀、数据完整性**
 
@@ -28,7 +28,7 @@ HTTP 采⽤明⽂传输，中间⼈可以获取到明⽂数据 （从⽽实现�
 
 > 加密和解密时使⽤的密钥都是同⼀个， 通信过程使⽤秘钥加密后的密⽂传输。只有⾃⼰和⽹站才能解密。
 
-![](https://raw.githubusercontent.com/Gao-Hongxiang/image-hosting/master/img/20221226122706.png)
+![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img/20221226122706.png)
 
 > ⽬前 AES （Advanced Encryption Standard） ChaCha20 为最常⻅的对称加密算法 。
 
@@ -42,7 +42,7 @@ HTTP 采⽤明⽂传输，中间⼈可以获取到明⽂数据 （从⽽实现�
 
 使⽤ RSA 、 ECDHE 算法解决秘钥交换的问题
 
-![](https://raw.githubusercontent.com/Gao-Hongxiang/image-hosting/master/img/20221226122909.png)
+![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img/20221226122909.png)
 
 > 最常听到的⾮对称加密算法是 RSA 、 ECC (⼦算法 ECDHE ⽤于密钥交换， ECDSA ⽤于数字签名)(性能和安全略胜⼀筹) HTTPS 中⽬前⼴泛使⽤ ECC 。
 
@@ -50,17 +50,17 @@ HTTP 采⽤明⽂传输，中间⼈可以获取到明⽂数据 （从⽽实现�
 
 通信刚开始的时候使⽤⾮对称算法，交换秘钥。在客户端⽣成**会话秘钥**后传送给服务端，后续通信采⽤对称加密的⽅式
 
-![](https://raw.githubusercontent.com/Gao-Hongxiang/image-hosting/master/img/20221226122909.png)
+![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img/20221226122909.png)
 
 > 这⾥还并不安全，还涉及到中间⼈攻击。（ 指攻击者与通讯的两端分别创建独⽴的联系,并交换其所收到的数据 ）
 
-![](https://raw.githubusercontent.com/Gao-Hongxiang/image-hosting/master/img/20221226123339.png)
+![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img/20221226123339.png)
 
 ### 4. 数字证书和 CA
 
 > 因为谁都可以发布公钥，所以我们需要验证对⽅身份。防⽌中间⼈攻击
 
-![](https://raw.githubusercontent.com/Gao-Hongxiang/image-hosting/master/img/20221226123540.png)
+![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img/20221226123540.png)
 
 > 客户端会判断有效期、颁发者、证书是否被修改及证书是否被吊销。 每份签发证书都可以根据验证链查找到对应的根证书，操作系统、浏览器会在本地存储权威机构的根证书，利⽤本地根证书可以对对应机构签发证书完成来源验证。
 
@@ -118,9 +118,9 @@ HTTP 采⽤明⽂传输，中间⼈可以获取到明⽂数据 （从⽽实现�
 
   - Encrypted HandleShake Message
 
-![](https://raw.githubusercontent.com/Gao-Hongxiang/image-hosting/master/img/20221226124922.png)
+![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img/20221226124922.png)
 
-![](https://raw.githubusercontent.com/Gao-Hongxiang/image-hosting/master/img/20221226125026.png)
+![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img/20221226125026.png)
 
 ## SSL 协议组成
 

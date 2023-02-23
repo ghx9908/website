@@ -216,7 +216,7 @@ TCP、UDP 是我们所熟悉的传输层协议，UDP 比 TCP 相比效率更高�
 
 HTTP/3 使用**Connection ID 对连接保持**，只要 Connection ID 不改变，连接仍可维持。
 
-![](https://raw.githubusercontent.com/Gao-Hongxiang/image-hosting/master/img/20221226164045.png)
+![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img/20221226164045.png)
 
 **至此即可完成一次 RTT 对连接的建立，当缓存 Server Config 后零 RTT 即可进行数据传递。**
 
@@ -226,11 +226,11 @@ HTTP/3 使用**Connection ID 对连接保持**，只要 Connection ID 不改变�
 
 - HTTP/1.1 中提出 Pipelining 的方式，单个 TCP 连接可多次发送请求，但依旧会有中间请求丢失产生阻塞的问题。
 
-![](https://raw.githubusercontent.com/Gao-Hongxiang/image-hosting/master/img/20221226164453.png)
+![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img/20221226164453.png)
 
 - HTTP/2 中将请求粒度减小，通过 Frame 的方式进行请求的发送。但在 TCP 层 Frame 组合得到 Stream 进行传输，一旦出现 Stream 中的 Frame 丢失，其后方的 Stream 都将会被阻塞。
 
-![](https://raw.githubusercontent.com/Gao-Hongxiang/image-hosting/master/img/20221226164533.png)
+![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img/20221226164533.png)
 
 - 对于 HTTP/2 而言，浏览器会默认采取 TLS 方式传输，TLS 基于 Record 组织数据，每个 Record 包含 16K，其中有 12 个 TCP 的包，一旦其中一个 TCP 包出现问题将会导致整个 Record 无法解密。这也是网络环境较差时 HTTP/2 的传输速度比 HTTP/1.1 更慢的原因。
 
@@ -244,13 +244,13 @@ HTTP/3 使用**Connection ID 对连接保持**，只要 Connection ID 不改变�
 - 前向纠错(FEC)：将数据切割成包后可对每个包进行异或运算，将运算结果随数据发送。一旦丢失数据可据此推算。(带宽换时间)
 - 单调递增的 Packet Number：TCP 在超时重传后的两次 ACK 接受情况并不支持的很好。导致 RTT 和 RTO 的计算有所偏差。HTTP/3 对此进行改进，一旦重传后的 Packet N 会递增。
 
-![](https://raw.githubusercontent.com/Gao-Hongxiang/image-hosting/master/img/20221226164934.png)
+![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img/20221226164934.png)
 
 - ACK Delay
 
   HTTP/3 在计算 RTT 时健壮的考虑了服务端的 ACK 处理时延。
 
-![](https://raw.githubusercontent.com/Gao-Hongxiang/image-hosting/master/img/20221226165004.png)
+![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img/20221226165004.png)
 
 - 更多地 ACK 块
 

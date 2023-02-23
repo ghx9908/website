@@ -13,7 +13,7 @@ last_update:
 
 先上图：
 
-![](https://raw.githubusercontent.com/Gao-Hongxiang/image-hosting/master/img/20221226190531.png)
+![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img/20221226190531.png)
 
 **白话文理解**
 
@@ -76,11 +76,11 @@ last_update:
 
 ## **数据传输**
 
-![](https://raw.githubusercontent.com/Gao-Hongxiang/image-hosting/master/img/20221226212743.png)
+![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img/20221226212743.png)
 
 ## 四次挥手
 
-![](https://raw.githubusercontent.com/Gao-Hongxiang/image-hosting/master/img/20221226212930.png)
+![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img/20221226212930.png)
 
 **白话文理解**
 

@@ -8,7 +8,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula")
 const config = {
   title: "My Site",
   tagline: "Dinosaurs are cool",
-  url: "https://gao-hongxiang.github.io/",
+  url: "https://ghx9908.github.io/",
   baseUrl: "/",
   themes: [
     [
@@ -154,12 +154,12 @@ const config = {
             activeBaseRegex: "/interview/",
           },
           {
-            to: "https://gao-hongxiang.github.io/blog/",
+            to: "https://ghx9908.github.io/blog/",
             label: "Blog",
             position: "right",
           },
           {
-            href: "https://github.com/Gao-Hongxiang",
+            href: "https://github.com/ghx9908",
             label: "GitHub",
             position: "right",
           },

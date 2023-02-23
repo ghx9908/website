@@ -21,6 +21,6 @@ DNS 是 Domain Name System 的缩写， DNS 服务器进⾏**域名和**与之�
 
 - 获取最终的 ip 地址。缓存到 DNS 服务器上
 
-![](https://raw.githubusercontent.com/Gao-Hongxiang/image-hosting/master/img/20221226190219.png)
+![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img/20221226190219.png)
 
 > DNS 服务器会对 ip 及 域名 进⾏缓存

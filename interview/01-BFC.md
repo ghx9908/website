@@ -1,9 +1,12 @@
 ---
-title: 1. 谈谈你对 BFC 的理解，如何创建 BFC?
+title: H5C3
+sidebar_position: 2
 last_update:
   date: 01/03/2022
   author: 高红翔
 ---
+
+## 1. BFC
 
 ### 概念：
 
@@ -67,3 +70,19 @@ last_update:
   - 子元素或者父元素的**position**不为**relative**或**static**
   - 父元素的**overflow**为**auto**或**scroll**或**hidden**
   - 父元素的**display**的值为**table-cell**或**inline-block**
+
+## 2. 盒模型
+
+> 盒子模型（Box Modle）可以用来对元素进行布局，包括**内边距**，边框，**外边距**，和**实际内容**这几个部分
+
+**盒子模型分为两种:**
+
+1.  W3C 标准的盒子模型（**标准盒模型**） box-sizing:content-box
+
+- width 指的是内容区域 content 的宽度，height 指的是内容区域 content 的高度，
+- 标准盒模型下盒子的大小 = content + border + padding + margin
+
+2.  IE 标准的盒子模型（**怪异盒模型**） box-sizing:border-box
+
+- width 指的是内容、边框、内边距总的宽度（content + border +padding）,height 指的是内容、边框、内边距总的高度
+- 怪异盒模型下盒子的大小=width（content + border + padding） + margin

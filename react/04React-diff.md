@@ -23,7 +23,7 @@ React 的 diff 算法遵循以下规则：
 
 ## 单节点的 diff
 
-![](https://raw.githubusercontent.com/Gao-Hongxiang/image-hosting/master/img/20230220164823.png)
+![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img/20230220164823.png)
 
 ### 1、单节点 key 和类型相同
 
@@ -412,7 +412,7 @@ function reconcileSingleElement(returnFiber, currentFirstChild, element) {
 
 ### 1、多个节点的数量和 key 相同，有的 type 不同
 
-![](https://raw.githubusercontent.com/Gao-Hongxiang/image-hosting/master/img/20230220164902.png)
+![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img/20230220164902.png)
 
 ```js
 function FunctionComponent() {
@@ -511,7 +511,7 @@ function FunctionComponent() {
 - 把所有的 map 中剩下的 fiber 全部标记为删除
 - (删除#li#F)=>(添加#li#B)=>(添加#li#G)=>(添加#li#D)=>null
 
-![](https://raw.githubusercontent.com/Gao-Hongxiang/image-hosting/master/img/20230220164329.png)
+![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img/20230220164329.png)
 
 ![image-20230220164410416](C:\Users\哗啦啦\AppData\Roaming\Typora\typora-user-images\image-20230220164410416.png)
 

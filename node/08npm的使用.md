@@ -35,7 +35,7 @@ last_update:
 
 ## 2. licens
 
-![](https://raw.githubusercontent.com/Gao-Hongxiang/image-hosting/master/img/20230209153037.png)
+![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img/20230209153037.png)
 
 ## 3.安装 install
 
@@ -88,14 +88,14 @@ package.json
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Gao-Hongxiang/node.git"
+    "url": "git+https://github.com/ghx9908/node.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Gao-Hongxiang/node/issues"
+    "url": "https://github.com/ghx9908/node/issues"
   },
-  "homepage": "https://github.com/Gao-Hongxiang/node#readme"
+  "homepage": "https://github.com/ghx9908/node#readme"
 }
 
 ```
@@ -205,7 +205,7 @@ npm version patch # 修订号加 1
 
 - rc(release candidate)：最终测试版本；可能成为最终产品的候选版本，如果未出现问题则可发布成为正式版本。"1.0.0-rc.1"
 
-![](https://raw.githubusercontent.com/Gao-Hongxiang/image-hosting/master/img/20230209181600.png)
+![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img/20230209181600.png)
 
 ## **5.scripts**配置
 
@@ -296,8 +296,6 @@ npm login
 npm who am i
 ```
 
-
-
 更新包名字，忽略⽂件夹可以使⽤ .npmignore，⼀切就绪后，发布！！！
 
 ```bash
@@ -306,8 +304,6 @@ npm publish -h
 npm publish --access public
 npm unpublish [<package-spec>]
 ```
-
-
 
 **注册**
 
