@@ -1,5 +1,6 @@
 ---
 sidebar_position: 2
+title: 2. polyfill
 ---
 
 ## 1. babel-polyfill
