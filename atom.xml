@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>闪烁之狐</title>
+  
+  <subtitle>闪烁之狐</subtitle>
+  <link href="https://gao-hongongxiang.github.io/blog/atom.xml" rel="self"/>
+  
+  <link href="https://gao-hongongxiang.github.io/blog/"/>
+  <updated>2023-03-16T10:22:34.883Z</updated>
+  <id>https://gao-hongongxiang.github.io/blog/</id>
+  
+  <author>
+    <name>高红翔</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>webpack 打包后模块分析</title>
+    <link href="https://gao-hongongxiang.github.io/blog/2023/03/16/bundle/"/>
+    <id>https://gao-hongongxiang.github.io/blog/2023/03/16/bundle/</id>
+    <published>2023-03-16T03:00:58.000Z</published>
+    <updated>2023-03-16T10:22:34.883Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;1-同步加载&quot;&gt;&lt;a href=&quot;#1-同步加载&quot; class=&quot;headerlink&quot; title=&quot;1. 同步加载&quot;&gt;&lt;/a&gt;1. 同步加载&lt;/h2&gt;&lt;h3 id=&quot;没有依赖&quot;&gt;&lt;a href=&quot;#没有依赖&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="工程化" scheme="https://gao-hongongxiang.github.io/blog/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/"/>
+    
+    
+    <category term="Webpack" scheme="https://gao-hongongxiang.github.io/blog/tags/Webpack/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>hasOwnProperty</title>
+    <link href="https://gao-hongongxiang.github.io/blog/2023/03/15/hasownproperty/"/>
+    <id>https://gao-hongongxiang.github.io/blog/2023/03/15/hasownproperty/</id>
+    <published>2023-03-15T10:03:13.000Z</published>
+    <updated>2023-03-15T10:07:19.061Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;Object-prototype-hasOwnProperty&quot;&gt;&lt;a href=&quot;#Object-prototype-hasOwnProperty&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="前端基础" scheme="https://gao-hongongxiang.github.io/blog/categories/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80/"/>
+    
+    
+    <category term="JavaScript" scheme="https://gao-hongongxiang.github.io/blog/tags/JavaScript/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>defineProperty 和 toStringTag</title>
+    <link href="https://gao-hongongxiang.github.io/blog/2023/03/15/defineproperty/"/>
+    <id>https://gao-hongongxiang.github.io/blog/2023/03/15/defineproperty/</id>
+    <published>2023-03-15T02:48:01.000Z</published>
+    <updated>2023-03-15T08:49:29.535Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h3 id=&quot;1-toStringTag&quot;&gt;&lt;a href=&quot;#1-toStringTag&quot; class=&quot;headerlink&quot; title=&quot;1. toStringTag&quot;&gt;&lt;/a&gt;1.</summary>
+        
+      
+    
+    
+    
+    <category term="前端基础" scheme="https://gao-hongongxiang.github.io/blog/categories/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80/"/>
+    
+    
+    <category term="JavaScript" scheme="https://gao-hongongxiang.github.io/blog/tags/JavaScript/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hexo</title>
+    <link href="https://gao-hongongxiang.github.io/blog/2023/03/15/000-hexo/"/>
+    <id>https://gao-hongongxiang.github.io/blog/2023/03/15/000-hexo/</id>
+    <published>2023-03-15T02:46:58.000Z</published>
+    <updated>2023-03-16T03:06:37.305Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;写作&quot;&gt;&lt;a href=&quot;#写作&quot; class=&quot;headerlink&quot; title=&quot;写作&quot;&gt;&lt;/a&gt;写作&lt;/h2&gt;&lt;p&gt;你可以执行下列命令来创建一篇新文章或者新的页面。&lt;/p&gt;
+&lt;pre class=&quot;line-numbers language-bash&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="开发工具" scheme="https://gao-hongongxiang.github.io/blog/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    
+    
+    <category term="工具" scheme="https://gao-hongongxiang.github.io/blog/tags/%E5%B7%A5%E5%85%B7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>模块化的发展历程</title>
+    <link href="https://gao-hongongxiang.github.io/blog/2023/03/10/014-polyfill/"/>
+    <id>https://gao-hongongxiang.github.io/blog/2023/03/10/014-polyfill/</id>
+    <published>2023-03-10T10:00:00.000Z</published>
+    <updated>2023-03-10T08:00:51.045Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;1-babel-polyfill&quot;&gt;&lt;a href=&quot;#1-babel-polyfill&quot; class=&quot;headerlink&quot; title=&quot;1. babel-polyfill&quot;&gt;&lt;/a&gt;1.</summary>
+        
+      
+    
+    
+    
+    <category term="工程化" scheme="https://gao-hongongxiang.github.io/blog/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/"/>
+    
+    
+    <category term="webpack" scheme="https://gao-hongongxiang.github.io/blog/tags/webpack/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>模块化的发展历程</title>
+    <link href="https://gao-hongongxiang.github.io/blog/2023/03/09/013-mo-kuai-hua/"/>
+    <id>https://gao-hongongxiang.github.io/blog/2023/03/09/013-mo-kuai-hua/</id>
+    <published>2023-03-09T10:00:00.000Z</published>
+    <updated>2023-03-09T08:22:43.265Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;一、模块化&quot;&gt;&lt;a href=&quot;#一、模块化&quot; class=&quot;headerlink&quot; title=&quot;一、模块化&quot;&gt;&lt;/a&gt;一、模块化&lt;/h2&gt;&lt;h3 id=&quot;1-1-什么是模块化&quot;&gt;&lt;a href=&quot;#1-1-什么是模块化&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="前端基础" scheme="https://gao-hongongxiang.github.io/blog/categories/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80/"/>
+    
+    
+    <category term="ES6 面试" scheme="https://gao-hongongxiang.github.io/blog/tags/ES6-%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>react 虚拟列表之 FixedSizeList 封装</title>
+    <link href="https://gao-hongongxiang.github.io/blog/2023/01/06/012fixedsizelist-feng-zhuang/"/>
+    <id>https://gao-hongongxiang.github.io/blog/2023/01/06/012fixedsizelist-feng-zhuang/</id>
+    <published>2023-01-06T10:00:00.000Z</published>
+    <updated>2023-01-06T10:28:59.814Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;1-长列表渲染&quot;&gt;&lt;a href=&quot;#1-长列表渲染&quot; class=&quot;headerlink&quot; title=&quot;1. 长列表渲染&quot;&gt;&lt;/a&gt;1.</summary>
+        
+      
+    
+    
+    
+    <category term="react全家桶" scheme="https://gao-hongongxiang.github.io/blog/categories/react%E5%85%A8%E5%AE%B6%E6%A1%B6/"/>
+    
+    
+    <category term="react组件" scheme="https://gao-hongongxiang.github.io/blog/tags/react%E7%BB%84%E4%BB%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>浏览器缓存机制介绍与缓存策略剖析</title>
+    <link href="https://gao-hongongxiang.github.io/blog/2023/01/06/011-liu-lan-qi-de-huan-cun-ji-zhi/"/>
+    <id>https://gao-hongongxiang.github.io/blog/2023/01/06/011-liu-lan-qi-de-huan-cun-ji-zhi/</id>
+    <published>2023-01-06T09:00:00.000Z</published>
+    <updated>2023-01-06T07:26:36.415Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;缓存可以减少网络  &lt;code&gt;IO&lt;/code&gt;  消耗，提高访问速度。浏览器缓存是一种操作简单、效果显著的前端性能优化手段。对于这个操作的必要性，Chrome</summary>
+        
+      
+    
+    
+    
+    <category term="计算机网络" scheme="https://gao-hongongxiang.github.io/blog/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+    
+    
+    <category term="浏览器" scheme="https://gao-hongongxiang.github.io/blog/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>安全问题：CSRF 和 XSS</title>
+    <link href="https://gao-hongongxiang.github.io/blog/2023/01/06/010-wang-luo-an-quan/"/>
+    <id>https://gao-hongongxiang.github.io/blog/2023/01/06/010-wang-luo-an-quan/</id>
+    <published>2023-01-06T08:00:00.000Z</published>
+    <updated>2023-01-06T07:05:11.636Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;1-前言&quot;&gt;&lt;a href=&quot;#1-前言&quot; class=&quot;headerlink&quot; title=&quot;1 前言&quot;&gt;&lt;/a&gt;1</summary>
+        
+      
+    
+    
+    
+    <category term="计算机网络" scheme="https://gao-hongongxiang.github.io/blog/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+    
+    
+    <category term="网络安全" scheme="https://gao-hongongxiang.github.io/blog/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>V8 内存管理（垃圾回收机制）</title>
+    <link href="https://gao-hongongxiang.github.io/blog/2023/01/04/009v8-nei-cun-guan-li/"/>
+    <id>https://gao-hongongxiang.github.io/blog/2023/01/04/009v8-nei-cun-guan-li/</id>
+    <published>2023-01-04T08:00:00.000Z</published>
+    <updated>2023-01-04T08:08:59.956Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;V8 也会申请内存，申请的内存又会分为&lt;strong&gt;堆内存和栈内存&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&quot;1-1-栈&quot;&gt;&lt;a href=&quot;#1-1-栈&quot; class=&quot;headerlink&quot; title=&quot;1.1</summary>
+        
+      
+    
+    
+    
+    <category term="计算机网络" scheme="https://gao-hongongxiang.github.io/blog/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+    
+    
+    <category term="浏览器" scheme="https://gao-hongongxiang.github.io/blog/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JS中的继承</title>
+    <link href="https://gao-hongongxiang.github.io/blog/2023/01/03/008js-zhong-de-ji-cheng/"/>
+    <id>https://gao-hongongxiang.github.io/blog/2023/01/03/008js-zhong-de-ji-cheng/</id>
+    <published>2023-01-03T08:00:00.000Z</published>
+    <updated>2023-01-03T07:29:55.024Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h3 id=&quot;一、原型链继承&quot;&gt;&lt;a href=&quot;#一、原型链继承&quot; class=&quot;headerlink&quot; title=&quot;一、原型链继承&quot;&gt;&lt;/a&gt;一、原型链继承&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;构造函数、原型和实例的关系：&lt;/strong&gt;</summary>
+        
+      
+    
+    
+    
+    <category term="前端基础" scheme="https://gao-hongongxiang.github.io/blog/categories/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80/"/>
+    
+    
+    <category term="JS高级" scheme="https://gao-hongongxiang.github.io/blog/tags/JS%E9%AB%98%E7%BA%A7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>sentry监控</title>
+    <link href="https://gao-hongongxiang.github.io/blog/2022/11/16/007sentry/"/>
+    <id>https://gao-hongongxiang.github.io/blog/2022/11/16/007sentry/</id>
+    <published>2022-11-16T08:00:00.000Z</published>
+    <updated>2022-11-16T10:27:07.573Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;基本原理&quot;&gt;&lt;a href=&quot;#基本原理&quot; class=&quot;headerlink&quot; title=&quot;基本原理&quot;&gt;&lt;/a&gt;基本原理&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="性能" scheme="https://gao-hongongxiang.github.io/blog/categories/%E6%80%A7%E8%83%BD/"/>
+    
+    
+    <category term="性能" scheme="https://gao-hongongxiang.github.io/blog/tags/%E6%80%A7%E8%83%BD/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>连续数组test1</title>
+    <link href="https://gao-hongongxiang.github.io/blog/2022/09/16/006-lian-xu-shu-zu/"/>
+    <id>https://gao-hongongxiang.github.io/blog/2022/09/16/006-lian-xu-shu-zu/</id>
+    <published>2022-09-16T08:00:00.000Z</published>
+    <updated>2022-11-10T08:54:50.924Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h3 id=&quot;题目&quot;&gt;&lt;a href=&quot;#题目&quot; class=&quot;headerlink&quot; title=&quot;题目&quot;&gt;&lt;/a&gt;题目&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;给定一个二进制数组 nums , 找到含有相同数量的 0 和 1</summary>
+        
+      
+    
+    
+    
+    <category term="算法" scheme="https://gao-hongongxiang.github.io/blog/categories/%E7%AE%97%E6%B3%95/"/>
+    
+    
+    <category term="算法" scheme="https://gao-hongongxiang.github.io/blog/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>文化建设</title>
+    <link href="https://gao-hongongxiang.github.io/blog/2022/09/16/005-wen-hua/"/>
+    <id>https://gao-hongongxiang.github.io/blog/2022/09/16/005-wen-hua/</id>
+    <published>2022-09-16T08:00:00.000Z</published>
+    <updated>2022-09-22T04:35:50.636Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h3 id=&quot;公司文化：&quot;&gt;&lt;a href=&quot;#公司文化：&quot; class=&quot;headerlink&quot; title=&quot;公司文化：&quot;&gt;&lt;/a&gt;公司文化：&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;Open minded and cooperative -</summary>
+        
+      
+    
+    
+    
+    <category term="文化建设" scheme="https://gao-hongongxiang.github.io/blog/categories/%E6%96%87%E5%8C%96%E5%BB%BA%E8%AE%BE/"/>
+    
+    
+    <category term="文化建设" scheme="https://gao-hongongxiang.github.io/blog/tags/%E6%96%87%E5%8C%96%E5%BB%BA%E8%AE%BE/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>软件下载</title>
+    <link href="https://gao-hongongxiang.github.io/blog/2022/08/17/015-ruan-jian-an-zhuang/"/>
+    <id>https://gao-hongongxiang.github.io/blog/2022/08/17/015-ruan-jian-an-zhuang/</id>
+    <published>2022-08-17T04:00:00.000Z</published>
+    <updated>2023-03-15T04:32:00.302Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;脚本之家&quot;&gt;&lt;a href=&quot;#脚本之家&quot; class=&quot;headerlink&quot; title=&quot;脚本之家&quot;&gt;&lt;/a&gt;脚本之家&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://www.jb51.net/&quot;&gt;脚本之家&lt;/a&gt;&lt;/p&gt;
+&lt;h3</summary>
+        
+      
+    
+    
+    
+    
+    <category term="前端工具" scheme="https://gao-hongongxiang.github.io/blog/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E5%85%B7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>node 工具使用</title>
+    <link href="https://gao-hongongxiang.github.io/blog/2022/08/17/022-node/"/>
+    <id>https://gao-hongongxiang.github.io/blog/2022/08/17/022-node/</id>
+    <published>2022-08-17T04:00:00.000Z</published>
+    <updated>2022-08-19T02:42:58.405Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;nvm-安装和使用&quot;&gt;&lt;a href=&quot;#nvm-安装和使用&quot; class=&quot;headerlink&quot; title=&quot;nvm 安装和使用&quot;&gt;&lt;/a&gt;nvm 安装和使用&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://nvm.uihtm.com/&quot;&gt;nvm</summary>
+        
+      
+    
+    
+    
+    
+    <category term="前端工具" scheme="https://gao-hongongxiang.github.io/blog/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E5%85%B7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>umi4升级</title>
+    <link href="https://gao-hongongxiang.github.io/blog/2022/08/09/016-sheng-ji-umi4/"/>
+    <id>https://gao-hongongxiang.github.io/blog/2022/08/09/016-sheng-ji-umi4/</id>
+    <published>2022-08-09T10:00:00.000Z</published>
+    <updated>2022-08-09T10:07:19.525Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt; 工程已经升级到了 umi4（需要安装pnpm, 然后 pnpm install），下面罗列了一些变动须知：&lt;/p&gt;
+&lt;h3 id=&quot;1、关于包管理器&quot;&gt;&lt;a href=&quot;#1、关于包管理器&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="前端框架" scheme="https://gao-hongongxiang.github.io/blog/categories/%E5%89%8D%E7%AB%AF%E6%A1%86%E6%9E%B6/"/>
+    
+    
+    <category term="umi" scheme="https://gao-hongongxiang.github.io/blog/tags/umi/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>weekly 004</title>
+    <link href="https://gao-hongongxiang.github.io/blog/2022/08/08/004weekly/"/>
+    <id>https://gao-hongongxiang.github.io/blog/2022/08/08/004weekly/</id>
+    <published>2022-08-08T10:00:00.000Z</published>
+    <updated>2022-08-11T07:36:10.787Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;本期文章&quot;&gt;&lt;a href=&quot;#本期文章&quot; class=&quot;headerlink&quot; title=&quot;本期文章&quot;&gt;&lt;/a&gt;本期文章&lt;/h2&gt;&lt;h3 id=&quot;七夕到了，还不快给你女朋友做一个专属-chrome-插件&quot;&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="weekly" scheme="https://gao-hongongxiang.github.io/blog/categories/weekly/"/>
+    
+    
+    <category term="weekly" scheme="https://gao-hongongxiang.github.io/blog/tags/weekly/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>weekly 003</title>
+    <link href="https://gao-hongongxiang.github.io/blog/2022/08/01/003weekly/"/>
+    <id>https://gao-hongongxiang.github.io/blog/2022/08/01/003weekly/</id>
+    <published>2022-08-01T10:00:00.000Z</published>
+    <updated>2022-08-11T07:33:45.308Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;本期文章&quot;&gt;&lt;a href=&quot;#本期文章&quot; class=&quot;headerlink&quot; title=&quot;本期文章&quot;&gt;&lt;/a&gt;本期文章&lt;/h2&gt;&lt;h3 id=&quot;成为优秀的-TS-体操高手-之-TS-类型体操前置知识储备&quot;&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="weekly" scheme="https://gao-hongongxiang.github.io/blog/categories/weekly/"/>
+    
+    
+    <category term="weekly" scheme="https://gao-hongongxiang.github.io/blog/tags/weekly/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>weekly 002</title>
+    <link href="https://gao-hongongxiang.github.io/blog/2022/07/25/002weekly/"/>
+    <id>https://gao-hongongxiang.github.io/blog/2022/07/25/002weekly/</id>
+    <published>2022-07-25T10:00:00.000Z</published>
+    <updated>2022-08-11T07:36:14.380Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;本期文章&quot;&gt;&lt;a href=&quot;#本期文章&quot; class=&quot;headerlink&quot; title=&quot;本期文章&quot;&gt;&lt;/a&gt;本期文章&lt;/h2&gt;&lt;h3 id=&quot;函数式组件与类组件有何不同？&quot;&gt;&lt;a href=&quot;#函数式组件与类组件有何不同？&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="weekly" scheme="https://gao-hongongxiang.github.io/blog/categories/weekly/"/>
+    
+    
+    <category term="weekly" scheme="https://gao-hongongxiang.github.io/blog/tags/weekly/"/>
+    
+  </entry>
+  
+</feed>
