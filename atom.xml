@@ -6,7 +6,7 @@
   <link href="https://gao-hongongxiang.github.io/blog/atom.xml" rel="self"/>
   
   <link href="https://gao-hongongxiang.github.io/blog/"/>
-  <updated>2023-03-16T10:22:34.883Z</updated>
+  <updated>2023-03-17T15:14:20.752Z</updated>
   <id>https://gao-hongongxiang.github.io/blog/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://gao-hongongxiang.github.io/blog/2023/03/16/bundle/"/>
     <id>https://gao-hongongxiang.github.io/blog/2023/03/16/bundle/</id>
     <published>2023-03-16T03:00:58.000Z</published>
-    <updated>2023-03-16T10:22:34.883Z</updated>
+    <updated>2023-03-17T15:14:20.752Z</updated>
     
     
       
@@ -37,7 +37,7 @@
     <category term="工程化" scheme="https://gao-hongongxiang.github.io/blog/categories/%E5%B7%A5%E7%A8%8B%E5%8C%96/"/>
     
     
-    <category term="Webpack" scheme="https://gao-hongongxiang.github.io/blog/tags/Webpack/"/>
+    <category term="webpack" scheme="https://gao-hongongxiang.github.io/blog/tags/webpack/"/>
     
   </entry>
   
@@ -46,7 +46,7 @@
     <link href="https://gao-hongongxiang.github.io/blog/2023/03/15/hasownproperty/"/>
     <id>https://gao-hongongxiang.github.io/blog/2023/03/15/hasownproperty/</id>
     <published>2023-03-15T10:03:13.000Z</published>
-    <updated>2023-03-15T10:07:19.061Z</updated>
+    <updated>2023-03-17T15:12:08.184Z</updated>
     
     
       
@@ -62,7 +62,7 @@
     <category term="前端基础" scheme="https://gao-hongongxiang.github.io/blog/categories/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80/"/>
     
     
-    <category term="JavaScript" scheme="https://gao-hongongxiang.github.io/blog/tags/JavaScript/"/>
+    <category term="javaScript" scheme="https://gao-hongongxiang.github.io/blog/tags/javaScript/"/>
     
   </entry>
   
@@ -71,7 +71,7 @@
     <link href="https://gao-hongongxiang.github.io/blog/2023/03/15/defineproperty/"/>
     <id>https://gao-hongongxiang.github.io/blog/2023/03/15/defineproperty/</id>
     <published>2023-03-15T02:48:01.000Z</published>
-    <updated>2023-03-15T08:49:29.535Z</updated>
+    <updated>2023-03-17T15:11:57.891Z</updated>
     
     
       
@@ -87,7 +87,7 @@
     <category term="前端基础" scheme="https://gao-hongongxiang.github.io/blog/categories/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80/"/>
     
     
-    <category term="JavaScript" scheme="https://gao-hongongxiang.github.io/blog/tags/JavaScript/"/>
+    <category term="javaScript" scheme="https://gao-hongongxiang.github.io/blog/tags/javaScript/"/>
     
   </entry>
   
@@ -96,7 +96,7 @@
     <link href="https://gao-hongongxiang.github.io/blog/2023/03/15/000-hexo/"/>
     <id>https://gao-hongongxiang.github.io/blog/2023/03/15/000-hexo/</id>
     <published>2023-03-15T02:46:58.000Z</published>
-    <updated>2023-03-16T03:06:37.305Z</updated>
+    <updated>2023-03-17T15:14:15.323Z</updated>
     
     
       
@@ -118,11 +118,11 @@
   </entry>
   
   <entry>
-    <title>模块化的发展历程</title>
+    <title>polyfill 实践</title>
     <link href="https://gao-hongongxiang.github.io/blog/2023/03/10/014-polyfill/"/>
     <id>https://gao-hongongxiang.github.io/blog/2023/03/10/014-polyfill/</id>
     <published>2023-03-10T10:00:00.000Z</published>
-    <updated>2023-03-10T08:00:51.045Z</updated>
+    <updated>2023-03-17T15:13:58.267Z</updated>
     
     
       
@@ -147,7 +147,7 @@
     <link href="https://gao-hongongxiang.github.io/blog/2023/03/09/013-mo-kuai-hua/"/>
     <id>https://gao-hongongxiang.github.io/blog/2023/03/09/013-mo-kuai-hua/</id>
     <published>2023-03-09T10:00:00.000Z</published>
-    <updated>2023-03-09T08:22:43.265Z</updated>
+    <updated>2023-03-17T15:07:38.686Z</updated>
     
     
       
@@ -163,7 +163,9 @@
     <category term="前端基础" scheme="https://gao-hongongxiang.github.io/blog/categories/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80/"/>
     
     
-    <category term="ES6 面试" scheme="https://gao-hongongxiang.github.io/blog/tags/ES6-%E9%9D%A2%E8%AF%95/"/>
+    <category term="ES6" scheme="https://gao-hongongxiang.github.io/blog/tags/ES6/"/>
+    
+    <category term="面试" scheme="https://gao-hongongxiang.github.io/blog/tags/%E9%9D%A2%E8%AF%95/"/>
     
   </entry>
   
