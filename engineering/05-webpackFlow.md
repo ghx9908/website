@@ -138,7 +138,10 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        use: [path.resolve(__dirname, "loaders/loader2.js"), path.resolve(__dirname, "loaders/loader1.js")],
+        use: [
+          path.resolve(__dirname, "loaders/loader2.js"),
+          path.resolve(__dirname, "loaders/loader1.js"),
+        ],
       },
     ],
   },
@@ -209,7 +212,7 @@ function webpack(options) {
 module.exports = webpack
 ```
 
-### 1.7 Compilation
+### 1.7 Compiler
 
 Compiler.js
 
@@ -243,9 +246,9 @@ class Compiler {
         fs.watch(fileDependency, () => this.compile(onCompiled))
       }
     }
-    this.hooks.done.call() //在编译完成时触发done钩子执行
     //调用compile方法进行编译  开始一次新的编译
     this.compile(onCompiled)
+    this.hooks.done.call() //在编译完成时触发done钩子执行
   }
   //开启一次新的编译
   compile(callback) {
@@ -305,14 +308,19 @@ class Compilation {
       let chunk = {
         name: entryName, //入口名称
         entryModule, //入口的模块 ./src/entry.js
-        modules: this.modules.filter((module) => module.names.includes(entryName)), //此入口对应的模块
+        modules: this.modules.filter((module) =>
+          module.names.includes(entryName)
+        ), //此入口对应的模块
       }
       this.chunks.push(chunk)
     }
 
     // 9.再把每个 Chunk 转换成一个单独的文件加入到输出列表
     this.chunks.forEach((chunk) => {
-      const filename = this.options.output.filename.replace("[name]", chunk.name)
+      const filename = this.options.output.filename.replace(
+        "[name]",
+        chunk.name
+      )
       this.files.push(filename)
       //组装chunk
       this.assets[filename] = getSource(chunk)
@@ -348,10 +356,13 @@ class Compilation {
     })
     //调用所有配置的Loader对模块进行转换
 
-    let transformedSourceCode = loaders.reduceRight((sourceCode, loaderPath) => {
-      const loaderFn = require(loaderPath)
-      return loaderFn(sourceCode)
-    }, rawSourceCode)
+    let transformedSourceCode = loaders.reduceRight(
+      (sourceCode, loaderPath) => {
+        const loaderFn = require(loaderPath)
+        return loaderFn(sourceCode)
+      },
+      rawSourceCode
+    )
 
     //7.再找出该模块依赖的模块，再递归本步骤直到所有入口依赖的文件都经过了本步骤的处理
     //获取当前模块，也就是 ./src/entry1.js的模块ID
