@@ -1,5 +1,5 @@
 ---
-title: 分发饼干-455
+title: 2. 分发饼干-455
 description: 考察贪心算法
 last_update:
   date: 11/15/2022

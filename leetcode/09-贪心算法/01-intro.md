@@ -1,5 +1,5 @@
 ---
-title: 贪心算法理论基础
+title: 1. 贪心算法理论基础
 description: 贪心算法理论基础
 last_update:
   date: 11/18/2022
