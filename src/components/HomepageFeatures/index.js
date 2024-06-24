@@ -1,43 +1,28 @@
-import React from 'react';
-import clsx from 'clsx';
-import styles from './styles.module.css';
+import React from "react"
+import clsx from "clsx"
+import styles from "./styles.module.css"
 
 const FeatureList = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
-    description: (
-      <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
-      </>
-    ),
+    title: "现代化开发工具",
+    Svg: require("@site/static/img/undraw_docusaurus_mountain.svg").default,
+    description: <>学习并使用最新的前端开发工具和技术栈，如Webpack、Babel、ESLint等，让你的开发流程更加高效。</>,
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
-    description: (
-      <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
-      </>
-    ),
+    title: "深入React",
+    Svg: require("@site/static/img/undraw_docusaurus_tree.svg").default,
+    description: <>掌握React框架，从基础的组件构建到高级的状态管理和性能优化，让你的前端开发如虎添翼。</>,
   },
   {
-    title: 'Powered by React',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
-    description: (
-      <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
-      </>
-    ),
+    title: "前端安全",
+    Svg: require("@site/static/img/undraw_docusaurus_react.svg").default,
+    description: <>掌握前端安全知识，防范XSS、CSRF等常见攻击，保护用户数据安全。</>,
   },
-];
+]
 
-function Feature({Svg, title, description}) {
+function Feature({ Svg, title, description }) {
   return (
-    <div className={clsx('col col--4')}>
+    <div className={clsx("col col--4")}>
       <div className="text--center">
         <Svg className={styles.featureSvg} role="img" />
       </div>
@@ -46,7 +31,7 @@ function Feature({Svg, title, description}) {
         <p>{description}</p>
       </div>
     </div>
-  );
+  )
 }
 
 export default function HomepageFeatures() {
@@ -60,5 +45,5 @@ export default function HomepageFeatures() {
         </div>
       </div>
     </section>
-  );
+  )
 }

@@ -6,8 +6,8 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula")
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "My Site",
-  tagline: "Dinosaurs are cool",
+  title: "我的前端知识库",
+  tagline: "探索前端世界的每一个角落",
   url: "https://ghx9908.github.io",
   deploymentBranch: "gh-pages",
   baseUrl: "/website/",
@@ -101,6 +101,15 @@ const config = {
     [
       "@docusaurus/plugin-content-docs",
       {
+        id: "vue",
+        path: "vue",
+        routeBasePath: "vue",
+        sidebarPath: require.resolve("./vue.js"),
+      },
+    ],
+    [
+      "@docusaurus/plugin-content-docs",
+      {
         id: "interview",
         path: "interview",
         routeBasePath: "interview",
@@ -112,7 +121,7 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: "My Site",
+        title: "我的前端知识库",
         logo: {
           alt: "My Site Logo",
           src: "img/logo.svg",
@@ -135,6 +144,12 @@ const config = {
             to: "react/intro",
             position: "left",
             activeBaseRegex: "/react/",
+          },
+          {
+            label: "Vue",
+            to: "vue/intro",
+            position: "left",
+            activeBaseRegex: "/vue/",
           },
           {
             label: "Leectode",
