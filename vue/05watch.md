@@ -1,5 +1,5 @@
 ---
-title: 5、atch & WatchEffect
+title: 5、watch & WatchEffect
 tags:
   - Vue.js
 ---
