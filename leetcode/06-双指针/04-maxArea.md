@@ -1,6 +1,6 @@
 ---
 title: 4. 盛最多水的容器--11
-description: 考察双指针
+description: 考察双指针 贪心算法
 last_update:
   date: 12/22/2022
   author: 高红翔
@@ -47,7 +47,7 @@ last_update:
 
 ## 解题
 
-### 用两个 for 循环，计算每一种组合的长度并记录最大值:
+### 暴力
 
 ```js
 /**
@@ -65,7 +65,7 @@ var maxArea = function (height) {
 }
 ```
 
-### 双指针法
+### 双指针法 贪心算法
 
 ```js
 var maxArea = function (height) {
