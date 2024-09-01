@@ -116,7 +116,7 @@ function FunctionComponent() {
 
 #### 执行更新 updateReducer
 
-1. 创建更新对象，为循环链表 update1.next=update2.next=update1
+1. 创建更新对象，将更新缓存到 concurrentQueue 中
 
    ```js
    /**
@@ -259,3 +259,180 @@ function FunctionComponent() {
    5. 初始化一个新的状态，取值为当前的状态，上次的值
    6. 批量执行里面的函数 然后返回新的状态
    7. 新的 fiber 树 ，协调 diff 算法 commit 阶段进行更新
+
+### useState
+
+```js
+function FunctionComponent() {
+  console.log("FunctionComponent")
+  const [number, setNumber] = React.useState(0)
+  //如果使用的是useState，调用setNumber的时候传入的是老状态，则不需要更新，
+  return (
+    <button
+      onClick={() => {
+        setNumber(number) //0
+        setNumber(number + 1) //1
+        setNumber(number + 2) //2
+      }}
+    >
+      {number}
+    </button>
+  )
+}
+```
+
+#### 初次挂载 mountState
+
+> 初始化 hooks 对象 ， 给`memoizedState` `queue`赋值， 返回 dispatch 函数和初始值
+
+```js
+//useState其实就是一个内置了reducer的useReducer
+function baseStateReducer(state, action) {
+  return typeof action === "function" ? action(state) : action
+}
+
+function mountState(initialState) {
+  const hook = mountWorkInProgressHook()
+  hook.memoizedState = initialState
+  const queue = {
+    pending: null,
+    dispatch: null,
+    lastRenderedReducer: baseStateReducer, //上一个reducer
+    lastRenderedState: initialState, //上一个state
+  }
+  hook.queue = queue
+  const dispatch = (queue.dispatch = dispatchSetState.bind(null, currentlyRenderingFiber, queue))
+  return [hook.memoizedState, dispatch]
+}
+```
+
+#### 执行更新 updateState
+
+```js
+//useState其实就是一个内置了reducer的useReducer
+function baseStateReducer(state, action) {
+  return typeof action === "function" ? action(state) : action
+}
+function updateState() {
+  return updateReducer(baseStateReducer)
+}
+```
+
+1. 创建一个更新对象，立即计算新值，判断是否需要构建新的队列
+
+   ```js
+   function dispatchSetState(fiber, queue, action) {
+     const update = {
+       action,
+       hasEagerState: false, //是否有急切的更新
+       eagerState: null, //急切的更新状态
+       next: null,
+     }
+     //当你派发动作后，我立刻用上一次的状态和上一次的reducer计算新状态
+     const { lastRenderedReducer, lastRenderedState } = queue
+     const eagerState = lastRenderedReducer(lastRenderedState, action) // 立即计算新的值 始终基于上一次的老值计算
+     update.hasEagerState = true
+     update.eagerState = eagerState
+     if (Object.is(eagerState, lastRenderedState)) {
+       //减少重复跟新
+       return
+     }
+     //下面是真正的入队更新，并调度更新逻辑
+     const root = enqueueConcurrentHookUpdate(fiber, queue, update)
+     scheduleUpdateOnFiber(root)
+   }
+   ```
+
+   2. 最新的更添的添加更新队列中，为了合并更新
+
+      ```js
+      function enqueueUpdate(fiber, queue, update) {
+        //012 setNumber1 345 setNumber2 678 setNumber3
+        concurrentQueue[concurrentQueuesIndex++] = fiber //函数组件对应的fiber
+        concurrentQueue[concurrentQueuesIndex++] = queue //要更新的hook对应的更新队列
+        concurrentQueue[concurrentQueuesIndex++] = update //更新对象
+      }
+      ```
+
+   3. 从根节点开始执行调度更新，应用 concurrentQueue ，数据 给 hooks.quene 赋值
+
+      构建更新循环链表
+
+      ```js
+      function prepareFreshStack(root) {
+        workInProgress = createWorkInProgress(root.current, null)
+        finishQueueingConcurrentUpdates()
+      }
+      function renderRootSync(root) {
+        //开始构建fiber树
+        prepareFreshStack(root)
+        //开始构建子节点
+        workLoopSync()
+      }
+
+      // 给函数组件fiber 的 hooks的queue
+      export function finishQueueingConcurrentUpdates() {
+        const endIndex = concurrentQueuesIndex //9 只是一边界条件
+        concurrentQueuesIndex = 0
+        let i = 0
+        while (i < endIndex) {
+          const fiber = concurrentQueue[i++]
+          const queue = concurrentQueue[i++]
+          const update = concurrentQueue[i++]
+          if (queue !== null && update !== null) {
+            const pending = queue.pending
+            if (pending === null) {
+              update.next = update
+            } else {
+              update.next = pending.next
+              pending.next = update
+            }
+            queue.pending = update
+          }
+        }
+      }
+      ```
+
+   4. begin 阶段 重新构建 fiber 树，执行函数组建，生成 新的 hooks 链表，执行更新，返回的新虚拟 dom
+
+      ```js
+      function updateReducer(reducer) {
+        //获取新的hook
+        const hook = updateWorkInProgressHook()
+        //获取新的hook的更新队列
+        const queue = hook.queue
+        //获取老的hook
+        const current = currentHook
+        //获取将要生效的更新队列
+        const pendingQueue = queue.pending
+        //初始化一个新的状态，取值为当前的状态
+        let newState = current.memoizedState
+        if (pendingQueue !== null) {
+          queue.pending = null
+          const firstUpdate = pendingQueue.next
+          let update = firstUpdate
+          do {
+            // 判断是否有急切的更新 说明已经计算过了 useState 会有
+            if (update.hasEagerState) {
+              newState = update.eagerState
+            } else {
+              const action = update.action
+              newState = reducer(newState, action)
+            }
+            update = update.next
+          } while (update !== null && update !== firstUpdate)
+        }
+        hook.memoizedState = newState
+        return [hook.memoizedState, queue.dispatch]
+      }
+      ```
+
+      5. 根据执行函数返回的虚拟 dom 构建新的 fiber 链表 ，commit 阶段提交 执行更新
+
+#### 总结
+
+1. 初次挂载，初始化 hooks 对象 ， 给`memoizedState` `queue`赋值， 返回 dispatch 函数和初始值
+2. 更新的时候，创建一个更新对象，立即计算新值，判断是否需要构建新的队列
+3. 从根节点开始执行调度更新，应用 concurrentQueue ，数据 给 hooks.quene 赋值,构建更新循环链表
+4. begin 阶段 重新构建 fiber 树，执行函数组建，生成 新的 hooks 链表，执行更新，返回的新虚拟 dom
+5. 根据执行函数返回的虚拟 dom 构建新的 fiber 链表 ，commit 阶段提交 执行更新
