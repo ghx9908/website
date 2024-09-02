@@ -25,71 +25,6 @@ React 的 diff 算法遵循以下规则：
 
 ![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img/20230220164823.png)
 
-### 1、单节点 key 和类型相同
-
-**核心复用老 Fiber 并返回**
-
-- 在 begin 阶段调用 useFiber 传入老 fiber 和新的虚拟 dom 的 props 创建 WorkInProgress 的新 fiber
-
-main.jsx
-
-```js
-function FunctionComponent() {
-  const [number, setNumber] = React.useState(0)
-  return number === 0 ? (
-    <div onClick={() => setNumber(number + 1)} key="title1" id="title">
-      title
-    </div>
-  ) : (
-    <div onClick={() => setNumber(number + 1)} key="title" id="title2">
-      title2
-    </div>
-  )
-}
-```
-
-src\react-reconciler\src\ReactChildFiber.js
-
-```js
-/**
- *
- * @param {*} returnFiber 根fiber div#root对应的fiber
- * @param {*} currentFirstChild 老的FunctionComponent对应的fiber
- * @param {*} element 新的虚拟DOM对象
- * @returns 返回新的第一个子fiber
- */
-function reconcileSingleElement(returnFiber, currentFirstChild, element) {
-  const key = element.key
-  let child = currentFirstChild
-  while (child !== null) {
-    if (child.key === key) {
-      if (child.type === element.type) {
-        //如果key一样，类型也一样，则认为此节点可以复用
-        const existing = useFiber(child, element.props)
-        existing.return = returnFiber
-        return existing
-      }
-    }
-  }
-}
-
-function useFiber(fiber, pendingProps) {
-  const clone = createWorkInProgress(fiber, pendingProps)
-  clone.index = 0
-  clone.sibling = null
-  return clone
-}
-```
-
-### 2、**单节点 key 不同,类型相同，**
-
-**核心删除老节点，添加新节点**
-
-- begin work 阶段 当检测到 key 不同的时候，给父 fiber 的 deletions=[deletedFiber]赋值和 flags 做上删除的标记；
-- 在 commit 阶段 从根节点递归遍历处理变更的时候，先通过父 fiber，找到最近真实的 DOM 节点，然后递归从里向外删除它的真实 dom，目的是为了处理一些组件销毁时候如 uesEffect 的副作用。
-
-main.jsx
-
 ```jsx
 function FunctionComponent() {
   const [number, setNumber] = React.useState(0)
@@ -105,262 +40,20 @@ function FunctionComponent() {
 }
 ```
 
-src\react-reconciler\src\ReactChildFiber.js
-
-```jsx
-/**
-   *
-   * @param {*} returnFiber 根fiber div#root对应的fiber
-   * @param {*} currentFirstChild 老的FunctionComponent对应的fiber
-   * @param {*} element 新的虚拟DOM对象
-   * @returns 返回新的第一个子fiber
-   */
-  function reconcileSingleElement(returnFiber, currentFirstChild, element) {
-        const key = element.key;
-    	let child = currentFirstChild;
-    while (child !== null) {
-      	if (child.key === key) {
-      //...
-        }
-     } else {
-       deleteChild(returnFiber, child);//给fiber上做标记
-     }
-      child = child.sibling;
-    }
-
-
-
-   /**
-   *给父fiber的deletions和flags赋值
-   * @param {*} returnFiber 父fiber
-   * @param {*} childToDelete 将要删除的老节点
-   * @returns
-   */
-  function deleteChild(returnFiber, childToDelete) {
-    if (!shouldTrackSideEffects) return
-    const deletions = returnFiber.deletions
-    if (deletions === null) {
-      returnFiber.deletions = [childToDelete]
-      returnFiber.flags |= ChildDeletion
-    } else {
-      returnFiber.deletions.push(childToDelete)
-    }
-  }
-```
-
-src\react-reconciler\src\ReactFiberCommitWork.js
+### 实现
 
 ```js
 /**
- * 递归遍历处理变更的作用
- * @param {*} root 根节点
- * @param {*} parentFiber  父fiber
- */
-function recursivelyTraverseMutationEffects(root, parentFiber) {
-  //先把父fiber上该删除的节点都删除
-  const deletions = parentFiber.deletions
-  if (deletions !== null) {
-    for (let i = 0; i < deletions.length; i++) {
-      const childToDelete = deletions[i]
-      //提交删除副作用
-      commitDeletionEffects(root, parentFiber, childToDelete)
-    }
-  }
-  //再去处理剩下的子节点
-  //判断是否有副作用...
-}
-let hostParent = null // 真实的父fiber对应的DOM
-/**
- * 提交删除副作用
- * @param {*} root 根节点
+ *
  * @param {*} returnFiber 父fiber
- * @param {*} deletedFiber 删除的fiber
- */
-function commitDeletionEffects(root, returnFiber, deletedFiber) {
-  let parent = returnFiber
-  //一直向上找，找到真实的DOM节点为此
-  findParent: while (parent !== null) {
-    switch (parent.tag) {
-      case HostComponent: {
-        hostParent = parent.stateNode
-        break findParent
-      }
-      case HostRoot: {
-        hostParent = parent.stateNode.containerInfo
-        break findParent
-      }
-    }
-    parent = parent.return
-  }
-  commitDeletionEffectsOnFiber(root, returnFiber, deletedFiber)
-  hostParent = null
-}
-
-/**
- * 删除真实Dom
- * @param {*} finishedRoot 跟biber
- * @param {*} nearestMountedAncestor 最近的父fiber
- * @param {*} deletedFiber 要删除的fiber
- */
-function commitDeletionEffectsOnFiber(
-  finishedRoot,
-  nearestMountedAncestor,
-  deletedFiber
-) {
-  switch (deletedFiber.tag) {
-    case HostComponent:
-    case HostText: {
-      //当要删除一个节点的时候，要先删除它的子节点
-      recursivelyTraverseDeletionEffects(
-        finishedRoot,
-        nearestMountedAncestor,
-        deletedFiber
-      )
-      //再把自己删除
-      if (hostParent !== null) {
-        removeChild(hostParent, deletedFiber.stateNode)
-      }
-      break
-    }
-    default:
-      break
-  }
-}
-//递归遍历
-function recursivelyTraverseDeletionEffects(
-  finishedRoot,
-  nearestMountedAncestor,
-  parent
-) {
-  let child = parent.child
-  while (child !== null) {
-    commitDeletionEffectsOnFiber(finishedRoot, nearestMountedAncestor, child)
-    child = child.sibling
-  }
-}
-```
-
-src\react-dom-bindings\src\client\ReactDOMHostConfig.js
-
-```js
-export function removeChild(parentInstance, child) {
-  parentInstance.removeChild(child)
-}
-```
-
-### 3、单节点 key 相同,类型不同
-
-**核心删除包括当前 fiber 在内的所有的老 fiber**
-
-main.jsx
-
-```js
-function FunctionComponent() {
-  const [number, setNumber] = React.useState(0)
-  return number === 0 ? (
-    <div onClick={() => setNumber(number + 1)} key="title1" id="title1">
-      title1
-    </div>
-  ) : (
-    <p onClick={() => setNumber(number + 1)} key="title1" id="title1">
-      title1
-    </p>
-  )
-}
-```
-
-src\react-reconciler\src\ReactChildFiber.js
-
-```js
-/**
- *
- * @param {*} returnFiber 根fiber div#root对应的fiber
- * @param {*} currentFirstChild 老的FunctionComponent对应的fiber
- * @param {*} element 新的虚拟DOM对象
- * @returns 返回新的第一个子fiber
- */
-function reconcileSingleElement(returnFiber, currentFirstChild, element) {
-  const key = element.key
-  let child = currentFirstChild
-  while (child !== null) {
-    if (child.key === key) {
-      if (child.type === element.type) {
-        //...
-      } else {
-        deleteRemai·ningChildren(returnFiber, child)
-        break
-      }
-    }
-  }
-}
-
-//删除从currentFirstChild之后所有的fiber节点
-function deleteRemainingChildren(returnFiber, currentFirstChild) {
-  if (!shouldTrackSideEffects) return
-  let childToDelete = currentFirstChild
-  while (childToDelete !== null) {
-    deleteChild(returnFiber, childToDelete)
-    childToDelete = childToDelete.sibling
-  }
-  return null
-}
-
-function deleteChild(returnFiber, childToDelete) {
-  if (!shouldTrackSideEffects) return
-  const deletions = returnFiber.deletions
-  if (deletions === null) {
-    returnFiber.deletions = [childToDelete]
-    returnFiber.flags |= ChildDeletion
-  } else {
-    returnFiber.deletions.push(childToDelete)
-  }
-}
-```
-
-### 4、原来多个节点，现在只有一个节点
-
-**核心删除多余节点**
-
-- 没有老 fiber 直接返回全新的 fiber,如果有老 fiber，看 key 是否相同，key 不同删除当前 fiber 并查找下一个 fiber，key 相同类型不同,删除当前 fiber 在内的所有老 fiebr 并返回新的 fiber，如果类型相同复删除剩下的其他老 fiber 并复用老 fiber 返回
-
-main.jsx
-
-```js
-function FunctionComponent() {
-  const [number, setNumber] = React.useState(0)
-  return number === 0 ? (
-    <ul key="container" onClick={() => setNumber(number + 1)}>
-      <li key="A">A</li>
-      <li key="B" id="B">
-        B
-      </li>
-      <li key="C">C</li>
-    </ul>
-  ) : (
-    <ul key="container" onClick={() => setNumber(number + 1)}>
-      <li key="B" id="B2">
-        B2
-      </li>
-    </ul>
-  )
-}
-```
-
-src\react-reconciler\src\ReactChildFiber.js
-
-```js
-/**
- *
- * @param {*} returnFiber 根fiber div#root对应的fiber
- * @param {*} currentFirstChild 老的FunctionComponent对应的fiber
- * @param {*} element 新的虚拟DOM对象
+ * @param {*} currentFirstChild 老fiber
+ * @param {*} element 新的虚拟DOM对象 为跟节点
  * @returns 返回新的第一个子fiber
  */
 function reconcileSingleElement(returnFiber, currentFirstChild, element) {
   //新的虚拟DOM的key,也就是唯一标准
-  debugger
   const key = element.key // null
-  let child = currentFirstChild //老的FunctionComponent对应的fiber
+  let child = currentFirstChild //老fiber
 
   while (child !== null) {
     //有老fiber
@@ -393,6 +86,8 @@ function reconcileSingleElement(returnFiber, currentFirstChild, element) {
 
 ## 多节点的 diff
 
+### 简单比较
+
 - DOM DIFF 的三个规则
   - 只对同级元素进行比较，不同层级不对比
   - 不同的类型对应不同的元素
@@ -400,7 +95,7 @@ function reconcileSingleElement(returnFiber, currentFirstChild, element) {
 - 第 1 轮遍历
   - 如果 key 不同则直接结束本轮循环
   - newChildren 或 oldFiber 遍历完，结束本轮循环
-  - key 相同而 type 不同，标记老的 oldFiber 为删除，继续循环
+  - key 相同而 type 不同，标记老的 oldFiber 为删除，创建新的 fiber 节点， 继续循环
   - key 相同而 type 也相同，则可以复用老节 oldFiber 节点，继续循环
 - 第 2 轮遍历
   - newChildren 遍历完而 oldFiber 还有，遍历剩下所有的 oldFiber 标记为删除，DIFF 结束
@@ -410,94 +105,7 @@ function reconcileSingleElement(returnFiber, currentFirstChild, element) {
 - 第 3 轮遍历
   - 处理节点移动的情况
 
-### 1、多个节点的数量和 key 相同，有的 type 不同
-
-![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img/20230220164902.png)
-
-```js
-function FunctionComponent() {
-  const [number, setNumber] = React.useState(0)
-  return number === 0 ? (
-    <ul key="container" onClick={() => setNumber(number + 1)}>
-      <li key="A">A</li>
-      <li key="B" id="B">
-        B
-      </li>
-      <li key="C" id="C">
-        C
-      </li>
-    </ul>
-  ) : (
-    <ul key="container" onClick={() => setNumber(number + 1)}>
-      <li key="A">A2</li>
-      <p key="B" id="B2">
-        B2
-      </p>
-      <li key="C" id="C2">
-        C2
-      </li>
-    </ul>
-  )
-}
-```
-
-### 2、多个节点的类型和 key 全部相同，有新增元素
-
-```js
-function FunctionComponent() {
-  const [number, setNumber] = React.useState(0)
-  return number === 0 ? (
-    <ul key="container" onClick={() => setNumber(number + 1)}>
-      <li key="A">A</li>
-      <li key="B" id="B">
-        B
-      </li>
-      <li key="C" id="C">
-        C
-      </li>
-    </ul>
-  ) : (
-    <ul key="container" onClick={() => setNumber(number + 1)}>
-      <li key="A">A2</li>
-      <p key="B" id="B2">
-        B2
-      </p>
-      <li key="C" id="C2">
-        C2
-      </li>
-      <li key="D">D</li>
-    </ul>
-  )
-}
-```
-
-### 3.多个节点的类型和 key 全部相同，有删除老元素
-
-```js
-function FunctionComponent() {
-  const [number, setNumber] = React.useState(0)
-  return number === 0 ? (
-    <ul key="container" onClick={() => setNumber(number + 1)}>
-      <li key="A">A</li>
-      <li key="B" id="B">
-        B
-      </li>
-      <li key="C" id="C">
-        C
-      </li>
-    </ul>
-  ) : (
-    <ul key="container" onClick={() => setNumber(number + 1)}>
-      <li key="A">A2</li>
-      <p key="B" id="B2">
-        B2
-      </p>
-    </ul>
-  )
-}
-```
-
-### 4.多个节点数量不同、key 不同
+### 处理移动
 
 - 多个节点数量不同、key 不同
 - 第一轮比较 A 和 A，相同可以复用，更新，然后比较 B 和 C，key 不同直接跳出第一个循环
@@ -512,8 +120,6 @@ function FunctionComponent() {
 - (删除#li#F)=>(添加#li#B)=>(添加#li#G)=>(添加#li#D)=>null
 
 ![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img/20230220164329.png)
-
-![image-20230220164410416](C:\Users\哗啦啦\AppData\Roaming\Typora\typora-user-images\image-20230220164410416.png)
 
 ```js
 function FunctionComponent() {
@@ -545,3 +151,248 @@ function FunctionComponent() {
   )
 }
 ```
+
+### 实现
+
+```js
+/**
+ *  核心的 diff 算法 多节点 创建子fiber链表并返回第一个子fiber
+ * @param {*} returnFiber 需要新biber对应父biber
+ * @param {*} currentFirstChild 老fiber对应的子fiber
+ * @param {*} newChildren 虚拟dom [hello文本节点,span虚拟DOM元素]
+ * @returns 返回第一个子fiber
+ */
+function reconcileChildrenArray(returnFiber, currentFirstChild, newChildren) {
+  let resultingFirstChild = null //返回的第一个新儿子
+  let previousNewFiber = null //上一个的一个新的儿fiber
+  let newIdx = 0 //用来遍历新的虚拟DOM的索引
+  let oldFiber = currentFirstChild //第一个老fiber
+  let nextOldFiber = null //下一个第fiber
+  let lastPlacedIndex = 0 //上一个不需要移动的老节点的索引
+  // 开始第一轮循环 如果老fiber有值，新的虚拟DOM也有值
+  //遍历新的虚拟 dom，和老的 fiber 进行比较 看是否能复用
+  for (; oldFiber !== null && newIdx < newChildren.length; newIdx++) {
+    //先暂下一个老fiber
+    nextOldFiber = oldFiber.sibling
+    //尽可能复用有 fiber，服用不了创建新的 fiber, 试图更新或者试图复用老的fiber 看 key 和 type 一样不一样
+    const newFiber = updateSlot(returnFiber, oldFiber, newChildren[newIdx])
+    if (newFiber === null) {
+      break
+    }
+    if (shouldTrackSideEffects) {
+      //如果有老fiber,但是新的fiber并没有成功复用老fiber和老的真实DOM，那就删除老fiber,在提交阶段会删除真实DOM
+      // 未复用的节点没有alternate
+      if (oldFiber && newFiber.alternate === null) {
+        // 给父fiber和flags添加删除标识和 deletions添加要删除的子节点
+        deleteChild(returnFiber, oldFiber)
+      }
+    }
+    //指定新fiber的位置
+    lastPlacedIndex = placeChild(newFiber, lastPlacedIndex, newIdx)
+    if (previousNewFiber === null) {
+      resultingFirstChild = newFiber //li(A).sibling=p(B).sibling=>li(C)
+    } else {
+      previousNewFiber.sibling = newFiber
+    }
+    previousNewFiber = newFiber
+    oldFiber = nextOldFiber
+  }
+  //新的虚拟DOM已经循环完毕，3=>2
+  if (newIdx === newChildren.length) {
+    //删除剩下的老fiber
+    deleteRemainingChildren(returnFiber, oldFiber)
+    return resultingFirstChild
+  }
+  if (oldFiber === null) {
+    //如果老的 fiber已经没有了， 新的虚拟DOM还有，进入插入新节点的逻辑
+    for (; newIdx < newChildren.length; newIdx++) {
+      const newFiber = createChild(returnFiber, newChildren[newIdx])
+      if (newFiber === null) continue
+      lastPlacedIndex = placeChild(newFiber, lastPlacedIndex, newIdx)
+      //如果previousNewFiber为null，说明这是第一个fiber
+      if (previousNewFiber === null) {
+        resultingFirstChild = newFiber //这个newFiber就是大儿子
+      } else {
+        //否则说明不是大儿子，就把这个newFiber添加上一个子节点后面
+        previousNewFiber.sibling = newFiber
+      }
+      //让newFiber成为最后一个或者说上一个子fiber
+      previousNewFiber = newFiber
+    }
+  }
+  // 开始处理移动的情况
+  // 把老节点的 fiber 和 key 或者 index 做映射 放到 map 中
+  const existingChildren = mapRemainingChildren(returnFiber, oldFiber)
+  //开始遍历剩下的虚拟DOM子节点
+  for (; newIdx < newChildren.length; newIdx++) {
+    // 在 map 中 查找该虚拟 dom节点是否有可用的 fiber 能复用，不能就新建 fiber 并返回
+    const newFiber = updateFromMap(existingChildren, returnFiber, newIdx, newChildren[newIdx])
+    if (newFiber !== null) {
+      if (shouldTrackSideEffects) {
+        //如果要跟踪副作用，并且有老fiber
+        // 如果在 map 中找到 说明复用成功，则map 中删除复用的该 fiber
+        if (newFiber.alternate !== null) {
+          existingChildren.delete(newFiber.key === null ? newIdx : newFiber.key)
+        }
+      }
+      //指定新的fiber存放位置 ，并且给lastPlacedIndex赋值
+      lastPlacedIndex = placeChild(newFiber, lastPlacedIndex, newIdx)
+      if (previousNewFiber === null) {
+        resultingFirstChild = newFiber //这个newFiber就是大儿子
+      } else {
+        //否则说明不是大儿子，就把这个newFiber添加上一个子节点后面
+        previousNewFiber.sibling = newFiber
+      }
+      //让newFiber成为最后一个或者说上一个子fiber
+      previousNewFiber = newFiber
+    }
+  }
+  if (shouldTrackSideEffects) {
+    //等全部处理完后，删除map中所有剩下的老fiber
+    existingChildren.forEach((child) => deleteChild(returnFiber, child))
+  }
+  return resultingFirstChild
+}
+```
+
+辅助方法
+
+```js
+//---------------
+// 试图更新或者试图复用老的fiber
+function updateSlot(returnFiber, oldFiber, newChild) {
+  const key = oldFiber !== null ? oldFiber.key : null
+  if (newChild !== null && typeof newChild === "object") {
+    switch (newChild.$$typeof) {
+      case REACT_ELEMENT_TYPE: {
+        //如果key一样，进入更新元素的逻辑
+        if (newChild.key === key) {
+          return updateElement(returnFiber, oldFiber, newChild)
+        }
+      }
+      default:
+        return null
+    }
+  }
+  return null
+}
+
+// 复用或者新建 fiber
+function updateElement(returnFiber, current, element) {
+  const elementType = element.type
+  if (current !== null) {
+    //判断是否类型一样，则表示key和type都一样，可以复用老的fiber和真实DOM
+    if (current.type === elementType) {
+      const existing = useFiber(current, element.props)
+      existing.return = returnFiber
+      return existing
+    }
+  }
+  const created = createFiberFromElement(element)
+  created.return = returnFiber
+  return created
+}
+
+/**
+ *给父fiber的deletions和flags赋值
+ * @param {*} returnFiber 父fiber
+ * @param {*} childToDelete 将要删除的老节点
+ * @returns
+ */
+function deleteChild(returnFiber, childToDelete) {
+  if (!shouldTrackSideEffects) return
+  const deletions = returnFiber.deletions
+  if (deletions === null) {
+    returnFiber.deletions = [childToDelete]
+    returnFiber.flags |= ChildDeletion
+  } else {
+    returnFiber.deletions.push(childToDelete)
+  }
+}
+
+/**
+ *  指定新的fiber在新的挂载索引 别切根据是否有副作用设置fiber的flags  newFiber.index = newIdx newFiber.flags |= Placement
+ * @param {*} newFiber
+ * @param {*} newIdx
+ */
+function placeChild(newFiber, lastPlacedIndex, newIdx) {
+  //指定新的fiber在新的挂载索引
+  newFiber.index = newIdx
+  //如果不需要跟踪副作用
+  if (!shouldTrackSideEffects) {
+    return lastPlacedIndex
+  }
+  //获取它的老fiber
+  const current = newFiber.alternate
+  //如果有，说明这是一个更新的节点，有老的真实DOM。
+  if (current !== null) {
+    const oldIndex = current.index
+    //如果找到的老fiber的索引比lastPlacedIndex要小，则老fiber对应的DOM节点需要移动
+    if (oldIndex < lastPlacedIndex) {
+      newFiber.flags |= Placement
+      return lastPlacedIndex
+    } else {
+      return oldIndex
+    }
+  } else {
+    //如果没有，说明这是一个新的节点，需要插入
+    newFiber.flags |= Placement
+    return lastPlacedIndex
+  }
+}
+
+//删除从currentFirstChild之后所有的fiber节点
+function deleteRemainingChildren(returnFiber, currentFirstChild) {
+  if (!shouldTrackSideEffects) return
+  let childToDelete = currentFirstChild
+  while (childToDelete !== null) {
+    deleteChild(returnFiber, childToDelete)
+    childToDelete = childToDelete.sibling
+  }
+  return null
+}
+
+/**
+ *给父fiber的deletions和flags赋值
+ * @param {*} returnFiber 父fiber
+ * @param {*} childToDelete 将要删除的老节点
+ * @returns
+ */
+function deleteChild(returnFiber, childToDelete) {
+  if (!shouldTrackSideEffects) return
+  const deletions = returnFiber.deletions
+  if (deletions === null) {
+    returnFiber.deletions = [childToDelete]
+    returnFiber.flags |= ChildDeletion
+  } else {
+    returnFiber.deletions.push(childToDelete)
+  }
+}
+```
+
+### 总结
+
+- 开始第一轮循环 如果老 fiber 有值，新的虚拟 DOM（是多节点）也有值 ，遍历新的虚拟 dom
+  - 如果 key 不同则直接结束本轮循环，
+  - key 一样，比较 type，试图更新或者试图复用老的 fiber，否则创建新 fiber
+  - 检查是否成功复用老 fiber，未成功服用的需要给当前 fiber 的父 fiber 添加删除的标识，将新的 fiber 标记位插入
+  - 继续循环
+- 开启第二轮遍历
+  - 新的虚拟 dom  newChildren 遍历完而 oldFiber 还有，遍历剩下所有的 oldFiber 标记为删除，DIFF 结束
+  - 老的 fiber （oldFiber） 遍历完了,而新的虚拟 dom（newChildren） 还有，将剩下的 newChildren 标记为插入，DIFF 结束
+  - newChildren 和 oldFiber 都同时遍历完成，diff 结束
+  - newChildren 和 oldFiber 都没有完成，则进行`节点移动`的逻辑
+- 移动（遍历新的虚拟 dom， 老的 fiber 放 map, 便利判断节点是否需要删除 移动 复用 新建）
+  - 把剩余 oldFibers 放到 map 中， fiber 和 key 或者 index 做映射
+  - 开始遍历剩下的虚拟 DOM 子节点
+  - 在 map 中 查找该虚拟 dom 节点是否有可用的 fiber 能复用，不能就新建 fiber 并返回
+  - 如果在 map 中找到 说明复用成功，则 map 中删除复用的该 fiber
+  - 指定新的 fiber 存放位置 ，判断是否需要移动
+  - 定义一个 lastPlacedIndex 默认为 0
+  - 如果没有老 fibe 直接标记 flag 为 Placement
+  - 如果有老 fiber，比较老 fiber 中的索引 oldIndex 和 lastPlacedIndex，
+    - 如果 oldIndex< lastPlacedIndex,标记该节点需要移动，并且把 oldIndex 赋值给 lastPlacedIndex
+    - 否则说明该节点不需要以移动，无须添加副作用
+  - 遍历下一个节点
+  - 等全部处理完后，删除 map 中所有剩下的老 fiber
+  - commit 阶段处理副作用 更新 删除 或者添加

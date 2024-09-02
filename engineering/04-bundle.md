@@ -606,6 +606,8 @@ window["someName"].push([
 ])
 ```
 
+> > 安装 VScode 插件，rm-js-common 可以删除代码注释
+
 ## 4 总结
 
 ### 核心方法

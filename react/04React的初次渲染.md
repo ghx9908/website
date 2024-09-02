@@ -72,3 +72,8 @@ const root = createRoot(document.getElementById("root"))
    ![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img20240828141900.png?token=AU2NEGG3X2COZLV43K7XAGTGZ3AZM)
 
 8. commitRoot(root) 开始进入提交 阶段，就是执行副作用，修改真实 DOM
+
+**如何处理删除**
+
+- begin work 阶段 当检测到 key 不同的时候，给父 fiber 的 deletions=[deletedFiber]赋值和 flags 做上删除的标记；
+- 在 commit 阶段 从根节点递归遍历处理变更的时候，先通过父 fiber，找到最近真实的 DOM 节点，然后递归从里向外删除它的真实 dom，目的是为了处理一些组件销毁时候如 uesEffect 的副作用。
