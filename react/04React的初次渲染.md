@@ -7,11 +7,13 @@ last_update:
 
 ## React 的初次渲染
 
-1. 通过 babel 编译将写的 html 标签转换成 jsx 函数成成虚拟 dom
+1. 通过 babel 编译将写的 html 标签转换成 jsx 函数，执行 jsx 函数生成虚拟 dom
 
-​ ![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img20240828141604.png?token=AU2NEGBPTRPKZWQAWSMSER3GZ3AOI)
+ ![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img20240828141604.png?token=AU2NEGBPTRPKZWQAWSMSER3GZ3AOI)
 
 2. 调用 creatRoot 方法会创建一个 ReactDOMRoot 一个实例
+   1. 其中会创建根 fiber，进行事件机制的绑定 初始化跟新队列
+
 
 ```JS
 const root = createRoot(document.getElementById("root"))
@@ -59,7 +61,7 @@ const root = createRoot(document.getElementById("root"))
 
    7. const next = beginWork(current, unitOfWork) //返回新创建的第一个子 fiber
 
-   ​ 看有没有子 fiber 节点，话 workInProgress = next
+    看有没有子 fiber 节点，话 workInProgress = next
 
    8. 回头执行第三步
 
