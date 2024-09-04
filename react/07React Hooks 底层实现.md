@@ -260,7 +260,7 @@ function FunctionComponent() {
    6. 批量执行里面的函数 然后返回新的状态
    7. 新的 fiber 树 ，协调 diff 算法 commit 阶段进行更新
 
-### useState
+### 2、useState
 
 ```js
 function FunctionComponent() {
@@ -436,3 +436,513 @@ function updateState() {
 3. 从根节点开始执行调度更新，应用 concurrentQueue ，数据 给 hooks.quene 赋值,构建更新循环链表
 4. begin 阶段 重新构建 fiber 树，执行函数组建，生成 新的 hooks 链表，执行更新，返回的新虚拟 dom
 5. 根据执行函数返回的虚拟 dom 构建新的 fiber 链表 ，commit 阶段提交 执行更新
+
+### 3、useEffect
+
+数据结构
+![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img202409031535901.png)
+
+```js
+const fiber = {
+  updateQueue: effect, // 最后一 effect
+}
+
+const effect = {
+  tag,
+  create,
+  destroy,
+  deps,
+  next: null,
+}
+
+const hook = {
+  memoizedState: effect, //hook的状态 0
+  queue: null, //存放本hook的更新队列 queue.pending=update的循环链表
+  next: null, //指向下一个hook,一个函数里可以会有多个hook,它们会组成一个单向链表
+}
+```
+
+#### 挂载 mountEffect
+
+1. 初始化 hooks 对象 ， 给`memoizedState` `queue`赋值未 effect 对象
+2. 给当前的函数组件 fiber 添加有 effect 标识，
+
+```js
+export const NoFlags = 0b0000
+//只有有此flag才会执行effect
+export const HasEffect = 0b0001 //1
+export const Layout = 0b0100 //4//useLayoutEffect  积极的，会在UI绘制前之前，类似于微任务
+export const Passive = 0b1000 //8 //useEffect 消极的，会在UI绘制后执行，类似于宏任务
+
+function mountEffect(create, deps) {
+  return mountEffectImpl(PassiveEffect, HookPassive, create, deps)
+}
+
+function mountEffectImpl(fiberFlags, hookFlags, create, deps) {
+  const hook = mountWorkInProgressHook()
+  const nextDeps = deps === undefined ? null : deps
+  //给当前的函数组件fiber添加flags
+  currentlyRenderingFiber.flags |= fiberFlags
+  hook.memoizedState = pushEffect(HookHasEffect | hookFlags, create, undefined, nextDeps)
+}
+
+/**
+ * 挂载构建中的hook
+ * */
+function mountWorkInProgressHook() {
+  const hook = {
+    memoizedState: null, //hook的状态 0
+    queue: null, //存放本hook的更新队列 queue.pending=update的循环链表
+    next: null, //指向下一个hook,一个函数里可以会有多个hook,它们会组成一个单向链表
+    baseState: null, //第一跳过的更新前的状态
+    baseQueue: null, //跳过的更新的链表
+  }
+  if (workInProgressHook === null) {
+    //当前函数对应的fiber的状态等于第一个hook对象
+    currentlyRenderingFiber.memoizedState = workInProgressHook = hook
+  } else {
+    workInProgressHook = workInProgressHook.next = hook
+  }
+  return workInProgressHook
+}
+
+function pushEffect(tag, create, destroy, deps) {
+  const effect = {
+    tag,
+    create,
+    destroy,
+    deps,
+    next: null,
+  }
+  let componentUpdateQueue = currentlyRenderingFiber.updateQueue
+  if (componentUpdateQueue === null) {
+    componentUpdateQueue = createFunctionComponentUpdateQueue()
+    currentlyRenderingFiber.updateQueue = componentUpdateQueue
+    componentUpdateQueue.lastEffect = effect.next = effect
+  } else {
+    const lastEffect = componentUpdateQueue.lastEffect
+    if (lastEffect === null) {
+      componentUpdateQueue.lastEffect = effect.next = effect
+    } else {
+      const firstEffect = lastEffect.next
+      lastEffect.next = effect
+      effect.next = firstEffect
+      componentUpdateQueue.lastEffect = effect
+    }
+  }
+  return effect
+}
+```
+
+3.  commit 阶段执行 effect
+
+先执行同步任务，开启执行调度任务，执行 effect
+
+```js
+function commitRootImpl(root) {
+  // 根据标识判断是否有要执行的副作用 执行 useEfect 相关函数
+  if ((finishedWork.subtreeFlags & Passive) !== NoFlags || (finishedWork.flags & Passive) !== NoFlags) {
+    if (!rootDoesHavePassiveEffect) {
+      rootDoesHavePassiveEffect = true
+      Scheduler_scheduleCallback(NormalSchedulerPriority, flushPassiveEffect) // 本次提交之后，放在了宏任务里面了
+    }
+  }
+  if (subtreeHasEffects || rootHasEffect) {
+    //当DOM执行变更之后
+    commitMutationEffectsOnFiber(finishedWork, root)
+    //执行layout Effect 相关函数
+    commitLayoutEffects(finishedWork, root)
+    if (rootDoesHavePassiveEffect) {
+      rootDoesHavePassiveEffect = false
+      rootWithPendingPassiveEffects = root
+    }
+  }
+}
+
+function flushPassiveEffect() {
+  if (rootWithPendingPassiveEffects !== null) {
+    const root = rootWithPendingPassiveEffects
+    //执行卸载副作用，destroy
+    commitPassiveUnmountEffects(root.current) // 递归执行useEffect 中的destroy，子到父
+    //执行挂载副作用 create
+    commitPassiveMountEffects(root, root.current) // 递归执行useEffect 中的create,子到父,有返回值会给effect.destroy
+  }
+}
+```
+
+1.  递归执行 useEffect 中的 destroy，子到父
+
+```js
+// 执行 useEffect 中的destroy
+export function commitPassiveUnmountEffects(finishedWork) {
+  commitPassiveUnmountOnFiber(finishedWork)
+}
+
+// 递归执行
+function commitPassiveUnmountOnFiber(finishedWork) {
+  const flags = finishedWork.flags
+  switch (finishedWork.tag) {
+    case HostRoot: {
+      recursivelyTraversePassiveUnmountEffects(finishedWork)
+      break
+    }
+    case FunctionComponent: {
+      recursivelyTraversePassiveUnmountEffects(finishedWork)
+      if (flags & Passive) {
+        //1024
+        commitHookPassiveUnmountEffects(finishedWork, HookHasEffect | HookPassive)
+      }
+      break
+    }
+  }
+}
+
+//执行自己的副作用
+function commitHookPassiveUnmountEffects(finishedWork, hookFlags) {
+  commitHookEffectListUnmount(hookFlags, finishedWork)
+}
+// 执行fiber上面所有effect 中的destroy
+function commitHookEffectListUnmount(flags, finishedWork) {
+  const updateQueue = finishedWork.updateQueue
+  // 最后一个 effect
+  const lastEffect = updateQueue !== null ? updateQueue.lastEffect : null
+  if (lastEffect !== null) {
+    //获取 第一个effect
+    const firstEffect = lastEffect.next
+    let effect = firstEffect
+    do {
+      //如果此 effect类型和传入的相同，都是 9 HookHasEffect | PassiveEffect
+      if ((effect.tag & flags) === flags) {
+        const destroy = effect.destroy
+        if (destroy !== undefined) {
+          destroy()
+        }
+      }
+      effect = effect.next
+    } while (effect !== firstEffect)
+  }
+}
+```
+
+2.  递归执行 useEffect 中的 create，子到父
+
+```js
+export function commitPassiveMountEffects(root, finishedWork) {
+  commitPassiveMountOnFiber(root, finishedWork)
+}
+function commitPassiveMountOnFiber(finishedRoot, finishedWork) {
+  const flags = finishedWork.flags
+  switch (finishedWork.tag) {
+    case HostRoot: {
+      recursivelyTraversePassiveMountEffects(finishedRoot, finishedWork)
+      break
+    }
+    case FunctionComponent: {
+      recursivelyTraversePassiveMountEffects(finishedRoot, finishedWork)
+      if (flags & Passive) {
+        //1024
+        commitHookPassiveMountEffects(finishedWork, HookHasEffect | HookPassive)
+      }
+      break
+    }
+  }
+}
+
+function commitHookPassiveMountEffects(finishedWork, hookFlags) {
+  commitHookEffectListMount(hookFlags, finishedWork)
+}
+function commitHookEffectListMount(flags, finishedWork) {
+  const updateQueue = finishedWork.updateQueue
+  const lastEffect = updateQueue !== null ? updateQueue.lastEffect : null
+  if (lastEffect !== null) {
+    //获取 第一个effect
+    const firstEffect = lastEffect.next
+    let effect = firstEffect
+    do {
+      //如果此 effect类型和传入的相同，都是 9 HookHasEffect | PassiveEffect
+      if ((effect.tag & flags) === flags) {
+        const create = effect.create
+        effect.destroy = create()
+      }
+      effect = effect.next
+    } while (effect !== firstEffect)
+  }
+}
+```
+
+#### updateEffect
+
+1. 通过 hooks 的 memoizedState 获取上一次的数据，拿出 Deps，比较数据，给 effect 标记是否需要执行 effect 函数
+
+```js
+function updateEffect(create, deps) {
+  return updateEffectImpl(PassiveEffect, HookPassive, create, deps)
+}
+function updateEffectImpl(fiberFlags, hookFlags, create, deps) {
+  const hook = updateWorkInProgressHook()
+  const nextDeps = deps === undefined ? null : deps
+  let destroy
+  //上一个老hook
+  if (currentHook !== null) {
+    //获取此useEffect这个Hook上老的effect对象 create deps destroy
+    const prevEffect = currentHook.memoizedState
+    destroy = prevEffect.destroy
+    if (nextDeps !== null) {
+      const prevDeps = prevEffect.deps
+      // 用新数组和老数组进行对比，如果一样的话
+      if (areHookInputsEqual(nextDeps, prevDeps)) {
+        //不管要不要重新执行，都需要把新的effect组成完整的循环链表放到fiber.updateQueue中
+        hook.memoizedState = pushEffect(hookFlags, create, destroy, nextDeps)
+        return
+      }
+    }
+  }
+  //如果要执行的话需要修改fiber的flags
+  currentlyRenderingFiber.flags |= fiberFlags
+  //如果要执行的话 添加HookHasEffect flag
+  //刚才有同学问 Passive还需HookHasEffect,因为不是每个Passive都会执行的
+  hook.memoizedState = pushEffect(HookHasEffect | hookFlags, create, destroy, nextDeps)
+}
+```
+
+#### **总结**
+
+1. 初始化 hooks 对象 ， 给`memoizedState` `queue`赋值为 effect 对象
+2. 给当前的函数组件 fiber 添加有 effect 标识，
+3. 更新阶段 通过 hooks 的 memoizedState 获取上一次的数据，拿出 Deps，比较数据，给 effect 标记是否需要执行 effect 函数
+4. 提交阶段执行
+   - 先执行 dom 的变更
+   - 执行 useLayoutEffect 的销毁函数
+   - 执行 layout Effect create 函数
+   - 开启调度任务
+   - 执行 useEffect 的销毁函数
+   - 执行 useEffect create 函数
+
+### 3、useEffect
+
+#### 挂载 mountEffect
+
+1. 初始化 hooks 对象 ， 给`memoizedState` `queue`赋值为 effect 对象
+2. 给当前的函数组件 fiber 添加有 layoutEffect 标识，
+
+```js
+function mountLayoutEffect(create, deps) {
+  return mountEffectImpl(UpdateEffect, HookLayout, create, deps)
+}
+```
+
+#### 挂载 updateEffect
+
+1. 通过 hooks 的 memoizedState 获取上一次的数据，拿出 Deps，比较数据，给 effect 标记是否需要执行 effect 函数,此时已经给 distory 赋值了
+
+```js
+function updateEffect(create, deps) {
+  return updateEffectImpl(PassiveEffect, HookPassive, create, deps)
+}
+```
+
+2. 提交阶段执行
+   - 先执行 dom 的变更
+   - 执行 useLayoutEffect 的销毁函数
+   - 执行 layout Effect create 函数
+   - 开启调度任务
+   - 执行 useEffect 的销毁函数
+   - 执行 useEffect create 函数
+
+```js
+function commitRootImpl(root) {
+  // 根据标识判断是否有要执行的副作用 执行 useEfect 相关函数
+  if ((finishedWork.subtreeFlags & Passive) !== NoFlags || (finishedWork.flags & Passive) !== NoFlags) {
+    if (!rootDoesHavePassiveEffect) {
+      rootDoesHavePassiveEffect = true
+      Scheduler_scheduleCallback(NormalSchedulerPriority, flushPassiveEffect) // 本次提交之后，放在了宏任务里面了
+    }
+  }
+  if (subtreeHasEffects || rootHasEffect) {
+    //当DOM执行变更之后
+    commitMutationEffectsOnFiber(finishedWork, root)
+    //执行layout Effect 相关函数
+    commitLayoutEffects(finishedWork, root)
+    if (rootDoesHavePassiveEffect) {
+      rootDoesHavePassiveEffect = false
+      rootWithPendingPassiveEffects = root
+    }
+  }
+}
+```
+
+```js
+export function commitLayoutEffects(finishedWork, root) {
+  //老的根fiber
+  const current = finishedWork.alternate
+  commitLayoutEffectOnFiber(root, current, finishedWork)
+}
+
+//开始递归
+function commitLayoutEffectOnFiber(finishedRoot, current, finishedWork) {
+  const flags = finishedWork.flags
+  switch (finishedWork.tag) {
+    case HostRoot: {
+      recursivelyTraverseLayoutEffects(finishedRoot, finishedWork)
+      break
+    }
+    case FunctionComponent: {
+      recursivelyTraverseLayoutEffects(finishedRoot, finishedWork)
+      if (flags & LayoutMask) {
+        // LayoutMask=Update=4
+        commitHookLayoutEffects(finishedWork, HookHasEffect | HookLayout)
+      }
+      break
+    }
+  }
+}
+
+function commitHookLayoutEffects(finishedWork, hookFlags) {
+  commitHookEffectListMount(hookFlags, finishedWork)
+}
+// 执行layout Effect create函数
+function commitHookEffectListMount(flags, finishedWork) {
+  const updateQueue = finishedWork.updateQueue
+  const lastEffect = updateQueue !== null ? updateQueue.lastEffect : null
+  if (lastEffect !== null) {
+    //获取 第一个effect
+    const firstEffect = lastEffect.next
+    let effect = firstEffect
+    do {
+      //如果此 effect类型和传入的相同，都是 9 HookHasEffect | PassiveEffect
+      if ((effect.tag & flags) === flags) {
+        const create = effect.create
+        effect.destroy = create()
+      }
+      effect = effect.next
+    } while (effect !== firstEffect)
+  }
+}
+
+export function commitMutationEffectsOnFiber(finishedWork, root) {
+  const current = finishedWork.alternate
+  const flags = finishedWork.flags
+  switch (finishedWork.tag) {
+    case FunctionComponent: {
+      //先遍历它们的子节点，处理它们的子节点上的副作用
+      recursivelyTraverseMutationEffects(root, finishedWork)
+      //再处理自己身上的副作用
+      commitReconciliationEffects(finishedWork)
+      if (flags & Update) {
+        commitHookEffectListUnmount(HookHasEffect | HookLayout, finishedWork) // 执行 useLayoutEffect 的销毁函数
+      }
+      break
+    }
+    case HostRoot:
+    case HostText: {
+      //先遍历它们的子节点，处理它们的子节点上的副作用
+      recursivelyTraverseMutationEffects(root, finishedWork)
+      //再处理自己身上的副作用
+      commitReconciliationEffects(finishedWork)
+      break
+    }
+    case HostComponent: {
+      //先遍历它们的子节点，处理它们的子节点上的副作用
+      recursivelyTraverseMutationEffects(root, finishedWork)
+      //再处理自己身上的副作用
+      commitReconciliationEffects(finishedWork)
+      if (flags & Ref) {
+        commitAttachRef(finishedWork)
+      }
+      //处理DOM更新
+      if (flags & Update) {
+        //获取真实DOM
+        const instance = finishedWork.stateNode
+        //更新真实DOM
+        if (instance !== null) {
+          const newProps = finishedWork.memoizedProps
+          const oldProps = current !== null ? current.memoizedProps : newProps
+          const type = finishedWork.type
+          const updatePayload = finishedWork.updateQueue
+          finishedWork.updateQueue = null
+          if (updatePayload) {
+            commitUpdate(instance, updatePayload, type, oldProps, newProps, finishedWork)
+          }
+        }
+      }
+      break
+    }
+    default:
+      break
+  }
+}
+
+function commitHookEffectListUnmount(flags, finishedWork) {
+  const updateQueue = finishedWork.updateQueue
+  const lastEffect = updateQueue !== null ? updateQueue.lastEffect : null
+  if (lastEffect !== null) {
+    //获取 第一个effect
+    const firstEffect = lastEffect.next
+    let effect = firstEffect
+    do {
+      //如果此 effect类型和传入的相同，都是 9 HookHasEffect | PassiveEffect
+      if ((effect.tag & flags) === flags) {
+        const destroy = effect.destroy
+        if (destroy !== undefined) {
+          destroy()
+        }
+      }
+      effect = effect.next
+    } while (effect !== firstEffect)
+  }
+}
+```
+
+#### **总结**
+
+1. 初始化 hooks 对象 ， 给`memoizedState` `queue`赋值为 effect 对象
+2. 给当前的函数组件 fiber 添加有 layoutEffect 标识，
+3. 更新阶段 通过 hooks 的 memoizedState 获取上一次的数据，拿出 Deps，比较数据，给 effect 标记是否需要执行 effect 函数
+4. 提交阶段执行
+   - 先执行 dom 的变更
+   - 执行 useLayoutEffect 的销毁函数
+   - 执行 layout Effect create 函数
+   - 开启调度任务
+   - 执行 useEffect 的销毁函数
+   - 执行 useEffect create 函数
+
+### 5、useRef
+
+#### mountRef
+
+```js
+function mountRef(initialValue) {
+  const hook = mountWorkInProgressHook()
+  const ref = {
+    current: initialValue,
+  }
+  hook.memoizedState = ref
+  return ref
+}
+```
+
+#### updateRef
+
+```js
+function updateRef() {
+  const hook = updateWorkInProgressHook()
+  return hook.memoizedState
+}
+```
+
+**注意**
+commit 阶段，会判断该 fiber 有没有 ref 属性，如果有，会执行 commitAttachRef 函数
+
+```js
+function commitAttachRef(finishedWork) {
+  const ref = finishedWork.ref
+  if (ref !== null) {
+    const instance = finishedWork.stateNode
+    if (typeof ref === "function") {
+      ref(instance)
+    } else {
+      ref.current = instance
+    }
+  }
+}
+```
