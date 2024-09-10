@@ -1,5 +1,5 @@
 ---
-sidebar_position: 7
+sidebar_position: 10
 title: TypeScript
 ---
 
@@ -22,21 +22,21 @@ title: TypeScript
 ```ts
 //声明合并
 interface Person {
-  name: string
+  name: string;
 }
 
 interface Person {
-  age: number
+  age: number;
 }
 
 const person: Person = {
   name: "Alice",
   age: 30,
-}
+};
 
 // 扩展
 interface Employee extends Person {
-  salary: number
+  salary: number;
 }
 ```
 
@@ -48,32 +48,32 @@ interface Employee extends Person {
 
 ```ts
 // 类型别名可以为基本类型（
-type MyString = string
-const name: MyString = "Alice"
+type MyString = string;
+const name: MyString = "Alice";
 
 //对象类型别名
 type Person = {
-  name: string
-  age: number
-}
+  name: string;
+  age: number;
+};
 
 const person: Person = {
   name: "Alice",
   age: 30,
-}
+};
 
 // 联合类型
-type Status = "success" | "error" | "loading"
-const currentStatus: Status = "loading" // 只能是 'success' | 'error' | 'loading' 中的一个
+type Status = "success" | "error" | "loading";
+const currentStatus: Status = "loading"; // 只能是 'success' | 'error' | 'loading' 中的一个
 
 // 交叉类型
-type Name = { name: string }
-type Age = { age: number }
-type Person = Name & Age
+type Name = { name: string };
+type Age = { age: number };
+type Person = Name & Age;
 const person: Person = {
   name: "Alice",
   age: 30,
-}
+};
 ```
 
 **其他**
@@ -84,30 +84,30 @@ const person: Person = {
 const person = {
   name: "Alice",
   age: 30,
-}
+};
 
 // 使用 typeof 获取 person 对象的类型
-type PersonType = typeof person
+type PersonType = typeof person;
 
 const anotherPerson: PersonType = {
   name: "Bob",
   age: 25,
-}
+};
 
 function getPerson() {
   return {
     name: "Alice",
     age: 30,
-  }
+  };
 }
 
 // 我们使用 ReturnType 内置类型和 typeof getPerson 获取 getPerson 函数的返回值类型，并将其作为类型别名 PersonType 使用
-type PersonType = ReturnType<typeof getPerson>
+type PersonType = ReturnType<typeof getPerson>;
 
 const anotherPerson: PersonType = {
   name: "Bob",
   age: 25,
-}
+};
 ```
 
 ### 总结
@@ -126,10 +126,10 @@ const anotherPerson: PersonType = {
 
 ```js
 function logMessage(message: string): void {
-  console.log(message)
+  console.log(message);
 }
 
-const result = logMessage("Hello, TypeScript!") // result 的类型是 void
+const result = logMessage("Hello, TypeScript!"); // result 的类型是 void
 ```
 
 ### `never`
@@ -140,7 +140,7 @@ const result = logMessage("Hello, TypeScript!") // result 的类型是 void
 
 ```ts
 function throwError(message: string): never {
-  throw new Error(message)
+  throw new Error(message);
 }
 
 function infiniteLoop(): never {
@@ -157,15 +157,15 @@ function infiniteLoop(): never {
 - **缺点**：使用 `any` 会关闭 TypeScript 的类型检查机制，从而失去类型安全。
 
 ```ts
-let anyValue: any
+let anyValue: any;
 
-anyValue = 123 // 赋值为数字
-anyValue = "hello" // 赋值为字符串
-anyValue = true // 赋值为布尔值
+anyValue = 123; // 赋值为数字
+anyValue = "hello"; // 赋值为字符串
+anyValue = true; // 赋值为布尔值
 
 // 可以访问任意属性，不会引发类型错误
-anyValue.foo()
-anyValue.bar = 42
+anyValue.foo();
+anyValue.bar = 42;
 ```
 
 ### `unknown`
@@ -176,19 +176,19 @@ anyValue.bar = 42
 
 ```ts
 //unknownValue 可以被赋值为任何类型，但在访问其属性或方法前，必须进行类型检查
-let unknownValue: unknown
+let unknownValue: unknown;
 
-unknownValue = 123 // 赋值为数字
-unknownValue = "hello" // 赋值为字符串
-unknownValue = true // 赋值为布尔值
+unknownValue = 123; // 赋值为数字
+unknownValue = "hello"; // 赋值为字符串
+unknownValue = true; // 赋值为布尔值
 
 // 不能直接访问属性或方法，需要先进行类型检查
 if (typeof unknownValue === "string") {
-  console.log(unknownValue.toUpperCase()) // 只有在确认类型为 string 后才能调用 string 方法
+  console.log(unknownValue.toUpperCase()); // 只有在确认类型为 string 后才能调用 string 方法
 }
 
 if (typeof unknownValue === "function") {
-  unknownValue() // 只有在确认类型为 function 后才能调用函数
+  unknownValue(); // 只有在确认类型为 function 后才能调用函数
 }
 ```
 

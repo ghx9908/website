@@ -1,6 +1,6 @@
 ---
-sidebar_position: 5
-title: vue面试题
+sidebar_position: 7
+title: react 面试题
 ---
 
 ## react 的事件机制 ？

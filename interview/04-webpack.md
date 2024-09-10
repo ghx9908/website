@@ -1,13 +1,12 @@
 ---
-title: Webpack 和 rollup区别
-last_update:
-  date: 05/17/2024
-  author: 高红翔
+sidebar_position: 5
+title: webpack 面试题题
 ---
 
-1. **特性**：
+## Webpack 和 rollup 区别
+
 - Webpack 的功能丰富，生态比 rollup 更加完善，基本所有可配置环节都做成了可配置，极度灵活，但也造成了学习成本高，配置复杂的缺点。而 rollup 使用起来简单，只需要针对处理加入不同的 plugins 即可。
-- webpack 打包产物会加入处理代码，导致代码体积变大，rollup基本只对代码进行转换和整合，打包之后产物更小巧。
+- webpack 打包产物会加入处理代码，导致代码体积变大，rollup 基本只对代码进行转换和整合，打包之后产物更小巧。
 - Rollup 是基于 es module 实现的，es module 的静态解析使得 rollup 原生支持 tree-shaking；webpack2 开始支持且消除效果不好，webpack5 支持更好的 tree-shaking。
 - Rollup 不支持 hmr。
 
