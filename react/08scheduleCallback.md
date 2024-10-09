@@ -29,31 +29,31 @@ last_update:
  */
 export function scheduleCallback(priorityLevel, callback) {
   // 获取当前的时候
-  const currentTime = getCurrentTime();
+  const currentTime = getCurrentTime()
   // 此任务的开时间
-  const startTime = currentTime;
+  const startTime = currentTime
   //超时时间 等待时间过了就得执行
-  let timeout;
+  let timeout
   switch (priorityLevel) {
     case ImmediatePriority: // 立刻执行优先级 局长
-      timeout = IMMEDIATE_PRIORITY_TIMEOUT; // -1
-      break;
+      timeout = IMMEDIATE_PRIORITY_TIMEOUT // -1
+      break
     case UserBlockingPriority: //用户阻塞操作优先级 用户点击 ，用户输入  副局长
-      timeout = USER_BLOCKING_PRIORITY_TIMEOUT; // 250ms
-      break;
+      timeout = USER_BLOCKING_PRIORITY_TIMEOUT // 250ms
+      break
     case IdlePriority: // 空闲优先级 临时工
-      timeout = IDLE_PRIORITY_TIMEOUT; //1073741823
-      break;
+      timeout = IDLE_PRIORITY_TIMEOUT //1073741823
+      break
     case LowPriority: // 低优先级 科员
-      timeout = LOW_PRIORITY_TIMEOUT; //10000
-      break;
+      timeout = LOW_PRIORITY_TIMEOUT //10000
+      break
     case NormalPriority: // 正常优先级
     default: //5000
-      timeout = NORMAL_PRIORITY_TIMEOUT; // 正常优先级过期时间
-      break;
+      timeout = NORMAL_PRIORITY_TIMEOUT // 正常优先级过期时间
+      break
   }
   //计算此任务的过期时间
-  const expirationTime = startTime + timeout;
+  const expirationTime = startTime + timeout
   const newTask = {
     id: taskIdCounter++,
     callback, //回调函数或者说任务函数
@@ -61,12 +61,12 @@ export function scheduleCallback(priorityLevel, callback) {
     startTime, //任务的开始时间
     expirationTime, //任务的过期时间
     sortIndex: expirationTime, //排序依赖
-  };
+  }
   //向任务最小堆里添加任务，排序的依据是过期时间
-  push(taskQueue, newTask);
+  push(taskQueue, newTask)
   //flushWork执行工作，刷新工作，执行任务，司机接人
-  requestHostCallback(flushWork);
-  return newTask;
+  requestHostCallback(flushWork)
+  return newTask
 }
 ```
 
@@ -74,39 +74,39 @@ export function scheduleCallback(priorityLevel, callback) {
 3. React 利用`MessageChannel`来创建一个新的宏任务，用于在当前事件循环结束后尽快执行回调函数
 
 ```js
-const channel = new MessageChannel();
-var port2 = channel.port2;
-var port1 = channel.port1;
-port1.onmessage = performWorkUntilDeadline;
+const channel = new MessageChannel()
+var port2 = channel.port2
+var port1 = channel.port1
+port1.onmessage = performWorkUntilDeadline
 
 function requestHostCallback(workLoop) {
   //先缓存回调函数
-  scheduleHostCallback = workLoop; //全局便利
+  scheduleHostCallback = workLoop //全局便利
   //执行工作直到截止时间
-  schedulePerformWorkUntilDeadline();
+  schedulePerformWorkUntilDeadline()
 }
 //执行工作直到截止时间
 function schedulePerformWorkUntilDeadline() {
-  port2.postMessage(null);
+  port2.postMessage(null)
 }
 
 function performWorkUntilDeadline() {
   if (scheduleHostCallback) {
     // 先获取开始执行任务的时间
     //表示时间片的开始
-    startTime = getCurrentTime();
+    startTime = getCurrentTime()
     // 是否有更多的工作要做
-    let hasMoreWork = true;
+    let hasMoreWork = true
     try {
       //执行 flushWork ，并判断有没有返回值
-      hasMoreWork = scheduleHostCallback(startTime);
+      hasMoreWork = scheduleHostCallback(startTime)
     } finally {
       //执行完以后如果为true,说明还有更多工作要做
       if (hasMoreWork) {
         //继续执行
-        schedulePerformWorkUntilDeadline(); //再次创建宏任务
+        schedulePerformWorkUntilDeadline() //再次创建宏任务
       } else {
-        scheduleHostCallback = null;
+        scheduleHostCallback = null
       }
     }
   }
@@ -183,19 +183,19 @@ function shouldYieldToHost() {
      if (scheduleHostCallback) {
        // 先获取开始执行任务的时间
        //表示时间片的开始
-       startTime = getCurrentTime();
+       startTime = getCurrentTime()
        // 是否有更多的工作要做
-       let hasMoreWork = true;
+       let hasMoreWork = true
        try {
          //执行 flushWork ，并判断有没有返回值
-         hasMoreWork = scheduleHostCallback(startTime);
+         hasMoreWork = scheduleHostCallback(startTime)
        } finally {
          //执行完以后如果为true,说明还有更多工作要做
          if (hasMoreWork) {
            //继续执行
-           schedulePerformWorkUntilDeadline();
+           schedulePerformWorkUntilDeadline()
          } else {
-           scheduleHostCallback = null;
+           scheduleHostCallback = null
          }
        }
      }
@@ -213,4 +213,4 @@ function shouldYieldToHost() {
       1. 如果此任务的过期时间小于当前时间，说明超时，需要不中断的直接执行
       2. 如果此任务的过期时间大于当前时间，说明未超时，而且切片时间未超过 5ms，执行下一个任务
    3. 任务都执行完或者超时了，跳出本次循环
-5. 如果本次任务返回 true，任务未执行完成，进入下一轮消息推送
+5. 如果本次任务返回一个函数，则 workLoop 返回 true，任务未执行完成，进入下一轮消息推送

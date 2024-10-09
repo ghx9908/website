@@ -5,13 +5,13 @@ last_update:
   author: 高红翔
 ---
 
-### React 同步与并发更新机制解析：从批处理到 Fiber 树构建
+## React 同步与并发更新机制解析：从批处理到 Fiber 树构建
 
 React 在性能优化上进行了大量的研究与迭代，特别是在引入了 **Fiber 架构** 和 **Concurrent Mode（并发模式）** 后，使得 React 的更新机制更加灵活、高效。本文将通过 React 同步更新与并发更新机制的源代码解析，深入理解其中的更新流程及背后的批处理逻辑。
 
-------
+---
 
-#### 1. React 状态更新的批处理机制
+### 1. React 状态更新的批处理机制
 
 在 React 中，当组件调用 `setState` 更新状态时，不会立即触发重新渲染。React 为了优化性能，在同一事件循环中会将多个状态更新合并（**批处理**），只进行一次渲染。这意味着如果你在同一个事件回调中多次调用 `setState`，React 会合并这些更新，减少渲染次数。
 
@@ -19,17 +19,17 @@ React 在性能优化上进行了大量的研究与迭代，特别是在引入�
 
 ```js
 function Counter() {
-  const [number, setNumber] = React.useState(0);
+  const [number, setNumber] = React.useState(0)
   return (
     <button
       onClick={() => {
-        setNumber(number + 1);
-        setNumber(number + 1);
+        setNumber(number + 1)
+        setNumber(number + 1)
       }}
     >
       {number}
     </button>
-  );
+  )
 }
 ```
 
@@ -96,6 +96,7 @@ function ensureRootIsScheduled(root, currentTime) {
         schedulerPriorityLevel = NormalSchedulerPriority
         break
     }
+    // 并发更新
     newCallbackNode = Scheduler_scheduleCallback(schedulerPriorityLevel, performConcurrentWorkOnRoot.bind(null, root))
   }
   //在根节点的执行的任务是newCallbackNode
@@ -104,13 +105,55 @@ function ensureRootIsScheduled(root, currentTime) {
 }
 ```
 
+ReactFiberSyncTaskQueue.js
+
+```js
+//同步队列
+let syncQueue = null
+//是否正在执行同步队列
+let isFlushingSyncQueue = false
+//调度同步执行  给syncQueue赋值
+export function scheduleSyncCallback(callback) {
+  if (syncQueue === null) {
+    syncQueue = [callback]
+  } else {
+    syncQueue.push(callback)
+  }
+}
+//刷新执行清空回调
+export function flushSyncCallbacks() {
+  if (!isFlushingSyncQueue && syncQueue !== null) {
+    isFlushingSyncQueue = true
+    let i = 0
+    //暂存当前的更新优先级
+    const previousUpdatePriority = getCurrentUpdatePriority()
+    try {
+      const isSync = true
+      const queue = syncQueue
+      //把优先级设置为同步优先级
+      setCurrentUpdatePriority(DiscreteEventPriority)
+      for (; i < queue.length; i++) {
+        let callback = queue[i]
+        do {
+          callback = callback(isSync)
+        } while (callback !== null)
+      }
+      syncQueue = null
+    } finally {
+      setCurrentUpdatePriority(previousUpdatePriority)
+      isFlushingSyncQueue = false
+    }
+  }
+}
+```
+
 当你点击按钮时，`setNumber` 会触发 `dispatchSetState`，然后 React 会将这些更新任务存入队列，并通过 `scheduleUpdateOnFiber` 开始从根节点进行更新调度。核心机制是通过 `lane` 优先级来管理更新任务的执行顺序。
 
 如果两次调用 `setState` 的更新优先级相同，React 会合并这些更新任务，触发一次渲染。
 
-------
+---
 
-#### 2. 同步更新 vs 并发更新
+### 2. 同步更新 vs 并发更新
 
 在 React 18 中，引入了 **Concurrent Mode**，使得 React 更新机制能够支持时间分片（time-slicing），从而允许在更复杂的场景中实现更加流畅的用户交互。
 
@@ -216,7 +259,6 @@ function renderRootConcurrent(root, lanes) {
   return workInProgressRootExitStatus
 }
 
-
 function workLoopConcurrent() {
   //如果有下一个要构建的fiber并且时间片没有过期
   while (workInProgress !== null && !shouldYield()) {
@@ -227,7 +269,7 @@ function workLoopConcurrent() {
 
 在并发模式下，`renderRootConcurrent` 会构建 Fiber 树，并根据时间片的分配来决定是否需要暂停，允许其他高优先级任务打断当前渲染工作。
 
-------
+---
 
 #### 3. 并发模式与 Fiber 架构
 
@@ -254,11 +296,35 @@ function performUnitOfWork(unitOfWork) {
     workInProgress = next
   }
 }
+
+function completeUnitOfWork(unitOfWork) {
+  let completedWork = unitOfWork
+  do {
+    const current = completedWork.alternate
+    const returnFiber = completedWork.return
+    //执行此fiber 的完成工作,如果是原生组件的话就是创建真实的DOM节点
+    completeWork(current, completedWork)
+    //如果有弟弟，就构建弟弟对应的fiber子链表
+    const siblingFiber = completedWork.sibling
+    if (siblingFiber !== null) {
+      workInProgress = siblingFiber
+      return
+    }
+    //如果没有弟弟，说明这当前完成的就是父fiber的最后一个节点
+    //也就是说一个父fiber,所有的子fiber全部完成了
+    completedWork = returnFiber
+    workInProgress = completedWork
+  } while (completedWork !== null)
+  //如果走到了这里，说明整个fiber树全部构建完毕,把构建状态设置为空成
+  if (workInProgressRootExitStatus === RootInProgress) {
+    workInProgressRootExitStatus = RootCompleted
+  }
+}
 ```
 
 `performUnitOfWork` 逐个处理 Fiber 节点，构建整棵 Fiber 树。而在并发模式下，如果当前时间片用完，React 会通过 `shouldYield` 判断是否需要暂停渲染，避免主线程长时间被阻塞。
 
-------
+---
 
 #### 4. React 18 的自动批处理
 
@@ -269,10 +335,10 @@ React 18 引入了 **自动批处理（Automatic Batching）** 功能，使得�
 ```js
 const handleClick = () => {
   Promise.resolve().then(() => {
-    setNumber((n) => n + 1);
-    setNumber((n) => n + 1);
-  });
-};
+    setNumber((n) => n + 1)
+    setNumber((n) => n + 1)
+  })
+}
 ```
 
 即便是在异步任务中，React 也会批处理这些状态更新，合并为一次渲染。
@@ -280,10 +346,10 @@ const handleClick = () => {
 如果你希望在异步任务中立即触发更新，可以使用 `flushSync`：
 
 ```js
-flushSync(() => setNumber((n) => n + 1));
+flushSync(() => setNumber((n) => n + 1))
 ```
 
-------
+---
 
 #### 5. 结语
 
