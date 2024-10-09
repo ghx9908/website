@@ -50,48 +50,220 @@ title: node面试题
 - 浏览器：每执行完毕一个宏任务，会清空微任务 从 node10+ 后执行机制和我们的浏览器一样 新的
 - **以前的 node 事件环是每个阶段的宏任务都被清空了，才会执行微任务 老的**
 
-## 1. 模块化
+## Koa 和 express 区别
 
-### 1.1.什么是模块化
+### 1. **框架设计和体积**
 
-- 模块划就是按照一定的规则把代码封装成若干的相互依赖的文件并进行组合
-- 每个模块内的数据都是私有的，只向外选择性的暴露一些方法和数据与外界进行数据通信
+- **Express**: 是一个全功能的 Web 框架，提供了很多开箱即用的功能，如路由、中间件、模板引擎等。它的目的是帮助开发者快速构建 Web 应用和 API。
+- **Koa**: 是由 Express 团队开发的一个更加轻量的框架。它没有 Express 内置的一些功能（例如路由、模板引擎），核心只提供非常基础的功能。Koa 的设计理念是让开发者根据需求自己选择和引入中间件，打造更加灵活的应用。
 
-### 1.2.模块化的意义
+### 2. **中间件机制**
 
-- 有利于代码分享、解耦以及复用
-- 团队并行开发
-- 避免命名冲突
-- 相互引用，按需加载
+- **Express**: 使用传统的回调函数形式来处理中间件。每个中间件通过 `next()` 来传递控制权给下一个中间件。中间件的执行顺序是线性执行的。
+- **Koa**: 基于 `async/await` 的中间件机制，使用了更现代的 ES2017 特性。Koa 的中间件是“洋葱模型”，即中间件可以在 `await next()` 前后处理请求。这样做的好处是可以在请求前后分别执行逻辑，代码结构更加清晰和直观。
 
-### 1.3. 模块化的发展史
+**例子:**
 
-- 自执行函数
-- AMD (Asynchronous Module Definition)
-  - AMD 推崇依赖前置，在定义模块的时候就要声明其依赖的模块
-  - `AMD`规范则是非同步加载模块，需要定义回调`define`方式
-- CMD (Common Module Definition)
-  - CMD 推崇就近依赖，只有在用到某个模块的时候再去 require
-- CommonJS (服务器端开发)
-- UMD (Universal Module Definition)
-  - UMD 叫做通用模块定义规范(Universal Module Definition)可以通过运行时或者编译时让同一个代码模块在使用 CommonJs、CMD 甚至是 AMD 的项目中运行
-- ES6 Module (ESM，JS 官方标准模块定义方式)
+- Express 中的中间件：
 
-### 1. 4 common.js 和 es6 中模块引入的区别
+  ```js
+  app.use(function (req, res, next) {
+    console.log("Request Type:", req.method)
+    next()
+  })
+  ```
 
-目前浏览器端虽写法是以 esm 为主，但是各种前端工具转换为 cjs
+- Koa 中的中间件：
 
-**在使用上的差别主要有：**
+  ```js
+  app.use(async (ctx, next) => {
+    console.log("Request Type:", ctx.method)
+    await next()
+    console.log("Response Status:", ctx.status)
+  })
+  ```
 
-- `CommonJS` 模块输出的是一个值的拷贝，ES6 模块输出的是值的引用。
+### 3. **异步处理**
 
-- `CommonJS` 模块是运行时加载，ES6 模块是编译时输出接口（静态编译）。
-- `CommonJs` 是单个值导出，`ES6 Module` 可以导出多个
-- `CommonJs` 是动态语法可以写在判断里，`ES6 Module` 静态语法只能写在顶层
-- `CommonJs` 的 `this` 是当前模块，`ES6 Module` 的 `this` 是 `undefined`
-- `CommonJS`是服务器端模块的规范，`CommonJS`规范加载模块是同步的
+- **Express**: Express 早期是基于回调的，虽然后来可以使用 `async/await`，但并不是从底层为这种异步模式设计的。Express 的异步处理依然会依赖于 `next()`。
+- **Koa**: 从一开始就基于 `async/await` 设计，异步操作更为自然和简洁。所有中间件都是通过 `async/await` 机制进行控制的，使得异步代码更加直观，避免了回调地狱。
 
-**注意：**
+### 4. **错误处理**
 
-- export {<变量>}这种方式一般称为 命名式导出 或者 具名导出，导出的是一个`变量的引用`。
-- export default 这种方式称为 默认导出 或者 匿名导出，导出的是一个值。
+- Express: 错误处理中间件需要手动通过 `next(err)` 传递错误，或者使用 try-catch 包裹异步函数。
+
+  ```js
+  app.use(function (err, req, res, next) {
+    console.error(err.stack)
+    res.status(500).send("Something broke!")
+  })
+  ```
+
+- Koa: 基于 `async/await`，Koa 内部通过 try-catch 自动捕获异步函数中的错误。开发者只需要在上层中间件处理即可，错误处理更加自然和优雅。
+
+  ```js
+  app.use(async (ctx, next) => {
+    try {
+      await next()
+    } catch (err) {
+      ctx.status = err.status || 500
+      ctx.body = "Internal Server Error"
+    }
+  })
+  ```
+
+### 5. **上下文对象**
+
+- **Express**: 请求和响应是两个独立的对象（`req` 和 `res`）。开发者需要在中间件中频繁地使用这两个对象进行操作。
+- **Koa**: 将请求和响应合并到了一个 `ctx`（context）对象中，简化了处理流程，所有与请求和响应相关的信息都挂在 `ctx` 上。开发者在处理时可以更加方便地进行操作。
+
+### 6. **扩展性**
+
+- **Express**: 提供了大量的内置中间件和插件，开箱即用，社区生态非常丰富。
+- **Koa**: 由于 Koa 非常轻量，几乎所有功能都需要通过第三方中间件来实现，因此 Koa 应用的扩展性和自由度更高。开发者可以根据具体需求自行选择合适的中间件。
+
+### 7. **性能**
+
+- Koa 由于更加轻量、底层更少的依赖，理论上在处理请求时的性能要优于 Express。但在实际应用中，两者的性能差异并不会特别大，更多还是取决于使用场景和具体实现。
+
+### 总结：
+
+- **Express** 更加适合需要快速开发、追求稳定的项目，特别是对于小型项目或中型项目来说，Express 内置的功能可以极大提高开发效率。
+- **Koa** 更加灵活、现代，适合追求极简和高度定制化的项目。对于大型项目或需要复杂中间件处理的场景，Koa 的“洋葱模型”会让中间件逻辑更加清晰明了。
+
+## Express 中间件
+
+Express 中间件是其核心功能之一，允许开发者在请求-响应的周期中拦截、修改、处理请求或响应。它的核心概念是以链式方式执行的函数，这些函数可以执行任务或将控制权交给下一个中间件。
+
+### **Express 中间件的特点**：
+
+1. **执行顺序**：按照注册顺序执行，类似于流水线。
+
+2. **`next` 函数**：用于将控制权传递给下一个中间件函数，如果不调用 `next()`，请求就会被挂起，无法继续往下执行。
+
+3. 三种类型的中间件：
+
+   - 应用级中间件
+   - 路由级中间件
+   - 错误处理中间件
+
+### **1. 应用级中间件**
+
+应用级中间件通过 `app.use()` 或 `app.METHOD()` 绑定到应用程序对象上，针对所有路由或特定路径进行全局的请求处理。
+
+```js
+const express = require("express")
+const app = express()
+
+// 不指定路径的应用级中间件，作用于所有请求
+app.use((req, res, next) => {
+  console.log("Time:", Date.now())
+  next() // 将控制权交给下一个中间件
+})
+
+// 绑定在特定路径上的中间件
+app.use("/user/:id", (req, res, next) => {
+  console.log("Request URL:", req.originalUrl)
+  next()
+})
+
+app.get("/user/:id", (req, res) => {
+  res.send("User Info")
+})
+
+app.listen(3000, () => {
+  console.log("Server is running on port 3000")
+})
+```
+
+### **2. 路由级中间件**
+
+路由级中间件与应用级类似，但它是通过 `express.Router()` 绑定在特定路由上的。路由级中间件允许我们对某个路由进行更加细粒度的控制。
+
+```js
+const express = require("express")
+const router = express.Router()
+
+// 路由级中间件
+router.use((req, res, next) => {
+  console.log("Router middleware triggered")
+  next()
+})
+
+router.get("/profile", (req, res) => {
+  res.send("User profile")
+})
+
+app.use("/user", router) // 绑定到 /user 路由上
+```
+
+### **3. 错误处理中间件**
+
+错误处理中间件是专门用于处理应用中错误的中间件。与普通中间件不同，它有 4 个参数：`err, req, res, next`，用于捕获和处理错误。
+
+```js
+app.use((err, req, res, next) => {
+  console.error(err.stack) // 输出错误堆栈信息
+  res.status(500).send("Something went wrong!")
+})
+```
+
+### **4. 内置中间件**
+
+Express 提供了一些常用的内置中间件来处理静态文件、解析请求体等操作。
+
+- **express.static**：用于服务静态文件。
+- **express.json**：解析 `JSON` 格式的请求体。
+- **express.urlencoded**：解析 `URL-encoded` 格式的请求体。
+
+```js
+app.use(express.json()) // 解析 application/json 格式的请求
+app.use(express.urlencoded({ extended: true })) // 解析 application/x-www-form-urlencoded
+app.use(express.static("public")) // 提供静态文件，如 HTML、CSS、图片等
+```
+
+### **5. 第三方中间件**
+
+Express 生态中有大量的第三方中间件，可以帮助处理不同的功能，比如日志记录、权限认证、CORS 等。
+
+- **morgan**：记录 HTTP 请求日志。
+- **cors**：处理跨域请求。
+- **helmet**：提升应用安全性。
+
+```j's
+const morgan = require('morgan');
+const cors = require('cors');
+
+app.use(morgan('combined')); // 日志记录
+app.use(cors()); // 允许跨域
+```
+
+### **6. 中间件的执行流程**
+
+Express 中间件的执行是串行的，每个中间件函数按照它们被注册的顺序依次执行。通过调用 `next()`，可以将控制权传递给下一个中间件。如果某个中间件没有调用 `next()`，请求-响应周期就会中止，响应会停滞在那个中间件上。
+
+### **中间件控制流示例**：
+
+```js
+app.use((req, res, next) => {
+  console.log("First middleware")
+  next() // 将控制权传递给下一个中间件
+})
+
+app.use((req, res, next) => {
+  console.log("Second middleware")
+  res.send("Hello World") // 响应结束，不会进入下一个中间件
+})
+
+app.use((req, res, next) => {
+  console.log("This will never run")
+})
+```
+
+在这个例子中，由于第二个中间件结束了请求的生命周期，第三个中间件将永远不会被执行。
+
+### **总结**：
+
+- Express 中间件是请求-响应周期的核心，可以实现请求的预处理、日志记录、错误处理等功能。
+- 中间件通过 `next()` 来传递控制权，形成一个执行链。
+- Express 支持应用级、路由级、错误处理以及第三方中间件，使其具有高度扩展性和灵活性。
