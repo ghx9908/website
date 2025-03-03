@@ -191,10 +191,7 @@ const path = require("path")
 function* readFile() {
   // 基于generator
   try {
-    console.log(
-      'path.resolve(__dirname, "fileUrl.txt")=>',
-      path.resolve(__dirname, "fileUrl.txt")
-    )
+    console.log('path.resolve(__dirname, "fileUrl.txt")=>', path.resolve(__dirname, "fileUrl.txt"))
     let data = yield fs.readFile(path.resolve(__dirname, "fileUrl.txt"), "utf8")
     let name = yield fs.readFile(path.resolve(__dirname, "name.txt"), "utf8")
     return name
@@ -225,10 +222,7 @@ const co = require("co")
 function* readFile() {
   // 基于generator
   try {
-    console.log(
-      'path.resolve(__dirname, "fileUrl.txt")=>',
-      path.resolve(__dirname, "fileUrl.txt")
-    )
+    console.log('path.resolve(__dirname, "fileUrl.txt")=>', path.resolve(__dirname, "fileUrl.txt"))
     let data = yield fs.readFile(path.resolve(__dirname, "fileUrl.txt"), "utf8")
     let name = yield fs.readFile(path.resolve(__dirname, data), "utf8")
     return name
@@ -267,10 +261,7 @@ function co(it) {
 function* readFile() {
   // 基于generator
   try {
-    console.log(
-      'path.resolve(__dirname, "fileUrl.txt")=>',
-      path.resolve(__dirname, "fileUrl.txt")
-    )
+    console.log('path.resolve(__dirname, "fileUrl.txt")=>', path.resolve(__dirname, "fileUrl.txt"))
     let data = yield fs.readFile(path.resolve(__dirname, "fileUrl.txt"), "utf8")
     let name = yield fs.readFile(path.resolve(__dirname, data), "utf8")
     return name
