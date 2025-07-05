@@ -185,6 +185,9 @@ vue 基于虚拟 DOM 做更新 。diff 的核心就是比较两个虚拟节点�
 
 ## v-if & v-show
 
+v-if 如果条件不成立不会渲染当前指令所在节点的 dom 元素
+v-show 只是切换当前 dom 的显示或者隐藏 display、opacity、visiviblity
+
 - v-if 可以阻断内部代码是否执行
 
 ## v-if & v-for 优先级
@@ -201,24 +204,24 @@ vue 基于虚拟 DOM 做更新 。diff 的核心就是比较两个虚拟节点�
 ```js
 Vue.use = function (plugin: Function | Object) {
   // 插件缓存
-  const installedPlugins = this._installedPlugins || (this._installedPlugins = []);
+  const installedPlugins = this._installedPlugins || (this._installedPlugins = [])
   if (installedPlugins.indexOf(plugin) > -1) {
     // 如果已经有插件 直接返回
-    return this;
+    return this
   }
   // additional parameters
-  const args = toArray(arguments, 1); // 除了第一项其他的参数整合成数组
-  args.unshift(this); // 将Vue 放入到数组中
+  const args = toArray(arguments, 1) // 除了第一项其他的参数整合成数组
+  args.unshift(this) // 将Vue 放入到数组中
   if (typeof plugin.install === "function") {
     // 调用install方法
-    plugin.install.apply(plugin, args);
+    plugin.install.apply(plugin, args)
   } else if (typeof plugin === "function") {
     // 直接调用方法
-    plugin.apply(null, args);
+    plugin.apply(null, args)
   }
-  installedPlugins.push(plugin); // 缓存插件
-  return this;
-};
+  installedPlugins.push(plugin) // 缓存插件
+  return this
+}
 ```
 
 ## 说说你对 nextTick 的理解？
@@ -226,11 +229,11 @@ Vue.use = function (plugin: Function | Object) {
 - 当你在 Vue 中更改响应式状态时，最终的 DOM 更新并不是同步生效的，而是由 Vue 将它们缓存在一个队列中，直到下一个“tick”才一起执行。这样是为了确保每个组件无论发生多少状态改变，都仅执行一次更新。
 
 ```js
-const resolvedPromise = Promise.resolve();
-let currentFlushPromise;
+const resolvedPromise = Promise.resolve()
+let currentFlushPromise
 export function nextTick(fn) {
-  const p = currentFlushPromise || resolvedPromise;
-  return fn ? p.then(this ? fn.bind(this) : fn) : p;
+  const p = currentFlushPromise || resolvedPromise
+  return fn ? p.then(this ? fn.bind(this) : fn) : p
 }
 ```
 

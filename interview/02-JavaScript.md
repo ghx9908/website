@@ -3,6 +3,113 @@ sidebar_position: 3
 title: js面试题
 ---
 
+## 闭包
+
+**定义**
+
+一句话理解闭包：
+
+**闭包是函数和其词法作用域之间的绑定关系**，即：
+一个函数即使脱离了它的创建环境，仍然“记得”当时的变量。
+
+直白点说：
+
+> 闭包 = **函数 + 该函数定义时的作用域链**
+
+即便函数执行在别处，**它依然可以访问原来作用域里的变量** —— 这就是闭包的威力。
+
+**闭包的应用场景**
+
+| 场景              | 示例                       | 原因            |
+| ----------------- | -------------------------- | --------------- |
+| **数据私有化**    | 封装变量，不暴露到全局     | 形成封闭作用域  |
+| **工厂函数**      | 生成带状态的函数           | 每次生成闭包    |
+| **函数防抖/节流** | `let timer` 在闭包中被记住 | 保持 timer 状态 |
+| **模块化开发**    | IIFE/模块封装内部变量      | 用闭包隔离环境  |
+| **回调函数**      | 异步时保留上下文           | 记住变量环境    |
+
+**缺点：**
+
+1. 闭包占用的内存比较大，**容易造成内存泄漏；**
+2. **过度使用闭包会影响性能；**
+3. 可能会导致变量长期驻留在内存中**，影响垃圾回收机制的效率**。从而引起内存泄漏和溢出问题
+4. 为了避免内存泄漏，我们应该尽量**避免在循环或定时器中使用闭包，及时释放不再需要的闭包**变量。
+
+## JS 的垃圾回收机制
+
+> JavaScript 中的垃圾回收机制会**自动释放不再被引用的内存**，核心是：**“对象是否还能被访问”**。
+
+### 一、为什么需要 GC？
+
+- JavaScript 是**高级语言**，开发者不需要手动分配/释放内存
+- 但内存不是无限的，JS 引擎必须知道**什么时候可以安全释放内存**
+
+### 二、判断“垃圾”的依据：引用是否可达（Reachability）
+
+**只要一个对象“可达”，就不会被回收**
+
+可达的典型引用来源：
+
+- 当前执行上下文的局部变量、参数
+- 全局变量
+- 闭包引用的变量
+- DOM 元素引用
+
+  **一旦一个对象变成“不可达”，JS 引擎就会将它回收**
+
+### 三、JavaScript 中的垃圾回收算法
+
+JS 引擎（如 V8）中最主要的 GC 策略是：**标记清除（Mark-and-Sweep）**。
+
+#### ✅ 1. 标记-清除（Mark-and-Sweep）
+
+**过程：**
+
+1. 从“根”对象出发（全局变量、当前执行栈）
+
+2. 遍历所有引用，**打上“可达”标记**
+
+3. 清除所有未被标记的对象（= 不可达）
+
+   ```text
+   🟢 root
+     └─ 🔵 a → 🔵 b → 🔵 c
+
+   🗑️ d ← 被断开引用，GC 回收
+   ```
+
+#### ✅ 2. 引用计数（不常用了）
+
+- 每个对象维护一个“引用次数”
+- 引用 +1，取消引用 -1，引用数为 0 就释放
+
+**缺点：会导致“循环引用”对象永远无法被清除**
+
+```JS
+const a = {}
+const b = {}
+a.self = b
+b.self = a
+```
+
+即使 `a = null; b = null;`，也无法释放（两个对象互相引用，引用数都不为 0）
+
+### 四、现代引擎中的优化机制（V8）
+
+为了性能更好，V8（Chrome 的 JS 引擎）把内存分成了两部分：
+
+| 区域       | 说明                                                 |
+| ---------- | ---------------------------------------------------- |
+| **新生代** | 小对象、生命周期短的对象（比如函数里的局部变量）     |
+| **老生代** | 生命周期长、体积大的对象（DOM 引用、闭包引用的变量） |
+
+新生代：用**Scavenge 算法（复制 + 标记）**
+
+- 有两个空间（From/To）
+- GC 时，把还活着的对象复制到 To 区，再清空 From 区
+
+老生代：用**标记-清除 + 压缩**
+
 ## 基础
 
 ### **类型转换**
@@ -54,26 +161,22 @@ if(a == 1 && a ==2 && a ==3 ){
 }
 ```
 
-
-
 ### +号
 
 - 两个操作数如果是`number`则直接相加出结果
-- 如果其中有一个操作数为string，则将另一个操作数隐式的转换为string，然后进行字符串拼接得出结果
+- 如果其中有一个操作数为 string，则将另一个操作数隐式的转换为 string，然后进行字符串拼接得出结果
 - 如果操作数为对象或者是数组这种复杂的数据类型，那么就将两个操作数都转换为字符串，进行拼接
-- 如果操作数是像boolean这种的简单数据类型，那么就将操作数转换为number相加得出结果
+- 如果操作数是像 boolean 这种的简单数据类型，那么就将操作数转换为 number 相加得出结果
 - `[ ] + { }` 因为[]会被强制转换为"", 然后+运算符 链接一个{ }, { }强制转换为字符串就是"[object Object]"
-- { } 当作一个空代码块,+[]是强制将[]转换为number,转换的过程是 +[] => +"" =>0 最终的结果就是0
+- { } 当作一个空代码块,+[]是强制将[]转换为 number,转换的过程是 +[] => +"" =>0 最终的结果就是 0
 
-[]+{}  //"[object Object]"
+[]+{} //"[object Object]"
 
- {}+[]  //0 
+{}+[] //0
 
-{}+0   //0
+{}+0 //0
 
- []+0   //"0"
-
-
+[]+0 //"0"
 
 ### 真实数组和伪数组有什么区别？
 
@@ -89,11 +192,7 @@ if(a == 1 && a ==2 && a ==3 ){
 
 ### 0.1 + 0.2 是否等于 0.3，如何解决？
 
-在JavaScript中，0.1 + 0.2的结果不是0.3，而是0.30000000000000004。这是由于JavaScript采用IEEE 754标准来表示浮点数，采用的是二进制浮点数的表示方法，因此存在精度问题。这个问题可以通过将浮点数转换为整数进行运算，最后再将结果转换为浮点数来解决。可以采用一些库如big.js或decimal.js这样的高精度计算库来解决这个问题。当然，也可以将数字乘以一个足够大的整数（例如10的9次方），进行计算后再除以这个整数，以获得较为准确的结果。
-
-
-
-
+在 JavaScript 中，0.1 + 0.2 的结果不是 0.3，而是 0.30000000000000004。这是由于 JavaScript 采用 IEEE 754 标准来表示浮点数，采用的是二进制浮点数的表示方法，因此存在精度问题。这个问题可以通过将浮点数转换为整数进行运算，最后再将结果转换为浮点数来解决。可以采用一些库如 big.js 或 decimal.js 这样的高精度计算库来解决这个问题。当然，也可以将数字乘以一个足够大的整数（例如 10 的 9 次方），进行计算后再除以这个整数，以获得较为准确的结果。
 
 ### for...in 和 for of 区别
 
@@ -123,13 +222,11 @@ for (let value of arr) {
 
 注意，`for...of` 的**循环变量是元素值，而不是索引或属性名。**
 
-###  `map` 和 `forEach`
+### `map` 和 `forEach`
 
-有个有返回值，一个没有  都不可以打断循环
+有个有返回值，一个没有 都不可以打断循环
 
-
-
-### filter 和 find 
+### filter 和 find
 
 `filter` 方法返回一个新的数组，其中包含了所有满足条件的元素。如果没有满足条件的元素，返回空数组
 
@@ -183,18 +280,16 @@ console.log(obj.a) // 输出：null
 处理一个对象 `a.b.c` 可以通过以下方式进行：
 
 ```js
-const a = { b: {} };
-Object.defineProperty(a.b, 'c', {
-  value: 'Hello World!',
+const a = { b: {} }
+Object.defineProperty(a.b, "c", {
+  value: "Hello World!",
   writable: true,
   enumerable: true,
   configurable: true,
-});
+})
 ```
 
 这里使用了 `Object.defineProperty` 方法来定义 `a.b.c` 这个属性，并设置了属性的 `value`、`writable`、`enumerable` 和 `configurable` 属性。如果需要修改这个属性，则可以通过 `Object.defineProperty` 方法重新定义该属性。
-
-
 
 ### Proxy 是怎么处理的？
 
@@ -206,26 +301,26 @@ Object.defineProperty(a.b, 'c', {
 
 ```js
 const handler = {
-  get: function(target, prop, receiver) {
-    console.log(`Getting ${prop}`);
-    return target[prop];
+  get: function (target, prop, receiver) {
+    console.log(`Getting ${prop}`)
+    return target[prop]
   },
-  set: function(target, prop, value, receiver) {
-    console.log(`Setting ${prop} to ${value}`);
-    target[prop] = value;
-    return true;
-  }
-};
+  set: function (target, prop, value, receiver) {
+    console.log(`Setting ${prop} to ${value}`)
+    target[prop] = value
+    return true
+  },
+}
 
 const obj = {
   foo: 1,
-  bar: 2
-};
+  bar: 2,
+}
 
-const proxy = new Proxy(obj, handler);
-console.log(proxy.foo); // Getting foo, 1
-proxy.bar = 3; // Setting bar to 3
-console.log(proxy.bar); // Getting bar, 3
+const proxy = new Proxy(obj, handler)
+console.log(proxy.foo) // Getting foo, 1
+proxy.bar = 3 // Setting bar to 3
+console.log(proxy.bar) // Getting bar, 3
 ```
 
 以上代码中，`handler` 是一个拦截器对象，`get` 和 `set` 方法分别用来监听属性的读取和修改操作。在 `get` 方法中，当属性被读取时，会打印出 `Getting ${prop}`，并返回属性值；在 `set` 方法中，当属性被修改时，会打印出 `Setting ${prop} to ${value}`，并将新的属性值赋给目标对象。创建 `proxy` 对象时，传入 `obj` 和 `handler` 参数，即可创建一个代理对象，并对对象的属性读取和修改操作进行拦截和处理。
@@ -239,21 +334,21 @@ console.log(proxy.bar); // Getting bar, 3
 例如，一个 `Proxy` 对象可以拦截对象的读取和赋值操作，同时使用 `Reflect` 对象的 `get()` 和 `set()` 方法进行实际的读取和赋值操作，代码示例：
 
 ```js
-const obj = { name: 'Tom' };
+const obj = { name: "Tom" }
 
 const proxy = new Proxy(obj, {
   get(target, property, receiver) {
-    console.log(`读取 ${property} 属性`);
-    return Reflect.get(target, property, receiver);
+    console.log(`读取 ${property} 属性`)
+    return Reflect.get(target, property, receiver)
   },
   set(target, property, value, receiver) {
-    console.log(`设置 ${property} 属性为 ${value}`);
-    return Reflect.set(target, property, value, receiver);
-  }
-});
+    console.log(`设置 ${property} 属性为 ${value}`)
+    return Reflect.set(target, property, value, receiver)
+  },
+})
 
-console.log(proxy.name); // 读取 name 属性，输出 Tom
-proxy.age = 18; // 设置 age 属性为 18
+console.log(proxy.name) // 读取 name 属性，输出 Tom
+proxy.age = 18 // 设置 age 属性为 18
 ```
 
 可以看到，`Proxy` 对象拦截了对象的读取和赋值操作，而实际的读取和赋值操作则是通过 `Reflect` 对象的 `get()` 和 `set()` 方法实现的。
@@ -272,15 +367,13 @@ proxy.age = 18; // 设置 age 属性为 18
 
 **typeof**
 
-typeof 可以用来区分除了 Null 类型以外的原始数据类型，对象类型的可以从普通对象里面识别出函数:	
+typeof 可以用来区分除了 Null 类型以外的原始数据类型，对象类型的可以从普通对象里面识别出函数:
 
 **instanceof**
 
-instanceof 不能用于判断原始数据类型的数据:	
+instanceof 不能用于判断原始数据类型的数据:
 
 **Object.prototype.toString.call**
-
-
 
 ## 继承
 
@@ -531,92 +624,6 @@ SubType.prototype.sayAge = function () {
 
 **缺点：** 实现麻烦
 
-## 闭包
-
-**定义-----作用------产生--------销毁-------优缺点----什么场景用到--内存泄露溢出---垃圾回收机制**
-
-**定义**
-
-闭包（Closure）是指**有权访问另一个函数作用域中的变量的函数。**在 JavaScript 中，由于**函数具有词法作用域，函数内部可以访问外部函数的变量，而外部函数无法访问内部函数的变量，形成了闭包。**
-
-**销毁：**
-
-当闭包不再被引用时，它占用的内存会被垃圾回收器回收，闭包的变量也会被销毁。
-
-**优点：**
-
-1. 可以帮助我们实现**信息隐藏和数据封装，避免变量名冲突**；
-
-```js
-function createCounter() {
-  let count = 0 // 外部函数的变量，只能在内部函数中被访问
-
-  return function () {
-    count++
-    console.log(count)
-  }
-}
-
-const counter1 = createCounter()
-counter1() // 输出 1
-counter1() // 输出 2
-
-const counter2 = createCounter()
-counter2() // 输出 1
-```
-
-在这个例子中，`createCounter` 函数返回了一个内部函数，这个内部函数可以访问 `createCounter` 函数中的 `count` 变量。由于 `count` 变量只能在内部函数中被访问，所以外部代码无法直接修改它，实现了信息隐藏和数据封装的效果。
-
-2. 可以实现**私有变量和方法，保护数据安全**；
-
-```js
-function Person(name) {
-  let age = 18 // 私有变量
-
-  function getAge() {
-    // 私有方法
-    return age
-  }
-
-  this.getName = function () {
-    // 公共方法
-    return name
-  }
-
-  this.getAge = function () {
-    // 公共方法
-    return getAge()
-  }
-}
-
-const person = new Person("张三")
-console.log(person.getName()) // 输出 "张三"
-console.log(person.getAge()) // 输出 18
-```
-
-在这个例子中，`Person` 构造函数中定义了一个私有变量 `age` 和一个私有方法 `getAge`，外部代码无法直接访问它们。同时，`Person` 构造函数也定义了两个公共方法 `getName` 和 `getAge`，外部代码可以通过这两个公共方法访问 `name` 和 `age`。
-
-3. 可以访问外部函数的变量**，实现持久化存储等。**
-
-**缺点：**
-
-1. 闭包占用的内存比较大，**容易造成内存泄漏；**
-2. **过度使用闭包会影响性能；**
-3. 可能会导致变量长期驻留在内存中**，影响垃圾回收机制的效率**。
-
-**场景：**
-
-1. 实现**函数柯里化；**
-2. 实现**单例模式；**
-3. 实**现事件绑定和解绑；**
-4. 实现 bind 函数
-5. 异步循环调用
-6. 实**现异步编程，解决回调地狱问题**等。
-
-**内存泄露溢出：**
-
-由于闭包会使函数内部的变量长期驻留在内存中，如果过度使用闭包，可能会导致内存占用过多，从而引起内存泄漏和溢出问题。
-
 **垃圾回收机制：**
 
 当闭包**不再被引用时**，垃圾回收器会将其**标记为垃圾对象**，等待**下一次垃圾回收时被回收**。在 **JavaScript** 中，垃圾回收器使用的是**标记清除算法和引用计数算法**。
@@ -627,7 +634,7 @@ console.log(person.getAge()) // 输出 18
 
 JavaScript 引擎使用的是标记清除算法和引用计数算法的结合，称为“标记-清除算法”。垃圾回收器会周期性地执行垃圾回收，遍历所有对象，标记不再使用的对象，然后回收这些对象的内存。
 
-由于闭包会引用外部函数的变量，如果不及时释放，会导致外部函数的变量一直被引用，无法被垃圾回收器回收，从而造成内存泄漏。为了避免内存泄漏，我们应该尽量**避免在循环或定时器中使用闭包，及时释放不再需要的闭包**变量。
+由于闭包会引用外部函数的变量，如果不及时释放，会导致外部函数的变量一直被引用，无法被垃圾回收器回收，从而造成内存泄漏。
 
 ## 预解析 执行上下文
 
@@ -673,16 +680,14 @@ requestAnimationFrame 也是浏览器提供的一个 API，它用于在下一次
 
 Promise 是一种比较常用的异步编程方式，它可以用于处理各种异步操作，包括从服务器获取数据、操作 DOM、定时器等等。通过 Promise，可以在异步操作完成后执行一些操作，比如更新页面、展示数据等等。
 
-## script标签，defer 和 async 什么区别？
+## script 标签，defer 和 async 什么区别？
 
-script标签用于加载 JavaScript 文件。`defer` 和 `async` 是 `<script>` 标签的两个属性，它们可以控制 JavaScript 文件的加载和执行。
+script 标签用于加载 JavaScript 文件。`defer` 和 `async` 是 `<script>` 标签的两个属性，它们可以控制 JavaScript 文件的加载和执行。
 
 - `defer` 属性表示脚本可以延迟到文档完全被解析和显示之后再执行，即在文档加载的同时进行下载，但是会延迟执行，等到 HTML 解析完成后才会执行，适用于不依赖 DOM 的脚本。多个 defer 属性的脚本按照它们在页面上出现的顺序依次执行。
 - `async` 属性表示脚本在下载后立即执行，但是执行时不会阻塞页面的解析，适用于一些不依赖 DOM 的脚本。多个 async 属性的脚本在下载完成后按照它们完成下载的顺序执行，不保证它们在页面上的顺序。
 
 需要注意的是，`defer` 和 `async` 属性只适用于外部脚本文件，即带有 `src` 属性的脚本文件。如果是内联脚本（即没有 `src` 属性的脚本），则不受 `defer` 和 `async` 属性的影响，会按照在页面上的出现顺序依次执行。同时，如果同时使用了 `defer` 和 `async` 属性，`async` 属性会覆盖 `defer` 属性。
-
-
 
 ## 事件循环机制
 
@@ -736,29 +741,27 @@ Node.js 的事件循环实现基于 `libuv` 库，它的事件循环和浏览器
 
 通过这些高级细节的理解，可以帮助你在面试中更全面地展示对 JavaScript 事件循环的掌握。
 
-
-
 1. 刚开始，整个脚本作为第一个宏任务来执行，对于同步代码直接压入执行栈进行执行，依次执行
 
-2. 1. 先执行同步代码，遇到new Pomise，执行改构造函数中的内容
-   2. 碰到resove函数，更改promise的状态，将结果保存下来
+2. 1. 先执行同步代码，遇到 new Pomise，执行改构造函数中的内容
+   2. 碰到 resove 函数，更改 promise 的状态，将结果保存下来
 
-3. 有可能启动定时器,有可能发送ajax请求,有可能绑定事件监听,执行这些代码的时候,会把回调函数交给对应的管理模进行管理,而对应的管理模块在分线程执行,不会影响js执行,js会继续向下执行	
+3. 有可能启动定时器,有可能发送 ajax 请求,有可能绑定事件监听,执行这些代码的时候,会把回调函数交给对应的管理模进行管理,而对应的管理模块在分线程执行,不会影响 js 执行,js 会继续向下执行
 
-4. 比如启动一个setTimeout定时器(有个定时器的管理模块),假设1秒后执行,就会在1秒后把回调放在待执行的回调队列里,此时js有可能还在执行初始化代码,只有初始化代码全部的执行完毕后,一个一个,依次的取出执行（导致定时器不一定准时）
+4. 比如启动一个 setTimeout 定时器(有个定时器的管理模块),假设 1 秒后执行,就会在 1 秒后把回调放在待执行的回调队列里,此时 js 有可能还在执行初始化代码,只有初始化代码全部的执行完毕后,一个一个,依次的取出执行（导致定时器不一定准时）
 
 5. 宏任务被放入宏任务队列，微任务放微队列，
 
-6. 遇到promies.then，（如果状态位pending，理解为先不执行它，当他状态改变，再执行），等微任务，放入微任务队列，
+6. 遇到 promies.then，（如果状态位 pending，理解为先不执行它，当他状态改变，再执行），等微任务，放入微任务队列，
 
 7. 本轮宏任务执行完，查找微任务队列，有的话，顺序执行所有的微任务（产生宏任务，放红任务队列，产生微任务，放微任务队列）
 
-8. 1. 发现promise.then这个微任务状态为resolved，执行它
+8. 1. 发现 promise.then 这个微任务状态为 resolved，执行它
 
-9. **清空微队列中所有微任务 ==> 渲染界(UI线程) ==> 执行宏队列中的第一个宏任务**
+9. **清空微队列中所有微任务 ==> 渲染界(UI 线程) ==> 执行宏队列中的第一个宏任务**
 
-10. 1. 浏览器在另一个线程(GUI渲染线程)进行页面渲染操作,
-    2. GUI渲染线程与js线程是互斥(不会同时执行), 因为 JS 可以修改 DOM 结构
+10. 1. 浏览器在另一个线程(GUI 渲染线程)进行页面渲染操作,
+    2. GUI 渲染线程与 js 线程是互斥(不会同时执行), 因为 JS 可以修改 DOM 结构
 
 11. 执行完所有的微任务，执行下一个宏任务，开始新的一轮
 
@@ -775,24 +778,23 @@ Node.js 的事件循环实现基于 `libuv` 库，它的事件循环和浏览器
 ```html
 <!-- HTML 结构 -->
 <div id="drag" style="width: 100px; height: 100px; background-color: #ccc; position: absolute; left: 0; top: 0;"></div>
-
 ```
 
 ```js
 // JS 代码
-const dragElem = document.getElementById('drag')
+const dragElem = document.getElementById("drag")
 
 let isDragging = false // 是否正在拖拽
 let startX = 0 // 鼠标按下时的 X 坐标
 let startY = 0 // 鼠标按下时的 Y 坐标
 
-dragElem.addEventListener('mousedown', (e) => {
+dragElem.addEventListener("mousedown", (e) => {
   isDragging = true
   startX = e.clientX
   startY = e.clientY
 })
 
-document.addEventListener('mousemove', (e) => {
+document.addEventListener("mousemove", (e) => {
   if (!isDragging) {
     return
   }
@@ -800,8 +802,8 @@ document.addEventListener('mousemove', (e) => {
   const deltaX = e.clientX - startX
   const deltaY = e.clientY - startY
 
-  const currentX = parseInt(dragElem.style.left || '0')
-  const currentY = parseInt(dragElem.style.top || '0')
+  const currentX = parseInt(dragElem.style.left || "0")
+  const currentY = parseInt(dragElem.style.top || "0")
 
   dragElem.style.left = `${currentX + deltaX}px`
   dragElem.style.top = `${currentY + deltaY}px`
@@ -810,12 +812,10 @@ document.addEventListener('mousemove', (e) => {
   startY = e.clientY
 })
 
-document.addEventListener('mouseup', () => {
+document.addEventListener("mouseup", () => {
   isDragging = false
 })
 ```
-
-
 
 以上示例中，我们首先获取到需要拖拽的 DOM 元素，然后在鼠标按下事件（mousedown）中记录下鼠标按下时的位置，随后在鼠标移动事件（mousemove）中计算鼠标移动的距离，并根据移动距离改变拖拽元素的位置。最后，在鼠标松开事件（mouseup）中取消对鼠标移动事件的监听。
 
@@ -824,7 +824,6 @@ document.addEventListener('mouseup', () => {
 JavaScript 中数组的 sort 方法默认将元素转换为字符串，然后按**照 UTF-16 编码的顺序进行排序**，也就是按照字典序排序。这种排序方式可能不符合我们的需求，因此可以使用 sort 方法的回调函数来指定排序规则。
 
 sort 方法使用的**排序算法是快速排序（QuickSort）**，在大多数浏览器中都是基于原地排序的，也就是说，sort 方法不会创建新的数组，而是直接对原数组进行排序。如果数组元素过多，快速排序的时间复杂度可能会达到 O(n^2)，因此在处理大规模数据时可能需要使用其他排序算法。
-
 
 ## 事件循环机制
 
@@ -870,21 +869,21 @@ Node.js 的事件循环实现基于 `libuv` 库，它的事件循环和浏览器
 - Reflect.ownKeys()得出的对象自己的所有属性，包括不可枚举和 Symbol 的属性，但是拿不到原型上的属性
 
 ```js
-Object.prototype.pr = "我是原型属性";
-let s = Symbol();
+Object.prototype.pr = "我是原型属性"
+let s = Symbol()
 let obj = {
   [s]: "this is Symbol",
   a: "a",
-};
+}
 Object.defineProperty(obj, "name", {
   value: "sunny",
   configurable: true,
   enumerable: false,
   writable: true,
-});
+})
 
-console.log("Object.keys", Object.keys(obj)); // ["a"]
-console.log("Reflect.ownKeys(obj)", Reflect.ownKeys(obj)); //["a", "name", Symbol()]
+console.log("Object.keys", Object.keys(obj)) // ["a"]
+console.log("Reflect.ownKeys(obj)", Reflect.ownKeys(obj)) //["a", "name", Symbol()]
 ```
 
 ## 继承
@@ -899,21 +898,21 @@ console.log("Reflect.ownKeys(obj)", Reflect.ownKeys(obj)); //["a", "name", Symbo
 
 ```js
 function SuperType() {
-  this.property = true;
+  this.property = true
 }
 SuperType.prototype.getSuperValue = function () {
-  return this.property;
-};
+  return this.property
+}
 function SubType() {
-  this.subproperty = false;
+  this.subproperty = false
 }
 // 继承 SuperType
-SubType.prototype = new SuperType();
+SubType.prototype = new SuperType()
 SubType.prototype.getSubValue = function () {
-  return this.subproperty;
-};
-let instance = new SubType();
-console.log(instance.getSuperValue()); // true
+  return this.subproperty
+}
+let instance = new SubType()
+console.log(instance.getSuperValue()) // true
 ```
 
 **特点：**
@@ -931,16 +930,16 @@ console.log(instance.getSuperValue()); // true
 
 ```js
 function SuperType() {
-  this.colors = ["red", "blue", "green"];
+  this.colors = ["red", "blue", "green"]
 }
 function SubType() {}
 // 继承 SuperType
-SubType.prototype = new SuperType();
-let instance1 = new SubType();
-instance1.colors.push("black");
-console.log(instance1.colors); // "red,blue,green,black"
-let instance2 = new SubType();
-console.log(instance2.colors); // "red,blue,green,black"
+SubType.prototype = new SuperType()
+let instance1 = new SubType()
+instance1.colors.push("black")
+console.log(instance1.colors) // "red,blue,green,black"
+let instance2 = new SubType()
+console.log(instance2.colors) // "red,blue,green,black"
 ```
 
 ### 二、借用构造函数继承
@@ -949,17 +948,17 @@ console.log(instance2.colors); // "red,blue,green,black"
 
 ```js
 function SuperType(name) {
-  this.name = name;
+  this.name = name
 }
 function SubType() {
   // 继承 SuperType 并传参
-  SuperType.call(this, "Nicholas");
+  SuperType.call(this, "Nicholas")
   // 实例属性
-  this.age = 29;
+  this.age = 29
 }
-let instance = new SubType();
-console.log(instance.name); // "Nicholas";
-console.log(instance.age); // 29
+let instance = new SubType()
+console.log(instance.name) // "Nicholas";
+console.log(instance.age) // 29
 ```
 
 **特点：**
@@ -982,32 +981,32 @@ console.log(instance.age); // 29
 
 ```js
 function SuperType(name) {
-  this.name = name;
-  this.colors = ["red", "blue", "green"];
+  this.name = name
+  this.colors = ["red", "blue", "green"]
 }
 SuperType.prototype.sayName = function () {
-  console.log(this.name);
-};
+  console.log(this.name)
+}
 function SubType(name, age) {
   // 继承属性
-  SuperType.call(this, name); //// 第一次调用 SuperType()
-  this.age = age;
+  SuperType.call(this, name) //// 第一次调用 SuperType()
+  this.age = age
 }
 // 继承方法
-SubType.prototype = new SuperType(); // 第二次调用 SuperType()
+SubType.prototype = new SuperType() // 第二次调用 SuperType()
 SubType.prototype.sayAge = function () {
-  console.log(this.age);
-};
-let instance1 = new SubType("Nicholas", 29);
-console.log("instance1=>", instance1);
-instance1.colors.push("black");
-console.log(instance1.colors); // "red,blue,green,black"
-instance1.sayName(); // "Nicholas";
-instance1.sayAge(); // 29
-let instance2 = new SubType("Greg", 27);
-console.log(instance2.colors); // "red,blue,green"
-instance2.sayName(); // "Greg";
-instance2.sayAge(); // 27
+  console.log(this.age)
+}
+let instance1 = new SubType("Nicholas", 29)
+console.log("instance1=>", instance1)
+instance1.colors.push("black")
+console.log(instance1.colors) // "red,blue,green,black"
+instance1.sayName() // "Nicholas";
+instance1.sayAge() // 29
+let instance2 = new SubType("Greg", 27)
+console.log(instance2.colors) // "red,blue,green"
+instance2.sayName() // "Greg";
+instance2.sayAge() // 27
 ```
 
 **特点：**
@@ -1025,21 +1024,21 @@ instance2.sayAge(); // 27
 //核心代码
 function object(o) {
   function F() {}
-  F.prototype = o;
-  return new F();
+  F.prototype = o
+  return new F()
 }
 
 let person = {
   name: "Nicholas",
   friends: ["Shelby", "Court", "Van"],
-};
-let anotherPerson = object(person);
-anotherPerson.name = "Greg";
-anotherPerson.friends.push("Rob");
-let yetAnotherPerson = object(person);
-yetAnotherPerson.name = "Linda";
-yetAnotherPerson.friends.push("Barbie");
-console.log(person.friends); // "Shelby,Court,Van,Rob,Barbie"
+}
+let anotherPerson = object(person)
+anotherPerson.name = "Greg"
+anotherPerson.friends.push("Rob")
+let yetAnotherPerson = object(person)
+yetAnotherPerson.name = "Linda"
+yetAnotherPerson.friends.push("Barbie")
+console.log(person.friends) // "Shelby,Court,Van,Rob,Barbie"
 ```
 
 **特点：** 类似于复制一个对象，用函数来包装。
@@ -1059,25 +1058,25 @@ console.log(person.friends); // "Shelby,Court,Van,Rob,Barbie"
 ```js
 function object(o) {
   function F() {}
-  F.prototype = o;
-  return new F();
+  F.prototype = o
+  return new F()
 }
 
 function createAnother(original) {
-  let clone = object(original); // 通过调用函数创建一个新对象
+  let clone = object(original) // 通过调用函数创建一个新对象
   clone.sayHi = function () {
     // 以某种方式增强这个对象
-    console.log("hi");
-  };
-  return clone; // 返回这个对象
+    console.log("hi")
+  }
+  return clone // 返回这个对象
 }
 
 let person = {
   name: "Nicholas",
   friends: ["Shelby", "Court", "Van"],
-};
-let anotherPerson = createAnother(person);
-anotherPerson.sayHi(); // "hi"
+}
+let anotherPerson = createAnother(person)
+anotherPerson.sayHi() // "hi"
 //寄生式继承同样适合主要关注对象，而不在乎类型和构造函数的场景。object()函数不是寄生式继承所必需的，任何返回新对象的函数都可以在这里使用。
 // 注意 通过寄生式继承给对象添加函数会导致函数难以重用，与构造函数模式类似。
 ```
@@ -1100,8 +1099,8 @@ anotherPerson.sayHi(); // "hi"
 ```js
 function object(o) {
   function F() {}
-  F.prototype = o;
-  return new F();
+  F.prototype = o
+  return new F()
 }
 
 /*function inheritPrototype(subType, superType) { 
@@ -1111,25 +1110,25 @@ function object(o) {
 }*/
 
 function SuperType(name) {
-  this.name = name;
-  this.colors = ["red", "blue", "green"];
+  this.name = name
+  this.colors = ["red", "blue", "green"]
 }
 SuperType.prototype.sayName = function () {
-  console.log(this.name);
-};
-function SubType(name, age) {
-  SuperType.call(this, name);
-  this.age = age;
+  console.log(this.name)
 }
-let prototype = object(superType.prototype); // 创建对象
-subType.prototype = prototype; // 赋值对象
-prototype.constructor = subType; // 修复实例
+function SubType(name, age) {
+  SuperType.call(this, name)
+  this.age = age
+}
+let prototype = object(superType.prototype) // 创建对象
+subType.prototype = prototype // 赋值对象
+prototype.constructor = subType // 修复实例
 
 //inheritPrototype(SubType, SuperType);
 
 SubType.prototype.sayAge = function () {
-  console.log(this.age);
-};
+  console.log(this.age)
+}
 ```
 
 **优先：** 修复了组合继承的问题
@@ -1151,30 +1150,30 @@ SubType.prototype.sayAge = function () {
 ```js
 function Foo() {
   getName = function () {
-    console.log("11=>", 11);
-  };
-  return this;
+    console.log("11=>", 11)
+  }
+  return this
 }
 Foo.getName = function () {
-  console.log("22=>", 22);
-};
+  console.log("22=>", 22)
+}
 Foo.prototype.getName = function () {
-  console.log("33=>", 33);
-};
+  console.log("33=>", 33)
+}
 var getName = function () {
-  console.log("44=>", 44);
-};
+  console.log("44=>", 44)
+}
 function getName() {
-  console.log("55=>", 55);
+  console.log("55=>", 55)
 }
 
-Foo.getName();
-getName();
-Foo().getName();
-getName();
-new Foo.getName();
-new Foo().getName();
-new new Foo().getName();
+Foo.getName()
+getName()
+Foo().getName()
+getName()
+new Foo.getName()
+new Foo().getName()
+new new Foo().getName()
 
 // 22=> 22
 // 44=> 44
