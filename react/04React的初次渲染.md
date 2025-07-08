@@ -9,7 +9,7 @@ last_update:
 
 1. 通过 babel 编译将写的 html 标签转换成 jsx 函数，执行 jsx 函数生成虚拟 dom
 
-![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img20240828141604.png?token=AU2NEGBPTRPKZWQAWSMSER3GZ3AOI)
+![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img20240828141604.png)
 
 2. 调用 creatRoot 方法会创建一个 ReactDOMRoot 一个实例
    1. 其中会创建根 fiber，进行事件机制的绑定 初始化跟新队列
@@ -18,13 +18,13 @@ last_update:
 const root = createRoot(document.getElementById("root"))
 ```
 
-![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img20240828141640.png?token=AU2NEGBXZQYAHECYZ2ICM4DGZ3AQS)
+![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img20240828141640.png)
 
 3. 调用 root 的 render 方法先把 element 虚拟 dom 放到 HostRootFiber 的更新队列中
 
    - 这是一个循环链表
 
-   ![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img20240828141715.png?token=AU2NEGDIJXIP754DS262GGTGZ3ASW)
+   ![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img20240828141715.png)
 
 4. 开始调度更新，初始化栈（初次未空，更新的时候会给 fiber 的 update 赋值）
 
@@ -163,7 +163,7 @@ const root = createRoot(document.getElementById("root"))
       workInProgress = createWorkInProgress(root.current, null)
       ```
 
-   ![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img20240828141930.png?token=AU2NEGBWOQRXOMZ6BS3VHD3GZ3A3G)
+   ![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img20240828141930.png)
 
    3. 递归构建子节点 workLoopSync() 执行工作单元 一个 fiber 就是一个工作单元
 
@@ -273,7 +273,7 @@ const root = createRoot(document.getElementById("root"))
    }
    ```
 
-   ![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img20240828141900.png?token=AU2NEGG3X2COZLV43K7XAGTGZ3AZM)
+   ![](https://raw.githubusercontent.com/ghx9908/image-hosting/master/img20240828141900.png)
 
 8. fiber 树都构建完成 进入体检阶段
 
