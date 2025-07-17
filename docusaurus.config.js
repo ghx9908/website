@@ -179,11 +179,22 @@ const config = {
             label: "GitHub",
             position: "right",
           },
+          {
+            type: "dropdown",
+            label: "更多",
+            position: "right",
+            items: [
+              {
+                label: "大数据可视化",
+                to: "https://ghx9908.github.io/large-data-visualization/",
+              },
+            ],
+          },
         ],
       },
       footer: {
         style: "dark",
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Gao hongxiang.`,
+        copyright: `Copyright © ${new Date().getFullYear()} My Project, Gao HongXiang.`,
       },
       prism: {
         theme: lightCodeTheme,
